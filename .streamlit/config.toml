@@ -1,0 +1,15 @@
+# .streamlit/config.toml
+# TUTORIAL NOTE ────────────────────────────────────────────────────────────
+# This file controls Streamlit's built-in theming.
+# It overrides the default dark UI chrome (topbar, sidebar, widgets).
+# Place it at  <project_root>/.streamlit/config.toml
+# Full reference: https://docs.streamlit.io/library/advanced-features/theming
+# ──────────────────────────────────────────────────────────────────────────
+
+[theme]
+base             = "light"           # "light" or "dark" — sets the base palette
+primaryColor     = "#6366f1"         # indigo — buttons, sliders, active widgets
+backgroundColor  = "#ffffff"         # main page background
+secondaryBackgroundColor = "#ffffff" # sidebar and widget card background
+textColor        = "#1e293b"         # primary text colour
+font             = "sans serif"

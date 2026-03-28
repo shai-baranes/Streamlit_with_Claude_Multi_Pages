@@ -1,0 +1,1501 @@
+Date,Year,Quarter,Month,MonthNum,Region,Country,Category,Product,Segment,Channel,Sales_Rep,Revenue,Units,Cost,Profit,Margin_%,Deal_Won
+2022-01-01,2022,Q1,Jan,1,North America,Mexico,Hardware,Network Hub,Mid-Market,Partner,Rep_14,35622.39,47,14744.7,20877.69,58.6,True
+2022-01-01,2022,Q1,Jan,1,Middle East & Africa,Saudi Arabia,Cloud,Kubernetes,Mid-Market,Direct,Rep_10,3512.73,29,2006.87,1505.86,42.9,False
+2022-01-02,2022,Q1,Jan,1,Asia-Pacific,India,Consulting,Strategy,Mid-Market,Partner,Rep_18,15827.01,27,6630.39,9196.62,58.1,False
+2022-01-02,2022,Q1,Jan,1,Asia-Pacific,South Korea,Services,Deployment,Enterprise,Direct,Rep_12,13049.1,41,8470.23,4578.87,35.1,True
+2022-01-03,2022,Q1,Jan,1,Europe,Germany,Services,24/7 Support,Enterprise,Online,Rep_06,14192.48,39,8330.75,5861.73,41.3,True
+2022-01-03,2022,Q1,Jan,1,Asia-Pacific,Australia,Consulting,Migration,Enterprise,Online,Rep_19,56632.73,41,31792.98,24839.75,43.9,True
+2022-01-03,2022,Q1,Jan,1,Middle East & Africa,South Africa,Cloud,Cloud Compute,Enterprise,Reseller,Rep_06,3714.89,12,2201.86,1513.03,40.7,True
+2022-01-03,2022,Q1,Jan,1,Europe,Sweden,Cloud,Cloud Storage,SMB,Direct,Rep_10,774.0,48,466.44,307.56,39.7,False
+2022-01-04,2022,Q1,Jan,1,Europe,Sweden,Services,24/7 Support,Mid-Market,Reseller,Rep_18,7152.88,37,4096.85,3056.03,42.7,True
+2022-01-04,2022,Q1,Jan,1,Latin America,Colombia,Consulting,Digital Transform,Enterprise,Reseller,Rep_05,95771.85,28,41846.06,53925.79,56.3,False
+2022-01-06,2022,Q1,Jan,1,Europe,Germany,Consulting,Audit,Enterprise,Reseller,Rep_19,76408.0,30,41820.42,34587.58,45.3,True
+2022-01-07,2022,Q1,Jan,1,North America,Mexico,Consulting,Digital Transform,SMB,Partner,Rep_20,15104.49,22,9257.81,5846.68,38.7,True
+2022-01-07,2022,Q1,Jan,1,Latin America,Colombia,Software,CRM Suite,SMB,Direct,Rep_18,2432.22,40,1421.99,1010.23,41.5,False
+2022-01-08,2022,Q1,Jan,1,North America,Canada,Software,Security Shield,SMB,Partner,Rep_04,2239.98,41,1187.33,1052.65,47.0,False
+2022-01-09,2022,Q1,Jan,1,Asia-Pacific,South Korea,Hardware,Network Hub,SMB,Partner,Rep_01,3350.97,1,1406.88,1944.09,58.0,True
+2022-01-09,2022,Q1,Jan,1,Asia-Pacific,Australia,Services,Training,Enterprise,Partner,Rep_18,9348.96,45,3649.35,5699.61,61.0,True
+2022-01-10,2022,Q1,Jan,1,Latin America,Argentina,Cloud,Cloud Compute,Mid-Market,Direct,Rep_06,1327.0,32,809.51,517.49,39.0,False
+2022-01-10,2022,Q1,Jan,1,North America,Mexico,Services,Deployment,SMB,Direct,Rep_17,1968.8,50,792.32,1176.48,59.8,True
+2022-01-10,2022,Q1,Jan,1,Latin America,Chile,Consulting,Migration,Enterprise,Online,Rep_11,44943.85,48,19496.26,25447.59,56.6,True
+2022-01-11,2022,Q1,Jan,1,Latin America,Chile,Consulting,Strategy,Enterprise,Partner,Rep_13,44891.59,21,16567.22,28324.37,63.1,True
+2022-01-12,2022,Q1,Jan,1,Middle East & Africa,Saudi Arabia,Cloud,Kubernetes,Mid-Market,Partner,Rep_12,3378.41,30,1965.23,1413.18,41.8,True
+2022-01-13,2022,Q1,Jan,1,Latin America,Chile,Software,Analytics Pro,SMB,Partner,Rep_18,2952.91,22,1337.13,1615.78,54.7,False
+2022-01-13,2022,Q1,Jan,1,North America,USA,Software,CRM Suite,SMB,Partner,Rep_16,4609.25,27,1820.26,2788.99,60.5,True
+2022-01-15,2022,Q1,Jan,1,Middle East & Africa,Nigeria,Software,CRM Suite,SMB,Partner,Rep_04,3657.88,35,1944.02,1713.86,46.9,True
+2022-01-15,2022,Q1,Jan,1,Asia-Pacific,South Korea,Software,Security Shield,SMB,Reseller,Rep_06,2411.18,32,855.45,1555.73,64.5,True
+2022-01-15,2022,Q1,Jan,1,North America,USA,Consulting,Audit,Enterprise,Reseller,Rep_05,24379.12,33,15016.0,9363.12,38.4,False
+2022-01-16,2022,Q1,Jan,1,Middle East & Africa,Nigeria,Cloud,Cloud Storage,Enterprise,Reseller,Rep_15,8197.09,7,4952.56,3244.53,39.6,True
+2022-01-16,2022,Q1,Jan,1,Europe,Netherlands,Hardware,Network Hub,Enterprise,Partner,Rep_04,25763.42,17,13738.49,12024.93,46.7,True
+2022-01-16,2022,Q1,Jan,1,Europe,Germany,Consulting,Audit,Enterprise,Reseller,Rep_18,24632.32,11,14288.28,10344.04,42.0,True
+2022-01-17,2022,Q1,Jan,1,Asia-Pacific,India,Software,DevTools,Mid-Market,Reseller,Rep_03,7108.53,47,3437.67,3670.86,51.6,True
+2022-01-18,2022,Q1,Jan,1,Middle East & Africa,Nigeria,Cloud,Cloud Storage,Mid-Market,Partner,Rep_05,3864.32,1,2148.55,1715.77,44.4,False
+2022-01-20,2022,Q1,Jan,1,Europe,UK,Services,Training,Enterprise,Direct,Rep_16,5313.98,41,2856.73,2457.25,46.2,True
+2022-01-20,2022,Q1,Jan,1,North America,USA,Cloud,Cloud Compute,SMB,Online,Rep_05,1455.44,1,940.31,515.13,35.4,True
+2022-01-21,2022,Q1,Jan,1,Middle East & Africa,South Africa,Consulting,Audit,Mid-Market,Reseller,Rep_02,13464.74,22,5368.18,8096.56,60.1,True
+2022-01-21,2022,Q1,Jan,1,Europe,UK,Consulting,Migration,Enterprise,Reseller,Rep_10,61065.13,27,38649.12,22416.01,36.7,False
+2022-01-22,2022,Q1,Jan,1,Asia-Pacific,Singapore,Software,Analytics Pro,Mid-Market,Reseller,Rep_05,14709.21,7,8231.53,6477.68,44.0,True
+2022-01-22,2022,Q1,Jan,1,North America,Mexico,Software,CRM Suite,Mid-Market,Partner,Rep_14,6209.81,29,3538.2,2671.61,43.0,True
+2022-01-22,2022,Q1,Jan,1,Asia-Pacific,South Korea,Cloud,Serverless,SMB,Partner,Rep_04,1564.36,16,973.01,591.35,37.8,False
+2022-01-23,2022,Q1,Jan,1,North America,Canada,Hardware,Network Hub,Enterprise,Online,Rep_01,39157.85,16,20142.65,19015.2,48.6,True
+2022-01-25,2022,Q1,Jan,1,Asia-Pacific,Singapore,Cloud,Serverless,SMB,Partner,Rep_18,1301.75,27,548.78,752.97,57.8,False
+2022-01-26,2022,Q1,Jan,1,North America,Mexico,Services,Training,Mid-Market,Reseller,Rep_12,2359.98,23,1351.46,1008.52,42.7,True
+2022-01-26,2022,Q1,Jan,1,North America,Mexico,Software,Analytics Pro,Mid-Market,Reseller,Rep_11,9717.99,29,5990.43,3727.56,38.4,True
+2022-01-26,2022,Q1,Jan,1,Asia-Pacific,South Korea,Software,Security Shield,Mid-Market,Direct,Rep_04,8170.21,33,4207.64,3962.57,48.5,True
+2022-01-26,2022,Q1,Jan,1,North America,Mexico,Software,Analytics Pro,SMB,Partner,Rep_18,3087.12,13,1973.53,1113.59,36.1,False
+2022-01-27,2022,Q1,Jan,1,Middle East & Africa,Saudi Arabia,Services,Deployment,SMB,Partner,Rep_12,1483.66,5,596.95,886.71,59.8,True
+2022-01-27,2022,Q1,Jan,1,Middle East & Africa,South Africa,Cloud,Cloud Compute,Enterprise,Partner,Rep_08,8858.18,16,5346.93,3511.25,39.6,True
+2022-01-27,2022,Q1,Jan,1,Asia-Pacific,South Korea,Hardware,Network Hub,Mid-Market,Online,Rep_11,24366.93,44,14030.18,10336.75,42.4,True
+2022-01-28,2022,Q1,Jan,1,Europe,Germany,Consulting,Audit,SMB,Direct,Rep_07,14526.85,42,5623.84,8903.01,61.3,True
+2022-01-28,2022,Q1,Jan,1,Latin America,Argentina,Software,Security Shield,Enterprise,Online,Rep_13,14072.65,2,7936.84,6135.81,43.6,False
+2022-01-28,2022,Q1,Jan,1,Asia-Pacific,Australia,Hardware,Workstation Z,SMB,Reseller,Rep_15,8626.82,5,3477.85,5148.97,59.7,True
+2022-01-29,2022,Q1,Jan,1,Middle East & Africa,South Africa,Cloud,Cloud Compute,SMB,Reseller,Rep_03,845.42,40,318.33,527.09,62.3,True
+2022-01-30,2022,Q1,Jan,1,Middle East & Africa,Saudi Arabia,Cloud,Cloud Storage,Enterprise,Partner,Rep_12,7975.41,21,4027.07,3948.34,49.5,True
+2022-01-30,2022,Q1,Jan,1,Middle East & Africa,Saudi Arabia,Cloud,Cloud Compute,SMB,Online,Rep_14,791.65,50,353.83,437.82,55.3,True
+2022-01-30,2022,Q1,Jan,1,Middle East & Africa,Nigeria,Software,CRM Suite,Enterprise,Online,Rep_15,10117.63,41,4581.34,5536.29,54.7,True
+2022-01-30,2022,Q1,Jan,1,Middle East & Africa,Saudi Arabia,Cloud,Serverless,Mid-Market,Partner,Rep_17,1752.13,50,805.12,947.01,54.0,True
+2022-01-31,2022,Q1,Jan,1,Asia-Pacific,South Korea,Software,CRM Suite,Mid-Market,Partner,Rep_13,3761.94,48,1802.71,1959.23,52.1,True
+2022-02-01,2022,Q1,Feb,2,Asia-Pacific,South Korea,Consulting,Strategy,Enterprise,Online,Rep_10,32712.01,31,14478.41,18233.6,55.7,True
+2022-02-01,2022,Q1,Feb,2,Europe,Netherlands,Software,CRM Suite,SMB,Online,Rep_20,4864.47,30,2887.1,1977.37,40.6,True
+2022-02-02,2022,Q1,Feb,2,Asia-Pacific,Japan,Cloud,Kubernetes,Enterprise,Direct,Rep_02,6103.27,48,2535.12,3568.15,58.5,True
+2022-02-02,2022,Q1,Feb,2,North America,Mexico,Cloud,Cloud Storage,SMB,Online,Rep_11,1292.92,10,776.05,516.87,40.0,True
+2022-02-02,2022,Q1,Feb,2,North America,USA,Cloud,Cloud Compute,Enterprise,Partner,Rep_05,3256.32,14,1434.17,1822.15,56.0,True
+2022-02-03,2022,Q1,Feb,2,Latin America,Brazil,Hardware,Workstation Z,Enterprise,Direct,Rep_02,21645.49,26,11978.74,9666.75,44.7,True
+2022-02-03,2022,Q1,Feb,2,Middle East & Africa,UAE,Services,Managed IT,Enterprise,Reseller,Rep_10,6606.34,31,2500.74,4105.6,62.1,False
+2022-02-04,2022,Q1,Feb,2,Europe,Germany,Services,Managed IT,Enterprise,Online,Rep_06,12755.67,43,7578.03,5177.64,40.6,True
+2022-02-06,2022,Q1,Feb,2,Middle East & Africa,Saudi Arabia,Cloud,Cloud Storage,SMB,Online,Rep_03,690.93,37,431.92,259.01,37.5,True
+2022-02-06,2022,Q1,Feb,2,Europe,France,Software,DevTools,SMB,Direct,Rep_09,4291.27,7,2727.57,1563.7,36.4,True
+2022-02-07,2022,Q1,Feb,2,Europe,Germany,Services,Training,Enterprise,Online,Rep_18,6285.08,44,3792.92,2492.16,39.7,True
+2022-02-07,2022,Q1,Feb,2,Europe,Sweden,Services,Training,SMB,Partner,Rep_02,3141.15,33,1607.47,1533.68,48.8,True
+2022-02-08,2022,Q1,Feb,2,North America,Mexico,Cloud,Cloud Compute,Mid-Market,Partner,Rep_15,3606.01,30,2101.36,1504.65,41.7,True
+2022-02-09,2022,Q1,Feb,2,Europe,Netherlands,Hardware,Server X1,Mid-Market,Partner,Rep_16,9250.24,6,5922.04,3328.2,36.0,True
+2022-02-09,2022,Q1,Feb,2,Asia-Pacific,South Korea,Consulting,Audit,Mid-Market,Partner,Rep_06,34756.23,43,13391.41,21364.82,61.5,False
+2022-02-10,2022,Q1,Feb,2,Middle East & Africa,UAE,Cloud,Cloud Storage,SMB,Partner,Rep_06,797.08,2,323.17,473.91,59.5,True
+2022-02-10,2022,Q1,Feb,2,Latin America,Colombia,Software,CRM Suite,Enterprise,Partner,Rep_13,12016.12,50,6316.09,5700.03,47.4,True
+2022-02-10,2022,Q1,Feb,2,Middle East & Africa,UAE,Software,Security Shield,Mid-Market,Direct,Rep_14,7671.89,13,3494.77,4177.12,54.4,True
+2022-02-10,2022,Q1,Feb,2,North America,Mexico,Consulting,Migration,Enterprise,Reseller,Rep_12,34291.32,31,20124.43,14166.89,41.3,True
+2022-02-11,2022,Q1,Feb,2,Latin America,Argentina,Hardware,Workstation Z,Enterprise,Reseller,Rep_17,16783.12,4,6516.96,10266.16,61.2,True
+2022-02-11,2022,Q1,Feb,2,Middle East & Africa,Nigeria,Consulting,Audit,Mid-Market,Partner,Rep_03,16799.02,40,10414.16,6384.86,38.0,True
+2022-02-12,2022,Q1,Feb,2,Latin America,Chile,Cloud,Cloud Compute,SMB,Direct,Rep_08,712.15,7,345.74,366.41,51.5,True
+2022-02-12,2022,Q1,Feb,2,Europe,UK,Software,CRM Suite,Mid-Market,Online,Rep_07,10469.56,2,6771.58,3697.98,35.3,True
+2022-02-14,2022,Q1,Feb,2,Latin America,Colombia,Software,Security Shield,Mid-Market,Direct,Rep_20,8392.85,17,4805.91,3586.94,42.7,True
+2022-02-14,2022,Q1,Feb,2,Europe,Sweden,Services,Managed IT,Mid-Market,Reseller,Rep_12,12520.37,26,5636.82,6883.55,55.0,True
+2022-02-14,2022,Q1,Feb,2,Europe,France,Services,Managed IT,SMB,Online,Rep_14,2065.21,22,892.1,1173.11,56.8,True
+2022-02-15,2022,Q1,Feb,2,Middle East & Africa,UAE,Services,24/7 Support,Mid-Market,Partner,Rep_02,4623.19,33,2585.89,2037.3,44.1,True
+2022-02-15,2022,Q1,Feb,2,Asia-Pacific,India,Software,DevTools,Enterprise,Direct,Rep_13,18209.32,42,9871.28,8338.04,45.8,False
+2022-02-16,2022,Q1,Feb,2,Asia-Pacific,Australia,Services,Training,Enterprise,Online,Rep_05,6507.09,17,2660.69,3846.4,59.1,True
+2022-02-16,2022,Q1,Feb,2,Asia-Pacific,Australia,Cloud,Serverless,SMB,Partner,Rep_05,887.77,1,390.13,497.64,56.1,False
+2022-02-16,2022,Q1,Feb,2,Asia-Pacific,South Korea,Software,CRM Suite,Enterprise,Online,Rep_05,19103.3,50,10444.85,8658.45,45.3,True
+2022-02-17,2022,Q1,Feb,2,North America,USA,Consulting,Migration,Mid-Market,Reseller,Rep_04,14869.45,45,7833.44,7036.01,47.3,False
+2022-02-17,2022,Q1,Feb,2,North America,Canada,Hardware,Server X1,Mid-Market,Partner,Rep_05,11583.64,50,6599.6,4984.04,43.0,True
+2022-02-18,2022,Q1,Feb,2,Asia-Pacific,India,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_06,3625.71,36,2292.69,1333.02,36.8,True
+2022-02-20,2022,Q1,Feb,2,Europe,Germany,Consulting,Migration,SMB,Online,Rep_16,5511.54,42,2024.19,3487.35,63.3,True
+2022-02-21,2022,Q1,Feb,2,North America,Mexico,Hardware,Workstation Z,Mid-Market,Online,Rep_18,19188.21,43,12452.31,6735.9,35.1,False
+2022-02-21,2022,Q1,Feb,2,Europe,Germany,Services,Managed IT,Enterprise,Online,Rep_20,7569.2,21,3752.49,3816.71,50.4,True
+2022-02-21,2022,Q1,Feb,2,Middle East & Africa,South Africa,Consulting,Strategy,SMB,Online,Rep_12,9110.32,43,4435.47,4674.85,51.3,True
+2022-02-21,2022,Q1,Feb,2,Europe,Sweden,Consulting,Audit,Enterprise,Direct,Rep_10,41054.13,11,23472.9,17581.23,42.8,False
+2022-02-21,2022,Q1,Feb,2,Middle East & Africa,Nigeria,Consulting,Digital Transform,SMB,Partner,Rep_08,9625.23,13,4420.7,5204.53,54.1,False
+2022-02-22,2022,Q1,Feb,2,Middle East & Africa,Nigeria,Cloud,Cloud Storage,Mid-Market,Direct,Rep_15,2904.69,19,1816.59,1088.1,37.5,True
+2022-02-22,2022,Q1,Feb,2,North America,USA,Services,Managed IT,SMB,Reseller,Rep_02,3366.91,37,1223.75,2143.16,63.7,False
+2022-02-22,2022,Q1,Feb,2,Asia-Pacific,Singapore,Software,Analytics Pro,Mid-Market,Partner,Rep_07,8566.24,1,3770.0,4796.24,56.0,True
+2022-02-23,2022,Q1,Feb,2,Middle East & Africa,UAE,Services,Managed IT,SMB,Online,Rep_05,2332.87,17,1133.61,1199.26,51.4,True
+2022-02-23,2022,Q1,Feb,2,Middle East & Africa,Saudi Arabia,Software,DevTools,Enterprise,Direct,Rep_03,21141.54,41,10231.17,10910.37,51.6,True
+2022-02-24,2022,Q1,Feb,2,Middle East & Africa,Nigeria,Services,Managed IT,SMB,Partner,Rep_18,1436.42,42,527.34,909.08,63.3,False
+2022-02-25,2022,Q1,Feb,2,Latin America,Brazil,Software,DevTools,SMB,Online,Rep_05,3314.7,18,1304.0,2010.7,60.7,False
+2022-02-25,2022,Q1,Feb,2,Latin America,Brazil,Hardware,Network Hub,SMB,Reseller,Rep_13,3186.3,28,1500.8,1685.5,52.9,False
+2022-02-25,2022,Q1,Feb,2,Asia-Pacific,Singapore,Consulting,Digital Transform,SMB,Online,Rep_15,7921.63,3,2947.84,4973.79,62.8,True
+2022-02-27,2022,Q1,Feb,2,Asia-Pacific,Japan,Hardware,Server X1,SMB,Online,Rep_15,3480.4,46,1989.81,1490.59,42.8,True
+2022-02-27,2022,Q1,Feb,2,Europe,France,Consulting,Migration,Enterprise,Reseller,Rep_03,23843.73,44,9814.57,14029.16,58.8,True
+2022-02-28,2022,Q1,Feb,2,Middle East & Africa,UAE,Services,Managed IT,Mid-Market,Reseller,Rep_11,5709.55,7,2336.49,3373.06,59.1,True
+2022-02-28,2022,Q1,Feb,2,Middle East & Africa,South Africa,Hardware,Network Hub,SMB,Online,Rep_17,6161.15,33,2323.78,3837.37,62.3,False
+2022-03-01,2022,Q1,Mar,3,North America,Canada,Services,Managed IT,Mid-Market,Reseller,Rep_13,5911.26,49,3712.31,2198.95,37.2,True
+2022-03-01,2022,Q1,Mar,3,Middle East & Africa,UAE,Services,24/7 Support,Enterprise,Direct,Rep_06,7483.18,1,4208.32,3274.86,43.8,True
+2022-03-02,2022,Q1,Mar,3,Asia-Pacific,Singapore,Cloud,Cloud Storage,SMB,Reseller,Rep_18,2828.93,4,1703.69,1125.24,39.8,True
+2022-03-02,2022,Q1,Mar,3,Europe,France,Hardware,NAS Storage,SMB,Direct,Rep_10,6174.74,17,2432.41,3742.33,60.6,False
+2022-03-03,2022,Q1,Mar,3,Middle East & Africa,Nigeria,Software,Security Shield,SMB,Direct,Rep_05,2421.82,34,1376.72,1045.1,43.2,True
+2022-03-03,2022,Q1,Mar,3,Asia-Pacific,Singapore,Hardware,NAS Storage,Enterprise,Reseller,Rep_01,37181.3,6,14053.77,23127.53,62.2,True
+2022-03-04,2022,Q1,Mar,3,Asia-Pacific,India,Services,Training,SMB,Partner,Rep_19,2711.26,43,1214.54,1496.72,55.2,True
+2022-03-04,2022,Q1,Mar,3,North America,Canada,Hardware,NAS Storage,Enterprise,Partner,Rep_06,26579.69,27,16524.29,10055.4,37.8,False
+2022-03-04,2022,Q1,Mar,3,Europe,UK,Software,Analytics Pro,Enterprise,Direct,Rep_13,14675.55,24,8267.22,6408.33,43.7,True
+2022-03-04,2022,Q1,Mar,3,Asia-Pacific,South Korea,Cloud,Kubernetes,Enterprise,Reseller,Rep_20,6407.11,20,3066.17,3340.94,52.1,True
+2022-03-05,2022,Q1,Mar,3,Asia-Pacific,Singapore,Cloud,Cloud Compute,Mid-Market,Reseller,Rep_14,2615.71,1,996.06,1619.65,61.9,True
+2022-03-06,2022,Q1,Mar,3,Europe,Sweden,Cloud,Cloud Storage,Mid-Market,Online,Rep_06,3934.5,32,1392.38,2542.12,64.6,True
+2022-03-07,2022,Q1,Mar,3,Middle East & Africa,UAE,Cloud,Cloud Storage,Mid-Market,Online,Rep_11,3947.63,48,1473.82,2473.81,62.7,False
+2022-03-07,2022,Q1,Mar,3,North America,Canada,Hardware,Workstation Z,Enterprise,Partner,Rep_08,37380.79,31,14831.68,22549.11,60.3,True
+2022-03-07,2022,Q1,Mar,3,Latin America,Chile,Services,Deployment,SMB,Online,Rep_11,1878.28,29,1008.91,869.37,46.3,True
+2022-03-07,2022,Q1,Mar,3,Middle East & Africa,Nigeria,Services,Deployment,Mid-Market,Partner,Rep_10,7590.78,28,4513.8,3076.98,40.5,True
+2022-03-08,2022,Q1,Mar,3,North America,Mexico,Hardware,Workstation Z,SMB,Partner,Rep_17,2689.65,42,1055.04,1634.61,60.8,True
+2022-03-09,2022,Q1,Mar,3,Middle East & Africa,Nigeria,Consulting,Migration,Enterprise,Partner,Rep_09,89312.73,16,43601.37,45711.36,51.2,False
+2022-03-11,2022,Q1,Mar,3,Latin America,Argentina,Hardware,Server X1,SMB,Partner,Rep_06,7089.85,42,3078.72,4011.13,56.6,False
+2022-03-11,2022,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Software,DevTools,Enterprise,Partner,Rep_05,7784.57,11,4994.97,2789.6,35.8,False
+2022-03-12,2022,Q1,Mar,3,Middle East & Africa,South Africa,Services,24/7 Support,Mid-Market,Direct,Rep_17,4638.54,42,2150.22,2488.32,53.6,False
+2022-03-12,2022,Q1,Mar,3,Middle East & Africa,South Africa,Software,CRM Suite,Enterprise,Direct,Rep_13,18755.24,15,11090.0,7665.24,40.9,False
+2022-03-12,2022,Q1,Mar,3,Latin America,Brazil,Cloud,Cloud Compute,Mid-Market,Partner,Rep_12,3793.0,50,1776.6,2016.4,53.2,True
+2022-03-12,2022,Q1,Mar,3,Asia-Pacific,Japan,Cloud,Kubernetes,SMB,Direct,Rep_20,1800.51,13,688.52,1111.99,61.8,True
+2022-03-12,2022,Q1,Mar,3,Latin America,Colombia,Hardware,Workstation Z,Enterprise,Online,Rep_03,67230.41,9,38209.17,29021.24,43.2,False
+2022-03-12,2022,Q1,Mar,3,Asia-Pacific,India,Software,Security Shield,Enterprise,Reseller,Rep_13,19508.15,39,12165.89,7342.26,37.6,True
+2022-03-12,2022,Q1,Mar,3,Europe,UK,Cloud,Cloud Storage,Enterprise,Online,Rep_03,11530.63,39,4955.05,6575.58,57.0,True
+2022-03-13,2022,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Software,Analytics Pro,Mid-Market,Reseller,Rep_11,5223.55,22,3099.95,2123.6,40.7,False
+2022-03-13,2022,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Hardware,Network Hub,SMB,Partner,Rep_10,3083.55,4,1848.33,1235.22,40.1,False
+2022-03-13,2022,Q1,Mar,3,Middle East & Africa,South Africa,Software,Security Shield,SMB,Online,Rep_09,2663.36,31,1250.42,1412.94,53.1,True
+2022-03-13,2022,Q1,Mar,3,Asia-Pacific,South Korea,Consulting,Audit,Mid-Market,Online,Rep_03,25611.15,46,16513.41,9097.74,35.5,True
+2022-03-14,2022,Q1,Mar,3,Latin America,Argentina,Software,Security Shield,Mid-Market,Partner,Rep_07,6793.95,46,2546.63,4247.32,62.5,True
+2022-03-14,2022,Q1,Mar,3,Europe,France,Software,DevTools,Enterprise,Reseller,Rep_16,19082.74,20,11172.24,7910.5,41.5,True
+2022-03-14,2022,Q1,Mar,3,Middle East & Africa,Nigeria,Software,DevTools,Enterprise,Direct,Rep_04,24610.53,10,12796.94,11813.59,48.0,True
+2022-03-15,2022,Q1,Mar,3,Asia-Pacific,Singapore,Services,Deployment,Mid-Market,Online,Rep_10,6847.6,24,3339.06,3508.54,51.2,True
+2022-03-15,2022,Q1,Mar,3,Europe,Netherlands,Services,Deployment,Mid-Market,Online,Rep_10,3256.59,36,2052.01,1204.58,37.0,False
+2022-03-16,2022,Q1,Mar,3,Asia-Pacific,India,Hardware,Server X1,Mid-Market,Direct,Rep_16,9785.48,44,4503.6,5281.88,54.0,True
+2022-03-16,2022,Q1,Mar,3,Middle East & Africa,South Africa,Cloud,Cloud Storage,SMB,Reseller,Rep_16,1022.07,9,374.33,647.74,63.4,True
+2022-03-17,2022,Q1,Mar,3,Europe,France,Consulting,Digital Transform,Mid-Market,Partner,Rep_10,14725.05,7,7162.89,7562.16,51.4,False
+2022-03-17,2022,Q1,Mar,3,Europe,Netherlands,Cloud,Cloud Storage,SMB,Online,Rep_16,1464.51,34,747.19,717.32,49.0,True
+2022-03-17,2022,Q1,Mar,3,Europe,Sweden,Hardware,Workstation Z,SMB,Partner,Rep_09,7427.13,40,3544.26,3882.87,52.3,False
+2022-03-18,2022,Q1,Mar,3,Asia-Pacific,South Korea,Consulting,Digital Transform,SMB,Online,Rep_12,6008.4,25,2876.79,3131.61,52.1,True
+2022-03-18,2022,Q1,Mar,3,North America,Mexico,Consulting,Migration,Enterprise,Partner,Rep_19,41671.38,21,22208.5,19462.88,46.7,True
+2022-03-19,2022,Q1,Mar,3,Asia-Pacific,South Korea,Services,24/7 Support,SMB,Online,Rep_13,2398.4,18,1423.61,974.79,40.6,True
+2022-03-19,2022,Q1,Mar,3,Latin America,Argentina,Cloud,Cloud Compute,SMB,Partner,Rep_09,432.04,14,201.24,230.8,53.4,True
+2022-03-19,2022,Q1,Mar,3,Latin America,Argentina,Consulting,Digital Transform,Enterprise,Reseller,Rep_16,25598.75,42,16135.18,9463.57,37.0,True
+2022-03-19,2022,Q1,Mar,3,Asia-Pacific,Singapore,Hardware,Network Hub,Mid-Market,Partner,Rep_15,15388.66,13,5420.39,9968.27,64.8,False
+2022-03-21,2022,Q1,Mar,3,North America,USA,Hardware,Server X1,Mid-Market,Reseller,Rep_14,10941.17,17,4366.25,6574.92,60.1,False
+2022-03-22,2022,Q1,Mar,3,Asia-Pacific,Japan,Cloud,Cloud Storage,Mid-Market,Direct,Rep_19,4225.64,11,1802.38,2423.26,57.3,True
+2022-03-22,2022,Q1,Mar,3,North America,Canada,Consulting,Audit,SMB,Partner,Rep_03,7905.79,21,3751.6,4154.19,52.5,True
+2022-03-22,2022,Q1,Mar,3,Europe,Germany,Hardware,Network Hub,Enterprise,Online,Rep_12,35761.61,9,13237.88,22523.73,63.0,True
+2022-03-23,2022,Q1,Mar,3,Europe,Netherlands,Cloud,Serverless,Mid-Market,Partner,Rep_11,4481.8,14,2026.03,2455.77,54.8,True
+2022-03-24,2022,Q1,Mar,3,Middle East & Africa,Nigeria,Software,DevTools,Mid-Market,Reseller,Rep_03,7541.9,12,3182.86,4359.04,57.8,False
+2022-03-24,2022,Q1,Mar,3,Latin America,Argentina,Services,Managed IT,Mid-Market,Reseller,Rep_16,4588.81,42,2561.08,2027.73,44.2,True
+2022-03-24,2022,Q1,Mar,3,Middle East & Africa,UAE,Consulting,Digital Transform,Enterprise,Direct,Rep_17,44065.72,14,16792.66,27273.06,61.9,True
+2022-03-24,2022,Q1,Mar,3,North America,USA,Cloud,Cloud Storage,Enterprise,Direct,Rep_07,6965.79,17,3210.05,3755.74,53.9,True
+2022-03-25,2022,Q1,Mar,3,Middle East & Africa,Nigeria,Services,24/7 Support,Enterprise,Direct,Rep_19,11521.27,46,6602.77,4918.5,42.7,True
+2022-03-25,2022,Q1,Mar,3,Asia-Pacific,Japan,Hardware,Server X1,SMB,Partner,Rep_07,3655.36,2,1847.41,1807.95,49.5,True
+2022-03-25,2022,Q1,Mar,3,North America,Mexico,Hardware,Server X1,Mid-Market,Online,Rep_01,8113.73,27,4135.76,3977.97,49.0,True
+2022-03-27,2022,Q1,Mar,3,Europe,Netherlands,Services,Training,Mid-Market,Partner,Rep_20,5278.97,8,1929.8,3349.17,63.4,True
+2022-03-28,2022,Q1,Mar,3,Latin America,Brazil,Services,Deployment,Enterprise,Partner,Rep_01,11537.71,32,7176.89,4360.82,37.8,False
+2022-03-29,2022,Q1,Mar,3,Asia-Pacific,Singapore,Software,DevTools,Enterprise,Reseller,Rep_07,36629.56,24,21496.71,15132.85,41.3,False
+2022-03-29,2022,Q1,Mar,3,North America,USA,Consulting,Digital Transform,Enterprise,Reseller,Rep_12,45755.28,1,19371.2,26384.08,57.7,True
+2022-03-29,2022,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Hardware,Server X1,SMB,Direct,Rep_03,12816.53,17,7759.58,5056.95,39.5,True
+2022-03-30,2022,Q1,Mar,3,Latin America,Argentina,Software,CRM Suite,SMB,Partner,Rep_12,2439.27,18,1549.71,889.56,36.5,True
+2022-03-31,2022,Q1,Mar,3,Europe,Netherlands,Cloud,Serverless,Mid-Market,Online,Rep_19,2492.4,11,1149.04,1343.36,53.9,True
+2022-04-01,2022,Q2,Apr,4,Middle East & Africa,South Africa,Cloud,Cloud Compute,SMB,Partner,Rep_01,984.93,28,603.52,381.41,38.7,True
+2022-04-03,2022,Q2,Apr,4,Europe,Netherlands,Software,DevTools,SMB,Online,Rep_03,2382.16,37,1079.47,1302.69,54.7,True
+2022-04-03,2022,Q2,Apr,4,Europe,Germany,Software,CRM Suite,Enterprise,Online,Rep_06,16519.9,32,6111.54,10408.36,63.0,True
+2022-04-03,2022,Q2,Apr,4,Middle East & Africa,South Africa,Cloud,Cloud Compute,Enterprise,Reseller,Rep_16,7923.54,32,2788.73,5134.81,64.8,False
+2022-04-04,2022,Q2,Apr,4,Latin America,Argentina,Services,Managed IT,Mid-Market,Partner,Rep_10,4454.24,23,2363.98,2090.26,46.9,False
+2022-04-04,2022,Q2,Apr,4,Middle East & Africa,South Africa,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_03,5630.55,49,3082.91,2547.64,45.2,True
+2022-04-04,2022,Q2,Apr,4,Asia-Pacific,Japan,Software,DevTools,Enterprise,Reseller,Rep_11,11441.87,5,5173.76,6268.11,54.8,False
+2022-04-04,2022,Q2,Apr,4,Middle East & Africa,Nigeria,Consulting,Digital Transform,Mid-Market,Reseller,Rep_06,16836.06,38,6486.94,10349.12,61.5,True
+2022-04-05,2022,Q2,Apr,4,Middle East & Africa,Nigeria,Software,CRM Suite,Mid-Market,Partner,Rep_05,8032.13,39,4102.94,3929.19,48.9,False
+2022-04-05,2022,Q2,Apr,4,North America,Mexico,Services,24/7 Support,Enterprise,Partner,Rep_05,7783.3,3,3799.11,3984.19,51.2,False
+2022-04-06,2022,Q2,Apr,4,Middle East & Africa,South Africa,Software,Security Shield,SMB,Reseller,Rep_15,3253.66,50,1381.94,1871.72,57.5,False
+2022-04-06,2022,Q2,Apr,4,Europe,Sweden,Consulting,Digital Transform,Mid-Market,Direct,Rep_05,44640.83,30,27892.01,16748.82,37.5,True
+2022-04-06,2022,Q2,Apr,4,Latin America,Chile,Consulting,Strategy,Mid-Market,Reseller,Rep_12,47074.81,2,30501.94,16572.87,35.2,True
+2022-04-06,2022,Q2,Apr,4,Europe,Sweden,Consulting,Audit,Enterprise,Direct,Rep_14,33540.53,26,20410.4,13130.13,39.1,False
+2022-04-06,2022,Q2,Apr,4,Latin America,Argentina,Cloud,Cloud Storage,SMB,Reseller,Rep_02,985.23,22,376.68,608.55,61.8,True
+2022-04-07,2022,Q2,Apr,4,Asia-Pacific,Australia,Software,DevTools,Mid-Market,Reseller,Rep_13,6179.33,17,3844.0,2335.33,37.8,True
+2022-04-10,2022,Q2,Apr,4,Middle East & Africa,Saudi Arabia,Services,24/7 Support,SMB,Reseller,Rep_12,2987.84,35,1617.9,1369.94,45.9,True
+2022-04-10,2022,Q2,Apr,4,Europe,France,Cloud,Serverless,Mid-Market,Direct,Rep_16,2655.21,25,994.95,1660.26,62.5,False
+2022-04-10,2022,Q2,Apr,4,North America,Mexico,Consulting,Digital Transform,Mid-Market,Reseller,Rep_12,15957.52,31,5793.54,10163.98,63.7,False
+2022-04-10,2022,Q2,Apr,4,Latin America,Chile,Cloud,Cloud Storage,Mid-Market,Direct,Rep_10,2592.14,40,1557.41,1034.73,39.9,True
+2022-04-11,2022,Q2,Apr,4,Europe,UK,Services,Training,Mid-Market,Direct,Rep_10,5310.03,50,2703.44,2606.59,49.1,True
+2022-04-11,2022,Q2,Apr,4,Latin America,Brazil,Software,DevTools,Mid-Market,Direct,Rep_03,7058.19,3,3650.07,3408.12,48.3,True
+2022-04-11,2022,Q2,Apr,4,Europe,France,Cloud,Kubernetes,Enterprise,Reseller,Rep_01,3950.55,11,2506.33,1444.22,36.6,False
+2022-04-12,2022,Q2,Apr,4,Europe,Netherlands,Software,DevTools,Enterprise,Direct,Rep_19,15123.05,33,7761.13,7361.92,48.7,False
+2022-04-12,2022,Q2,Apr,4,Asia-Pacific,Australia,Hardware,Workstation Z,Mid-Market,Partner,Rep_13,21347.9,13,10900.77,10447.13,48.9,True
+2022-04-12,2022,Q2,Apr,4,Asia-Pacific,Australia,Software,CRM Suite,Enterprise,Direct,Rep_09,15829.38,2,8481.11,7348.27,46.4,True
+2022-04-13,2022,Q2,Apr,4,North America,Canada,Services,Training,Mid-Market,Reseller,Rep_07,3037.64,29,1201.49,1836.15,60.4,True
+2022-04-13,2022,Q2,Apr,4,Latin America,Argentina,Cloud,Cloud Storage,SMB,Partner,Rep_16,865.5,47,415.59,449.91,52.0,False
+2022-04-13,2022,Q2,Apr,4,Europe,Sweden,Cloud,Serverless,Enterprise,Partner,Rep_16,7068.97,10,4170.77,2898.2,41.0,True
+2022-04-13,2022,Q2,Apr,4,Latin America,Chile,Services,24/7 Support,Mid-Market,Online,Rep_15,4579.56,22,2601.25,1978.31,43.2,True
+2022-04-13,2022,Q2,Apr,4,Asia-Pacific,Japan,Hardware,NAS Storage,Mid-Market,Reseller,Rep_15,14953.23,19,8601.95,6351.28,42.5,False
+2022-04-14,2022,Q2,Apr,4,Asia-Pacific,India,Hardware,Workstation Z,Enterprise,Reseller,Rep_20,21631.63,4,9454.4,12177.23,56.3,True
+2022-04-15,2022,Q2,Apr,4,North America,Mexico,Services,Deployment,Mid-Market,Direct,Rep_15,5768.12,11,2456.24,3311.88,57.4,False
+2022-04-15,2022,Q2,Apr,4,Asia-Pacific,Singapore,Services,Managed IT,Mid-Market,Reseller,Rep_18,6116.87,37,2555.92,3560.95,58.2,True
+2022-04-15,2022,Q2,Apr,4,Middle East & Africa,Nigeria,Software,Security Shield,Enterprise,Partner,Rep_14,23513.8,20,9089.37,14424.43,61.3,True
+2022-04-16,2022,Q2,Apr,4,North America,Mexico,Consulting,Digital Transform,Mid-Market,Direct,Rep_05,19453.13,39,11888.65,7564.48,38.9,True
+2022-04-16,2022,Q2,Apr,4,Latin America,Brazil,Consulting,Migration,Enterprise,Reseller,Rep_15,51382.02,14,27060.79,24321.23,47.3,True
+2022-04-17,2022,Q2,Apr,4,North America,Mexico,Consulting,Digital Transform,Mid-Market,Partner,Rep_12,14919.98,31,8080.0,6839.98,45.8,True
+2022-04-18,2022,Q2,Apr,4,Europe,UK,Cloud,Cloud Storage,SMB,Online,Rep_02,598.36,28,305.01,293.35,49.0,True
+2022-04-19,2022,Q2,Apr,4,Asia-Pacific,South Korea,Consulting,Audit,SMB,Partner,Rep_14,15375.85,44,9141.78,6234.07,40.5,True
+2022-04-19,2022,Q2,Apr,4,Latin America,Colombia,Services,24/7 Support,SMB,Partner,Rep_20,1821.55,13,771.39,1050.16,57.7,False
+2022-04-20,2022,Q2,Apr,4,Middle East & Africa,UAE,Cloud,Serverless,SMB,Partner,Rep_01,876.28,2,363.49,512.79,58.5,True
+2022-04-20,2022,Q2,Apr,4,Latin America,Chile,Software,DevTools,SMB,Reseller,Rep_19,3897.59,2,2516.79,1380.8,35.4,True
+2022-04-20,2022,Q2,Apr,4,Europe,Netherlands,Hardware,NAS Storage,SMB,Reseller,Rep_07,7875.39,42,4544.17,3331.22,42.3,False
+2022-04-21,2022,Q2,Apr,4,Middle East & Africa,Nigeria,Cloud,Kubernetes,Enterprise,Reseller,Rep_14,5283.77,21,3190.03,2093.74,39.6,False
+2022-04-21,2022,Q2,Apr,4,Latin America,Colombia,Consulting,Digital Transform,Enterprise,Direct,Rep_11,22910.45,20,14426.74,8483.71,37.0,True
+2022-04-21,2022,Q2,Apr,4,Asia-Pacific,Australia,Hardware,Network Hub,SMB,Reseller,Rep_17,3369.27,38,1479.16,1890.11,56.1,True
+2022-04-22,2022,Q2,Apr,4,North America,Canada,Cloud,Cloud Compute,SMB,Partner,Rep_14,675.69,34,291.22,384.47,56.9,True
+2022-04-22,2022,Q2,Apr,4,Latin America,Colombia,Hardware,Network Hub,SMB,Online,Rep_02,3950.2,41,1580.81,2369.39,60.0,True
+2022-04-22,2022,Q2,Apr,4,Europe,Netherlands,Consulting,Strategy,SMB,Partner,Rep_01,4082.6,20,1914.36,2168.24,53.1,True
+2022-04-23,2022,Q2,Apr,4,Latin America,Brazil,Consulting,Audit,Enterprise,Online,Rep_05,29075.62,46,10817.64,18257.98,62.8,True
+2022-04-23,2022,Q2,Apr,4,Europe,UK,Consulting,Audit,SMB,Partner,Rep_01,5123.68,23,3085.64,2038.04,39.8,True
+2022-04-25,2022,Q2,Apr,4,North America,USA,Services,Training,Mid-Market,Reseller,Rep_17,4257.88,39,2167.97,2089.91,49.1,True
+2022-04-25,2022,Q2,Apr,4,Latin America,Brazil,Software,Analytics Pro,SMB,Reseller,Rep_06,2693.52,20,1212.27,1481.25,55.0,False
+2022-04-25,2022,Q2,Apr,4,Middle East & Africa,Saudi Arabia,Services,Managed IT,SMB,Partner,Rep_10,2175.63,9,965.88,1209.75,55.6,False
+2022-04-25,2022,Q2,Apr,4,Middle East & Africa,Nigeria,Services,24/7 Support,Mid-Market,Direct,Rep_01,4115.22,50,1530.44,2584.78,62.8,False
+2022-04-27,2022,Q2,Apr,4,Asia-Pacific,South Korea,Hardware,Server X1,Enterprise,Reseller,Rep_19,30345.38,36,12161.72,18183.66,59.9,False
+2022-04-27,2022,Q2,Apr,4,Latin America,Colombia,Consulting,Digital Transform,Mid-Market,Reseller,Rep_03,38199.96,11,15106.61,23093.35,60.5,True
+2022-04-27,2022,Q2,Apr,4,Europe,UK,Software,Security Shield,Enterprise,Direct,Rep_17,14690.74,50,6342.01,8348.73,56.8,True
+2022-04-28,2022,Q2,Apr,4,Middle East & Africa,Nigeria,Software,CRM Suite,Enterprise,Partner,Rep_18,11844.36,9,6970.04,4874.32,41.2,True
+2022-04-28,2022,Q2,Apr,4,Europe,Germany,Hardware,Server X1,Enterprise,Partner,Rep_03,40530.63,3,21180.06,19350.57,47.7,True
+2022-04-28,2022,Q2,Apr,4,Europe,France,Hardware,NAS Storage,Mid-Market,Online,Rep_07,33412.85,20,19164.39,14248.46,42.6,True
+2022-04-28,2022,Q2,Apr,4,Latin America,Chile,Services,24/7 Support,Mid-Market,Reseller,Rep_10,6579.11,10,3230.8,3348.31,50.9,True
+2022-04-28,2022,Q2,Apr,4,Latin America,Argentina,Consulting,Migration,Mid-Market,Reseller,Rep_11,20675.53,31,7841.96,12833.57,62.1,False
+2022-04-29,2022,Q2,Apr,4,Europe,Netherlands,Consulting,Strategy,Enterprise,Online,Rep_15,29213.89,45,11839.77,17374.12,59.5,True
+2022-04-29,2022,Q2,Apr,4,North America,Mexico,Consulting,Audit,SMB,Partner,Rep_18,6877.57,4,2530.48,4347.09,63.2,True
+2022-04-29,2022,Q2,Apr,4,Asia-Pacific,Singapore,Cloud,Kubernetes,Enterprise,Reseller,Rep_18,7392.93,21,4432.37,2960.56,40.0,False
+2022-04-29,2022,Q2,Apr,4,Middle East & Africa,South Africa,Consulting,Digital Transform,Mid-Market,Reseller,Rep_15,10352.75,35,6041.43,4311.32,41.6,True
+2022-04-29,2022,Q2,Apr,4,Middle East & Africa,Nigeria,Consulting,Digital Transform,SMB,Reseller,Rep_11,10116.52,4,5383.31,4733.21,46.8,False
+2022-04-30,2022,Q2,Apr,4,Middle East & Africa,Nigeria,Consulting,Strategy,Mid-Market,Online,Rep_20,33615.13,21,16653.25,16961.88,50.5,True
+2022-05-01,2022,Q2,May,5,Asia-Pacific,India,Services,Training,Enterprise,Reseller,Rep_01,16339.5,3,7294.49,9045.01,55.4,False
+2022-05-02,2022,Q2,May,5,North America,Canada,Cloud,Serverless,SMB,Online,Rep_06,651.88,14,359.12,292.76,44.9,True
+2022-05-03,2022,Q2,May,5,North America,Mexico,Services,Managed IT,Enterprise,Reseller,Rep_16,12385.77,29,6588.71,5797.06,46.8,False
+2022-05-03,2022,Q2,May,5,Middle East & Africa,UAE,Software,Analytics Pro,Enterprise,Direct,Rep_03,15157.33,46,7332.07,7825.26,51.6,True
+2022-05-04,2022,Q2,May,5,Middle East & Africa,Saudi Arabia,Cloud,Cloud Compute,SMB,Direct,Rep_13,1501.16,34,814.08,687.08,45.8,True
+2022-05-04,2022,Q2,May,5,Latin America,Chile,Consulting,Digital Transform,Mid-Market,Reseller,Rep_12,23644.45,12,10064.94,13579.51,57.4,True
+2022-05-04,2022,Q2,May,5,Asia-Pacific,South Korea,Hardware,Workstation Z,SMB,Reseller,Rep_11,4959.8,28,2914.14,2045.66,41.2,False
+2022-05-05,2022,Q2,May,5,North America,Canada,Cloud,Cloud Storage,Mid-Market,Partner,Rep_01,4673.39,32,2478.38,2195.01,47.0,False
+2022-05-05,2022,Q2,May,5,Asia-Pacific,India,Cloud,Serverless,Mid-Market,Partner,Rep_06,2186.76,42,1359.5,827.26,37.8,False
+2022-05-06,2022,Q2,May,5,Asia-Pacific,Australia,Consulting,Migration,Enterprise,Reseller,Rep_07,59255.52,21,26246.88,33008.64,55.7,True
+2022-05-07,2022,Q2,May,5,North America,USA,Consulting,Digital Transform,SMB,Reseller,Rep_07,7747.92,37,2756.43,4991.49,64.4,True
+2022-05-08,2022,Q2,May,5,North America,Mexico,Hardware,Workstation Z,Enterprise,Online,Rep_18,28535.93,34,18349.67,10186.26,35.7,True
+2022-05-08,2022,Q2,May,5,Asia-Pacific,India,Consulting,Migration,Enterprise,Reseller,Rep_02,36004.24,45,17396.26,18607.98,51.7,True
+2022-05-08,2022,Q2,May,5,North America,USA,Services,24/7 Support,Mid-Market,Partner,Rep_03,3467.76,19,2030.65,1437.11,41.4,True
+2022-05-09,2022,Q2,May,5,Asia-Pacific,Australia,Services,24/7 Support,Mid-Market,Reseller,Rep_16,5280.14,14,2146.91,3133.23,59.3,True
+2022-05-09,2022,Q2,May,5,Asia-Pacific,Singapore,Hardware,Network Hub,Mid-Market,Partner,Rep_18,8426.35,38,5405.99,3020.36,35.8,True
+2022-05-10,2022,Q2,May,5,Europe,UK,Services,24/7 Support,Enterprise,Online,Rep_18,5981.74,17,3383.58,2598.16,43.4,False
+2022-05-10,2022,Q2,May,5,Latin America,Argentina,Cloud,Kubernetes,SMB,Online,Rep_17,1732.64,45,1010.98,721.66,41.7,True
+2022-05-10,2022,Q2,May,5,North America,USA,Software,Security Shield,SMB,Direct,Rep_02,3825.81,31,2438.13,1387.68,36.3,True
+2022-05-10,2022,Q2,May,5,Asia-Pacific,Australia,Hardware,Network Hub,Mid-Market,Partner,Rep_03,11433.27,11,5786.98,5646.29,49.4,True
+2022-05-10,2022,Q2,May,5,Asia-Pacific,Japan,Services,Managed IT,Enterprise,Reseller,Rep_17,24945.09,39,9861.56,15083.53,60.5,True
+2022-05-11,2022,Q2,May,5,Latin America,Colombia,Services,Deployment,Enterprise,Direct,Rep_20,10132.29,28,4776.97,5355.32,52.9,True
+2022-05-11,2022,Q2,May,5,Middle East & Africa,Saudi Arabia,Consulting,Digital Transform,Mid-Market,Reseller,Rep_17,22673.59,3,8208.24,14465.35,63.8,False
+2022-05-11,2022,Q2,May,5,Latin America,Colombia,Consulting,Audit,SMB,Reseller,Rep_16,3862.94,29,2395.36,1467.58,38.0,True
+2022-05-12,2022,Q2,May,5,Europe,UK,Software,DevTools,Enterprise,Direct,Rep_11,18609.85,15,9536.87,9072.98,48.8,False
+2022-05-14,2022,Q2,May,5,Europe,UK,Cloud,Cloud Storage,Mid-Market,Partner,Rep_18,2715.64,26,1481.86,1233.78,45.4,True
+2022-05-14,2022,Q2,May,5,Asia-Pacific,India,Cloud,Kubernetes,SMB,Online,Rep_02,1570.81,37,747.94,822.87,52.4,True
+2022-05-15,2022,Q2,May,5,Latin America,Colombia,Consulting,Digital Transform,Mid-Market,Reseller,Rep_08,12929.08,8,5525.19,7403.89,57.3,True
+2022-05-15,2022,Q2,May,5,Europe,Netherlands,Services,Managed IT,SMB,Reseller,Rep_05,1236.21,45,579.34,656.87,53.1,True
+2022-05-15,2022,Q2,May,5,Europe,UK,Hardware,NAS Storage,Enterprise,Online,Rep_14,54607.23,1,23024.11,31583.12,57.8,True
+2022-05-15,2022,Q2,May,5,Middle East & Africa,Nigeria,Hardware,Workstation Z,Mid-Market,Partner,Rep_16,13783.91,31,5450.57,8333.34,60.5,False
+2022-05-16,2022,Q2,May,5,Asia-Pacific,India,Consulting,Migration,Enterprise,Partner,Rep_11,59536.99,6,23731.44,35805.55,60.1,True
+2022-05-16,2022,Q2,May,5,Latin America,Colombia,Software,CRM Suite,Enterprise,Reseller,Rep_06,13475.45,24,6692.39,6783.06,50.3,True
+2022-05-16,2022,Q2,May,5,North America,Canada,Cloud,Cloud Storage,Mid-Market,Partner,Rep_07,5446.12,33,2010.13,3435.99,63.1,True
+2022-05-17,2022,Q2,May,5,North America,Canada,Consulting,Audit,Enterprise,Direct,Rep_13,89164.18,27,55195.48,33968.7,38.1,True
+2022-05-18,2022,Q2,May,5,Europe,Germany,Hardware,Network Hub,Mid-Market,Online,Rep_19,6047.55,1,2420.28,3627.27,60.0,False
+2022-05-19,2022,Q2,May,5,Latin America,Chile,Software,DevTools,Mid-Market,Reseller,Rep_13,5084.81,35,1874.49,3210.32,63.1,True
+2022-05-19,2022,Q2,May,5,Europe,France,Consulting,Migration,Mid-Market,Partner,Rep_05,18841.52,6,11378.08,7463.44,39.6,True
+2022-05-20,2022,Q2,May,5,Middle East & Africa,Saudi Arabia,Software,Security Shield,Mid-Market,Online,Rep_17,9928.13,7,6188.32,3739.81,37.7,True
+2022-05-21,2022,Q2,May,5,Latin America,Argentina,Cloud,Cloud Compute,Mid-Market,Reseller,Rep_19,1775.14,4,1109.43,665.71,37.5,False
+2022-05-22,2022,Q2,May,5,Europe,UK,Consulting,Migration,Mid-Market,Online,Rep_18,14716.68,3,9231.0,5485.68,37.3,True
+2022-05-22,2022,Q2,May,5,Europe,UK,Cloud,Serverless,Mid-Market,Partner,Rep_04,2971.19,42,1710.71,1260.48,42.4,False
+2022-05-23,2022,Q2,May,5,Latin America,Chile,Hardware,NAS Storage,Mid-Market,Partner,Rep_05,18954.39,27,6893.99,12060.4,63.6,False
+2022-05-23,2022,Q2,May,5,Middle East & Africa,South Africa,Services,Managed IT,SMB,Reseller,Rep_08,3385.4,33,1400.95,1984.45,58.6,True
+2022-05-24,2022,Q2,May,5,Asia-Pacific,India,Software,CRM Suite,Enterprise,Partner,Rep_11,13764.79,1,8335.95,5428.84,39.4,True
+2022-05-24,2022,Q2,May,5,Europe,UK,Consulting,Digital Transform,Mid-Market,Partner,Rep_17,18231.91,47,6712.42,11519.49,63.2,True
+2022-05-25,2022,Q2,May,5,Middle East & Africa,Saudi Arabia,Cloud,Cloud Storage,Enterprise,Partner,Rep_05,10171.99,27,4526.0,5645.99,55.5,True
+2022-05-26,2022,Q2,May,5,Asia-Pacific,Australia,Consulting,Strategy,Enterprise,Online,Rep_11,54148.94,50,20477.67,33671.27,62.2,True
+2022-05-27,2022,Q2,May,5,Latin America,Argentina,Hardware,Server X1,Enterprise,Direct,Rep_14,54665.54,23,33846.53,20819.01,38.1,True
+2022-05-27,2022,Q2,May,5,North America,Mexico,Cloud,Cloud Storage,SMB,Reseller,Rep_08,1183.45,39,664.07,519.38,43.9,True
+2022-05-28,2022,Q2,May,5,Europe,Netherlands,Consulting,Audit,Mid-Market,Direct,Rep_11,14151.56,50,6494.89,7656.67,54.1,True
+2022-05-29,2022,Q2,May,5,North America,USA,Consulting,Migration,Mid-Market,Online,Rep_17,16325.19,43,8023.94,8301.25,50.8,True
+2022-05-29,2022,Q2,May,5,Asia-Pacific,Singapore,Software,Security Shield,Enterprise,Reseller,Rep_01,29315.08,25,17411.23,11903.85,40.6,False
+2022-05-30,2022,Q2,May,5,Middle East & Africa,UAE,Consulting,Migration,SMB,Direct,Rep_14,13810.65,42,8947.71,4862.94,35.2,True
+2022-05-31,2022,Q2,May,5,Asia-Pacific,Singapore,Services,Training,Enterprise,Partner,Rep_17,7455.42,33,4355.76,3099.66,41.6,True
+2022-06-01,2022,Q2,Jun,6,Middle East & Africa,Nigeria,Services,Training,SMB,Partner,Rep_20,2256.9,28,1243.34,1013.56,44.9,True
+2022-06-01,2022,Q2,Jun,6,Middle East & Africa,Nigeria,Services,24/7 Support,Mid-Market,Partner,Rep_07,4441.53,32,2185.92,2255.61,50.8,False
+2022-06-01,2022,Q2,Jun,6,Asia-Pacific,South Korea,Software,CRM Suite,SMB,Online,Rep_12,2201.41,3,855.16,1346.25,61.2,True
+2022-06-02,2022,Q2,Jun,6,Asia-Pacific,Australia,Services,Training,Enterprise,Online,Rep_07,6185.08,33,3599.86,2585.22,41.8,True
+2022-06-02,2022,Q2,Jun,6,Middle East & Africa,Saudi Arabia,Cloud,Cloud Storage,SMB,Online,Rep_20,1236.1,10,590.78,645.32,52.2,True
+2022-06-02,2022,Q2,Jun,6,North America,Canada,Cloud,Serverless,SMB,Reseller,Rep_04,1701.15,35,1054.78,646.37,38.0,False
+2022-06-02,2022,Q2,Jun,6,Latin America,Colombia,Services,Managed IT,Enterprise,Partner,Rep_01,12289.8,17,7550.57,4739.23,38.6,True
+2022-06-04,2022,Q2,Jun,6,Latin America,Chile,Consulting,Strategy,Mid-Market,Online,Rep_17,19484.23,43,7381.28,12102.95,62.1,False
+2022-06-05,2022,Q2,Jun,6,Asia-Pacific,Japan,Hardware,Server X1,Mid-Market,Direct,Rep_11,7717.35,33,4970.59,2746.76,35.6,True
+2022-06-05,2022,Q2,Jun,6,North America,Canada,Cloud,Cloud Storage,SMB,Partner,Rep_13,719.07,26,435.86,283.21,39.4,True
+2022-06-06,2022,Q2,Jun,6,Europe,France,Hardware,NAS Storage,Enterprise,Direct,Rep_12,31276.93,42,14328.92,16948.01,54.2,True
+2022-06-06,2022,Q2,Jun,6,Europe,Netherlands,Services,Training,Enterprise,Online,Rep_15,19518.23,6,6861.8,12656.43,64.8,True
+2022-06-06,2022,Q2,Jun,6,Europe,France,Hardware,Network Hub,Mid-Market,Direct,Rep_02,11843.81,37,4314.92,7528.89,63.6,True
+2022-06-06,2022,Q2,Jun,6,Latin America,Argentina,Cloud,Cloud Storage,Enterprise,Online,Rep_01,5174.57,24,1826.46,3348.11,64.7,True
+2022-06-06,2022,Q2,Jun,6,Asia-Pacific,Singapore,Software,DevTools,Enterprise,Partner,Rep_07,15464.27,8,7197.81,8266.46,53.5,True
+2022-06-07,2022,Q2,Jun,6,North America,USA,Cloud,Cloud Compute,Mid-Market,Partner,Rep_17,3873.29,9,2235.14,1638.15,42.3,True
+2022-06-08,2022,Q2,Jun,6,Europe,Netherlands,Software,Analytics Pro,SMB,Reseller,Rep_03,4173.6,45,2560.88,1612.72,38.6,True
+2022-06-08,2022,Q2,Jun,6,Latin America,Colombia,Cloud,Cloud Storage,SMB,Partner,Rep_20,1431.2,2,766.64,664.56,46.4,True
+2022-06-08,2022,Q2,Jun,6,North America,Canada,Cloud,Cloud Storage,Enterprise,Online,Rep_17,5609.44,45,3409.54,2199.9,39.2,True
+2022-06-08,2022,Q2,Jun,6,Middle East & Africa,South Africa,Hardware,NAS Storage,Mid-Market,Partner,Rep_19,6794.97,30,2489.07,4305.9,63.4,True
+2022-06-09,2022,Q2,Jun,6,North America,Canada,Software,DevTools,SMB,Direct,Rep_12,1369.91,24,576.37,793.54,57.9,False
+2022-06-09,2022,Q2,Jun,6,Europe,Sweden,Hardware,NAS Storage,Mid-Market,Partner,Rep_03,9441.89,47,4631.42,4810.47,50.9,True
+2022-06-10,2022,Q2,Jun,6,North America,USA,Software,Security Shield,Enterprise,Partner,Rep_09,24494.74,15,9186.33,15308.41,62.5,False
+2022-06-10,2022,Q2,Jun,6,North America,Canada,Hardware,Server X1,SMB,Online,Rep_20,1820.41,17,957.65,862.76,47.4,True
+2022-06-11,2022,Q2,Jun,6,Europe,Sweden,Consulting,Digital Transform,SMB,Partner,Rep_12,11804.94,24,6042.21,5762.73,48.8,False
+2022-06-11,2022,Q2,Jun,6,Asia-Pacific,Japan,Cloud,Cloud Storage,Enterprise,Reseller,Rep_14,4740.0,25,3029.56,1710.44,36.1,True
+2022-06-11,2022,Q2,Jun,6,North America,Mexico,Services,Deployment,SMB,Reseller,Rep_08,2470.58,50,974.87,1495.71,60.5,True
+2022-06-11,2022,Q2,Jun,6,Latin America,Chile,Consulting,Migration,Enterprise,Reseller,Rep_19,17959.36,45,9191.35,8768.01,48.8,True
+2022-06-12,2022,Q2,Jun,6,Europe,France,Hardware,NAS Storage,Mid-Market,Partner,Rep_01,11118.76,27,4610.78,6507.98,58.5,False
+2022-06-12,2022,Q2,Jun,6,Latin America,Chile,Hardware,Network Hub,Mid-Market,Direct,Rep_18,6190.18,37,2583.45,3606.73,58.3,True
+2022-06-13,2022,Q2,Jun,6,Europe,UK,Consulting,Strategy,SMB,Online,Rep_08,7161.23,29,2600.3,4560.93,63.7,True
+2022-06-13,2022,Q2,Jun,6,North America,USA,Software,DevTools,SMB,Partner,Rep_07,2687.45,2,1584.81,1102.64,41.0,True
+2022-06-13,2022,Q2,Jun,6,Asia-Pacific,Singapore,Software,Security Shield,Mid-Market,Reseller,Rep_03,6593.46,1,2885.0,3708.46,56.2,True
+2022-06-14,2022,Q2,Jun,6,Asia-Pacific,Japan,Consulting,Audit,Mid-Market,Direct,Rep_11,15570.77,49,8210.27,7360.5,47.3,True
+2022-06-15,2022,Q2,Jun,6,Asia-Pacific,Singapore,Cloud,Cloud Storage,Mid-Market,Partner,Rep_07,5186.53,3,3253.32,1933.21,37.3,True
+2022-06-15,2022,Q2,Jun,6,North America,USA,Cloud,Cloud Compute,Enterprise,Reseller,Rep_01,7036.5,38,2940.25,4096.25,58.2,False
+2022-06-16,2022,Q2,Jun,6,Latin America,Chile,Services,Training,Enterprise,Reseller,Rep_17,14587.08,13,7741.93,6845.15,46.9,False
+2022-06-16,2022,Q2,Jun,6,Middle East & Africa,South Africa,Cloud,Kubernetes,Mid-Market,Online,Rep_05,6583.08,34,3439.94,3143.14,47.7,True
+2022-06-17,2022,Q2,Jun,6,Europe,Sweden,Services,Managed IT,Mid-Market,Reseller,Rep_13,4330.37,19,2583.9,1746.47,40.3,True
+2022-06-17,2022,Q2,Jun,6,North America,USA,Cloud,Cloud Storage,Enterprise,Partner,Rep_10,7277.16,26,4267.24,3009.92,41.4,True
+2022-06-18,2022,Q2,Jun,6,Latin America,Colombia,Hardware,Network Hub,SMB,Online,Rep_06,5138.61,24,2143.58,2995.03,58.3,True
+2022-06-18,2022,Q2,Jun,6,Middle East & Africa,UAE,Services,Deployment,Enterprise,Partner,Rep_18,7536.65,40,4600.45,2936.2,39.0,True
+2022-06-19,2022,Q2,Jun,6,Asia-Pacific,South Korea,Services,Deployment,Enterprise,Reseller,Rep_02,7921.95,10,3110.49,4811.46,60.7,True
+2022-06-19,2022,Q2,Jun,6,Asia-Pacific,India,Services,Training,Mid-Market,Partner,Rep_05,5631.59,18,2365.74,3265.85,58.0,True
+2022-06-19,2022,Q2,Jun,6,Europe,UK,Services,Deployment,Enterprise,Reseller,Rep_12,17784.6,16,9306.24,8478.36,47.7,False
+2022-06-20,2022,Q2,Jun,6,North America,Mexico,Cloud,Serverless,SMB,Partner,Rep_19,1685.67,50,1055.82,629.85,37.4,False
+2022-06-20,2022,Q2,Jun,6,Asia-Pacific,Japan,Hardware,Workstation Z,SMB,Online,Rep_01,7058.04,46,3012.22,4045.82,57.3,True
+2022-06-21,2022,Q2,Jun,6,Middle East & Africa,UAE,Cloud,Kubernetes,Mid-Market,Reseller,Rep_12,3969.88,29,1946.29,2023.59,51.0,True
+2022-06-23,2022,Q2,Jun,6,Middle East & Africa,Saudi Arabia,Hardware,Workstation Z,Mid-Market,Direct,Rep_10,16721.06,19,8630.74,8090.32,48.4,True
+2022-06-24,2022,Q2,Jun,6,Latin America,Brazil,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_07,3041.18,4,1472.06,1569.12,51.6,False
+2022-06-25,2022,Q2,Jun,6,Middle East & Africa,Saudi Arabia,Hardware,Server X1,SMB,Partner,Rep_02,5474.58,34,2286.74,3187.84,58.2,False
+2022-06-27,2022,Q2,Jun,6,Europe,France,Hardware,Workstation Z,SMB,Reseller,Rep_04,4015.42,46,1744.0,2271.42,56.6,True
+2022-06-28,2022,Q2,Jun,6,Asia-Pacific,India,Consulting,Digital Transform,Mid-Market,Direct,Rep_18,28716.87,24,11560.84,17156.03,59.7,True
+2022-06-28,2022,Q2,Jun,6,Latin America,Argentina,Software,CRM Suite,Enterprise,Online,Rep_10,16096.33,8,7263.98,8832.35,54.9,True
+2022-06-28,2022,Q2,Jun,6,Asia-Pacific,Australia,Services,Training,Mid-Market,Partner,Rep_19,4526.52,31,1798.97,2727.55,60.3,True
+2022-06-29,2022,Q2,Jun,6,Asia-Pacific,India,Hardware,Network Hub,SMB,Partner,Rep_07,7815.59,50,2831.71,4983.88,63.8,True
+2022-06-29,2022,Q2,Jun,6,Latin America,Brazil,Software,Analytics Pro,SMB,Direct,Rep_06,2204.77,38,1250.89,953.88,43.3,True
+2022-06-29,2022,Q2,Jun,6,Latin America,Brazil,Consulting,Digital Transform,Enterprise,Direct,Rep_16,59807.65,34,26283.55,33524.1,56.1,False
+2022-06-30,2022,Q2,Jun,6,Asia-Pacific,Japan,Services,Deployment,Enterprise,Direct,Rep_19,6693.79,40,3834.65,2859.14,42.7,False
+2022-06-30,2022,Q2,Jun,6,Europe,UK,Cloud,Cloud Compute,Mid-Market,Direct,Rep_05,2477.16,41,1392.08,1085.08,43.8,False
+2022-07-01,2022,Q3,Jul,7,Latin America,Colombia,Cloud,Cloud Storage,SMB,Partner,Rep_01,1217.05,15,684.68,532.37,43.7,False
+2022-07-02,2022,Q3,Jul,7,North America,USA,Hardware,NAS Storage,SMB,Partner,Rep_20,5661.72,40,3056.37,2605.35,46.0,False
+2022-07-02,2022,Q3,Jul,7,Latin America,Argentina,Consulting,Digital Transform,SMB,Direct,Rep_10,15453.69,19,9158.92,6294.77,40.7,True
+2022-07-03,2022,Q3,Jul,7,Asia-Pacific,India,Consulting,Digital Transform,Enterprise,Online,Rep_16,40154.66,13,18035.64,22119.02,55.1,True
+2022-07-03,2022,Q3,Jul,7,North America,USA,Consulting,Audit,SMB,Reseller,Rep_19,7771.95,6,3191.91,4580.04,58.9,True
+2022-07-04,2022,Q3,Jul,7,Europe,Netherlands,Services,24/7 Support,Enterprise,Partner,Rep_15,6435.3,50,2938.38,3496.92,54.3,False
+2022-07-05,2022,Q3,Jul,7,Europe,France,Software,CRM Suite,Enterprise,Online,Rep_14,20502.0,32,10297.77,10204.23,49.8,True
+2022-07-06,2022,Q3,Jul,7,Middle East & Africa,UAE,Services,Deployment,SMB,Reseller,Rep_02,1324.01,14,660.03,663.98,50.1,True
+2022-07-06,2022,Q3,Jul,7,Europe,Germany,Software,DevTools,Mid-Market,Reseller,Rep_12,6484.78,39,2757.76,3727.02,57.5,True
+2022-07-07,2022,Q3,Jul,7,Latin America,Colombia,Cloud,Cloud Storage,Enterprise,Direct,Rep_06,6000.15,9,3353.19,2646.96,44.1,False
+2022-07-08,2022,Q3,Jul,7,Europe,Sweden,Software,CRM Suite,Enterprise,Online,Rep_07,20350.1,39,7189.55,13160.55,64.7,True
+2022-07-09,2022,Q3,Jul,7,Latin America,Brazil,Hardware,NAS Storage,SMB,Direct,Rep_07,6664.59,9,2911.74,3752.85,56.3,True
+2022-07-10,2022,Q3,Jul,7,Asia-Pacific,India,Cloud,Serverless,Enterprise,Online,Rep_04,4889.1,3,3149.45,1739.65,35.6,True
+2022-07-12,2022,Q3,Jul,7,Latin America,Colombia,Services,Deployment,SMB,Direct,Rep_05,1622.83,9,925.07,697.76,43.0,True
+2022-07-13,2022,Q3,Jul,7,Latin America,Colombia,Hardware,Server X1,Mid-Market,Partner,Rep_13,18064.25,9,8047.75,10016.5,55.4,True
+2022-07-14,2022,Q3,Jul,7,North America,Canada,Hardware,Network Hub,Enterprise,Partner,Rep_18,34211.83,42,17024.39,17187.44,50.2,True
+2022-07-14,2022,Q3,Jul,7,Asia-Pacific,Japan,Hardware,Server X1,SMB,Reseller,Rep_10,5803.7,1,2039.41,3764.29,64.9,False
+2022-07-14,2022,Q3,Jul,7,Asia-Pacific,South Korea,Hardware,Workstation Z,SMB,Direct,Rep_20,2613.96,49,1103.33,1510.63,57.8,True
+2022-07-14,2022,Q3,Jul,7,North America,Canada,Services,Managed IT,Enterprise,Direct,Rep_15,14551.15,16,8254.63,6296.52,43.3,True
+2022-07-14,2022,Q3,Jul,7,Europe,Netherlands,Services,24/7 Support,Enterprise,Direct,Rep_19,7090.61,1,3910.4,3180.21,44.9,True
+2022-07-14,2022,Q3,Jul,7,Europe,Germany,Cloud,Kubernetes,Enterprise,Partner,Rep_09,9692.13,6,3605.22,6086.91,62.8,True
+2022-07-15,2022,Q3,Jul,7,North America,Mexico,Hardware,Workstation Z,SMB,Reseller,Rep_18,7724.55,18,4352.04,3372.51,43.7,True
+2022-07-15,2022,Q3,Jul,7,North America,USA,Consulting,Strategy,Enterprise,Online,Rep_04,47150.14,36,22828.68,24321.46,51.6,False
+2022-07-16,2022,Q3,Jul,7,Asia-Pacific,Singapore,Hardware,NAS Storage,SMB,Direct,Rep_18,4819.69,27,2113.94,2705.75,56.1,True
+2022-07-16,2022,Q3,Jul,7,Middle East & Africa,Nigeria,Cloud,Cloud Compute,Mid-Market,Direct,Rep_14,2765.98,32,1167.67,1598.31,57.8,True
+2022-07-16,2022,Q3,Jul,7,Latin America,Colombia,Consulting,Digital Transform,Enterprise,Reseller,Rep_18,51448.39,29,29594.06,21854.33,42.5,True
+2022-07-16,2022,Q3,Jul,7,Middle East & Africa,South Africa,Cloud,Cloud Storage,SMB,Reseller,Rep_16,990.7,6,366.29,624.41,63.0,True
+2022-07-17,2022,Q3,Jul,7,North America,USA,Software,Analytics Pro,Mid-Market,Online,Rep_19,15698.83,24,8985.82,6713.01,42.8,True
+2022-07-17,2022,Q3,Jul,7,Middle East & Africa,Saudi Arabia,Hardware,Server X1,SMB,Reseller,Rep_04,2717.51,46,1419.24,1298.27,47.8,True
+2022-07-18,2022,Q3,Jul,7,Europe,Netherlands,Hardware,Workstation Z,Enterprise,Partner,Rep_10,32449.14,37,16132.27,16316.87,50.3,False
+2022-07-19,2022,Q3,Jul,7,North America,USA,Cloud,Cloud Compute,Enterprise,Online,Rep_05,9475.46,25,5035.02,4440.44,46.9,True
+2022-07-21,2022,Q3,Jul,7,Middle East & Africa,Nigeria,Consulting,Strategy,SMB,Direct,Rep_02,3754.91,38,1576.67,2178.24,58.0,True
+2022-07-22,2022,Q3,Jul,7,Latin America,Chile,Services,Managed IT,Enterprise,Reseller,Rep_07,13202.53,42,6135.97,7066.56,53.5,False
+2022-07-23,2022,Q3,Jul,7,North America,USA,Software,Analytics Pro,SMB,Online,Rep_01,4181.82,13,1695.45,2486.37,59.5,False
+2022-07-23,2022,Q3,Jul,7,North America,Canada,Hardware,Workstation Z,Enterprise,Reseller,Rep_06,41315.03,20,19817.18,21497.85,52.0,True
+2022-07-23,2022,Q3,Jul,7,Latin America,Brazil,Software,Analytics Pro,Mid-Market,Reseller,Rep_07,8596.57,30,3010.54,5586.03,65.0,True
+2022-07-23,2022,Q3,Jul,7,Europe,Sweden,Cloud,Kubernetes,Enterprise,Reseller,Rep_18,6585.84,50,3937.53,2648.31,40.2,True
+2022-07-23,2022,Q3,Jul,7,Asia-Pacific,South Korea,Consulting,Digital Transform,Mid-Market,Reseller,Rep_15,18492.83,33,6884.09,11608.74,62.8,False
+2022-07-24,2022,Q3,Jul,7,Europe,Germany,Cloud,Cloud Compute,Enterprise,Reseller,Rep_13,7928.07,25,2902.78,5025.29,63.4,False
+2022-07-24,2022,Q3,Jul,7,Europe,UK,Software,Security Shield,Enterprise,Reseller,Rep_20,21526.06,43,10606.27,10919.79,50.7,True
+2022-07-25,2022,Q3,Jul,7,North America,Mexico,Software,Analytics Pro,Mid-Market,Online,Rep_15,6886.24,17,4314.59,2571.65,37.3,False
+2022-07-25,2022,Q3,Jul,7,Latin America,Colombia,Hardware,NAS Storage,Enterprise,Reseller,Rep_05,130751.31,12,56549.23,74202.08,56.8,False
+2022-07-28,2022,Q3,Jul,7,Europe,Netherlands,Software,DevTools,SMB,Reseller,Rep_12,2833.92,4,1298.72,1535.2,54.2,True
+2022-07-28,2022,Q3,Jul,7,Latin America,Chile,Software,Analytics Pro,Mid-Market,Online,Rep_03,7739.65,47,4261.56,3478.09,44.9,True
+2022-07-29,2022,Q3,Jul,7,Middle East & Africa,South Africa,Hardware,Server X1,SMB,Partner,Rep_20,4502.53,33,2272.63,2229.9,49.5,False
+2022-07-30,2022,Q3,Jul,7,North America,Mexico,Hardware,Workstation Z,SMB,Online,Rep_08,3885.18,49,1841.78,2043.4,52.6,True
+2022-07-31,2022,Q3,Jul,7,Middle East & Africa,South Africa,Software,DevTools,Mid-Market,Reseller,Rep_08,6464.51,32,3258.16,3206.35,49.6,True
+2022-08-01,2022,Q3,Aug,8,Asia-Pacific,India,Software,DevTools,SMB,Direct,Rep_05,3025.63,2,1437.76,1587.87,52.5,True
+2022-08-01,2022,Q3,Aug,8,North America,Canada,Software,Analytics Pro,SMB,Direct,Rep_04,2288.86,2,1239.45,1049.41,45.8,True
+2022-08-03,2022,Q3,Aug,8,North America,Canada,Services,Managed IT,Mid-Market,Direct,Rep_20,4668.24,38,2064.78,2603.46,55.8,True
+2022-08-04,2022,Q3,Aug,8,Europe,Netherlands,Services,Training,Enterprise,Reseller,Rep_06,24083.71,10,10980.64,13103.07,54.4,True
+2022-08-04,2022,Q3,Aug,8,North America,USA,Hardware,Workstation Z,Enterprise,Partner,Rep_04,35921.8,13,13726.31,22195.49,61.8,False
+2022-08-04,2022,Q3,Aug,8,Europe,Germany,Software,CRM Suite,SMB,Direct,Rep_17,1963.89,29,1060.94,902.95,46.0,True
+2022-08-05,2022,Q3,Aug,8,Europe,Germany,Software,CRM Suite,Enterprise,Reseller,Rep_12,21503.48,9,8804.38,12699.1,59.1,True
+2022-08-05,2022,Q3,Aug,8,Latin America,Colombia,Consulting,Digital Transform,SMB,Direct,Rep_15,9692.83,42,3617.92,6074.91,62.7,True
+2022-08-05,2022,Q3,Aug,8,Asia-Pacific,Australia,Cloud,Cloud Compute,Mid-Market,Reseller,Rep_03,2952.2,2,1399.71,1552.49,52.6,False
+2022-08-05,2022,Q3,Aug,8,North America,USA,Cloud,Cloud Compute,Enterprise,Direct,Rep_15,7506.29,14,2778.73,4727.56,63.0,True
+2022-08-06,2022,Q3,Aug,8,Asia-Pacific,Australia,Software,DevTools,Mid-Market,Online,Rep_13,8236.61,28,4557.89,3678.72,44.7,True
+2022-08-06,2022,Q3,Aug,8,Latin America,Argentina,Software,DevTools,SMB,Reseller,Rep_02,2715.93,42,1688.28,1027.65,37.8,True
+2022-08-06,2022,Q3,Aug,8,Europe,Sweden,Hardware,Network Hub,Mid-Market,Partner,Rep_14,5570.02,18,2051.37,3518.65,63.2,True
+2022-08-07,2022,Q3,Aug,8,North America,USA,Cloud,Serverless,Mid-Market,Reseller,Rep_14,5866.08,19,2341.37,3524.71,60.1,False
+2022-08-07,2022,Q3,Aug,8,North America,Canada,Services,Training,Mid-Market,Online,Rep_12,6604.73,24,3421.94,3182.79,48.2,False
+2022-08-07,2022,Q3,Aug,8,Europe,Sweden,Consulting,Audit,SMB,Reseller,Rep_19,8141.71,8,4707.8,3433.91,42.2,True
+2022-08-08,2022,Q3,Aug,8,North America,Mexico,Software,CRM Suite,SMB,Partner,Rep_13,2255.73,43,1102.74,1152.99,51.1,False
+2022-08-08,2022,Q3,Aug,8,Europe,Germany,Services,Deployment,Enterprise,Direct,Rep_06,9185.03,50,5560.51,3624.52,39.5,False
+2022-08-09,2022,Q3,Aug,8,Asia-Pacific,Japan,Services,24/7 Support,Enterprise,Reseller,Rep_05,6172.48,3,2691.6,3480.88,56.4,True
+2022-08-10,2022,Q3,Aug,8,Middle East & Africa,South Africa,Services,Deployment,SMB,Partner,Rep_16,3556.13,32,1656.55,1899.58,53.4,True
+2022-08-10,2022,Q3,Aug,8,Latin America,Chile,Hardware,Workstation Z,Enterprise,Direct,Rep_17,42900.11,11,22375.38,20524.73,47.8,True
+2022-08-11,2022,Q3,Aug,8,North America,Mexico,Software,CRM Suite,SMB,Direct,Rep_12,3025.31,38,1100.17,1925.14,63.6,True
+2022-08-11,2022,Q3,Aug,8,Latin America,Colombia,Hardware,Server X1,Mid-Market,Online,Rep_15,13361.05,24,5030.77,8330.28,62.3,True
+2022-08-12,2022,Q3,Aug,8,North America,Canada,Consulting,Migration,SMB,Reseller,Rep_10,4801.6,26,2702.58,2099.02,43.7,False
+2022-08-12,2022,Q3,Aug,8,Europe,France,Hardware,Server X1,SMB,Reseller,Rep_07,3283.32,18,2008.92,1274.4,38.8,True
+2022-08-13,2022,Q3,Aug,8,Europe,Germany,Cloud,Serverless,SMB,Direct,Rep_17,1248.8,22,649.07,599.73,48.0,True
+2022-08-13,2022,Q3,Aug,8,Asia-Pacific,Australia,Consulting,Audit,Mid-Market,Direct,Rep_18,20132.98,28,8265.14,11867.84,58.9,False
+2022-08-13,2022,Q3,Aug,8,Europe,Sweden,Consulting,Audit,Enterprise,Online,Rep_17,27255.2,6,13723.03,13532.17,49.6,True
+2022-08-13,2022,Q3,Aug,8,Latin America,Chile,Cloud,Cloud Compute,Enterprise,Partner,Rep_12,6974.51,17,3281.01,3693.5,53.0,True
+2022-08-13,2022,Q3,Aug,8,Asia-Pacific,South Korea,Consulting,Strategy,Enterprise,Reseller,Rep_20,46622.89,9,23006.28,23616.61,50.7,True
+2022-08-14,2022,Q3,Aug,8,Middle East & Africa,South Africa,Services,Training,Enterprise,Reseller,Rep_05,13779.95,7,5028.17,8751.78,63.5,False
+2022-08-14,2022,Q3,Aug,8,North America,Mexico,Cloud,Kubernetes,Mid-Market,Partner,Rep_11,3486.48,47,2110.96,1375.52,39.5,False
+2022-08-14,2022,Q3,Aug,8,North America,Canada,Consulting,Strategy,SMB,Partner,Rep_18,6231.98,26,3015.39,3216.59,51.6,True
+2022-08-15,2022,Q3,Aug,8,Latin America,Brazil,Consulting,Audit,Mid-Market,Direct,Rep_16,29826.74,33,15375.15,14451.59,48.5,False
+2022-08-15,2022,Q3,Aug,8,North America,Canada,Cloud,Kubernetes,Enterprise,Partner,Rep_03,12999.52,41,4859.77,8139.75,62.6,False
+2022-08-15,2022,Q3,Aug,8,Latin America,Argentina,Services,Training,Enterprise,Reseller,Rep_14,8241.06,13,4087.24,4153.82,50.4,True
+2022-08-16,2022,Q3,Aug,8,Asia-Pacific,Singapore,Hardware,Workstation Z,Enterprise,Online,Rep_18,35262.75,20,18829.56,16433.19,46.6,True
+2022-08-17,2022,Q3,Aug,8,Middle East & Africa,Saudi Arabia,Consulting,Digital Transform,Mid-Market,Online,Rep_18,9466.82,46,5576.22,3890.6,41.1,True
+2022-08-17,2022,Q3,Aug,8,Middle East & Africa,South Africa,Software,DevTools,Mid-Market,Reseller,Rep_02,6829.48,43,4318.55,2510.93,36.8,True
+2022-08-18,2022,Q3,Aug,8,Latin America,Brazil,Software,CRM Suite,SMB,Reseller,Rep_13,4444.59,4,1948.84,2495.75,56.2,False
+2022-08-19,2022,Q3,Aug,8,North America,Canada,Hardware,Server X1,Mid-Market,Online,Rep_16,11726.59,50,4920.88,6805.71,58.0,True
+2022-08-19,2022,Q3,Aug,8,North America,Mexico,Consulting,Migration,SMB,Online,Rep_20,3411.58,3,1380.41,2031.17,59.5,False
+2022-08-19,2022,Q3,Aug,8,North America,Mexico,Consulting,Digital Transform,Mid-Market,Direct,Rep_03,12812.66,8,7976.63,4836.03,37.7,True
+2022-08-19,2022,Q3,Aug,8,Europe,France,Services,Training,SMB,Reseller,Rep_10,1389.59,1,525.64,863.95,62.2,True
+2022-08-20,2022,Q3,Aug,8,Asia-Pacific,Australia,Hardware,Server X1,Mid-Market,Online,Rep_17,7273.89,24,2581.19,4692.7,64.5,True
+2022-08-20,2022,Q3,Aug,8,Latin America,Chile,Consulting,Digital Transform,SMB,Direct,Rep_01,4167.56,7,2442.56,1725.0,41.4,False
+2022-08-21,2022,Q3,Aug,8,Asia-Pacific,Singapore,Cloud,Kubernetes,SMB,Partner,Rep_11,746.23,20,320.33,425.9,57.1,False
+2022-08-21,2022,Q3,Aug,8,Latin America,Brazil,Consulting,Strategy,SMB,Direct,Rep_13,7283.26,49,4314.59,2968.67,40.8,True
+2022-08-22,2022,Q3,Aug,8,North America,USA,Cloud,Cloud Compute,Mid-Market,Partner,Rep_10,2047.04,31,999.72,1047.32,51.2,True
+2022-08-22,2022,Q3,Aug,8,North America,USA,Software,Security Shield,SMB,Reseller,Rep_20,5160.89,14,2993.77,2167.12,42.0,True
+2022-08-23,2022,Q3,Aug,8,Latin America,Brazil,Cloud,Cloud Storage,SMB,Direct,Rep_18,1014.16,27,493.94,520.22,51.3,True
+2022-08-23,2022,Q3,Aug,8,Latin America,Argentina,Cloud,Kubernetes,Enterprise,Direct,Rep_17,9020.3,26,5600.1,3420.2,37.9,True
+2022-08-23,2022,Q3,Aug,8,Latin America,Colombia,Cloud,Cloud Storage,SMB,Online,Rep_05,734.93,46,461.7,273.23,37.2,True
+2022-08-24,2022,Q3,Aug,8,North America,Mexico,Software,DevTools,SMB,Partner,Rep_20,3718.11,11,2118.46,1599.65,43.0,True
+2022-08-24,2022,Q3,Aug,8,North America,Mexico,Software,Security Shield,SMB,Direct,Rep_14,1949.39,40,1204.66,744.73,38.2,True
+2022-08-25,2022,Q3,Aug,8,Asia-Pacific,India,Hardware,NAS Storage,Enterprise,Direct,Rep_11,42515.51,12,15401.96,27113.55,63.8,False
+2022-08-25,2022,Q3,Aug,8,Latin America,Colombia,Cloud,Kubernetes,SMB,Reseller,Rep_12,1132.67,39,540.19,592.48,52.3,True
+2022-08-26,2022,Q3,Aug,8,North America,Canada,Cloud,Serverless,SMB,Direct,Rep_10,1418.97,29,553.85,865.12,61.0,True
+2022-08-26,2022,Q3,Aug,8,Asia-Pacific,India,Software,Security Shield,Mid-Market,Online,Rep_15,13684.48,40,4982.82,8701.66,63.6,True
+2022-08-27,2022,Q3,Aug,8,Asia-Pacific,South Korea,Cloud,Cloud Storage,Mid-Market,Online,Rep_08,3466.92,33,1797.58,1669.34,48.2,True
+2022-08-27,2022,Q3,Aug,8,Latin America,Chile,Consulting,Digital Transform,Mid-Market,Online,Rep_10,19819.63,41,8531.63,11288.0,57.0,True
+2022-08-27,2022,Q3,Aug,8,North America,Canada,Hardware,Network Hub,SMB,Direct,Rep_08,5442.92,24,2048.93,3393.99,62.4,True
+2022-08-28,2022,Q3,Aug,8,North America,USA,Software,DevTools,Mid-Market,Reseller,Rep_03,14873.58,47,5475.28,9398.3,63.2,True
+2022-08-28,2022,Q3,Aug,8,Asia-Pacific,Australia,Consulting,Audit,Mid-Market,Partner,Rep_17,12057.94,46,5862.65,6195.29,51.4,False
+2022-08-28,2022,Q3,Aug,8,Latin America,Argentina,Hardware,Network Hub,SMB,Reseller,Rep_03,6752.97,34,4053.6,2699.37,40.0,True
+2022-08-29,2022,Q3,Aug,8,Latin America,Chile,Services,Training,Enterprise,Online,Rep_06,11292.31,29,6966.43,4325.88,38.3,True
+2022-08-29,2022,Q3,Aug,8,Europe,Netherlands,Software,Analytics Pro,Enterprise,Partner,Rep_05,12578.66,9,6566.64,6012.02,47.8,True
+2022-08-29,2022,Q3,Aug,8,Middle East & Africa,Saudi Arabia,Consulting,Digital Transform,SMB,Reseller,Rep_03,11298.92,50,5889.41,5409.51,47.9,False
+2022-08-29,2022,Q3,Aug,8,North America,USA,Consulting,Audit,Enterprise,Reseller,Rep_15,32081.3,14,13418.83,18662.47,58.2,False
+2022-08-29,2022,Q3,Aug,8,Middle East & Africa,UAE,Consulting,Digital Transform,SMB,Reseller,Rep_03,7752.02,46,4372.91,3379.11,43.6,True
+2022-08-30,2022,Q3,Aug,8,Latin America,Brazil,Consulting,Audit,Enterprise,Reseller,Rep_15,52090.78,22,32682.57,19408.21,37.3,True
+2022-08-31,2022,Q3,Aug,8,Europe,UK,Consulting,Digital Transform,Enterprise,Direct,Rep_16,26010.97,37,14798.12,11212.85,43.1,True
+2022-08-31,2022,Q3,Aug,8,Middle East & Africa,UAE,Cloud,Serverless,SMB,Partner,Rep_16,947.98,38,603.73,344.25,36.3,False
+2022-08-31,2022,Q3,Aug,8,Asia-Pacific,Japan,Services,Deployment,Enterprise,Online,Rep_12,6164.96,47,3002.26,3162.7,51.3,True
+2022-09-01,2022,Q3,Sep,9,Middle East & Africa,Nigeria,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_06,3583.91,10,2010.71,1573.2,43.9,True
+2022-09-01,2022,Q3,Sep,9,North America,USA,Services,Deployment,Enterprise,Reseller,Rep_02,10029.0,40,5341.41,4687.59,46.7,True
+2022-09-02,2022,Q3,Sep,9,Europe,UK,Services,Training,Mid-Market,Reseller,Rep_03,7828.62,33,4673.46,3155.16,40.3,True
+2022-09-02,2022,Q3,Sep,9,Europe,France,Cloud,Cloud Storage,SMB,Online,Rep_02,939.61,38,586.14,353.47,37.6,True
+2022-09-02,2022,Q3,Sep,9,Asia-Pacific,Singapore,Cloud,Cloud Storage,Mid-Market,Partner,Rep_16,2689.95,8,1194.29,1495.66,55.6,True
+2022-09-02,2022,Q3,Sep,9,Middle East & Africa,South Africa,Services,Training,Enterprise,Reseller,Rep_13,10422.53,39,6659.13,3763.4,36.1,True
+2022-09-03,2022,Q3,Sep,9,Europe,Germany,Services,Training,Mid-Market,Reseller,Rep_17,3466.09,48,2054.36,1411.73,40.7,True
+2022-09-03,2022,Q3,Sep,9,Latin America,Brazil,Services,Deployment,SMB,Direct,Rep_14,1748.32,16,642.28,1106.04,63.3,False
+2022-09-03,2022,Q3,Sep,9,Middle East & Africa,South Africa,Hardware,Server X1,SMB,Direct,Rep_11,3740.08,2,2209.35,1530.73,40.9,True
+2022-09-04,2022,Q3,Sep,9,Europe,France,Services,Deployment,Enterprise,Partner,Rep_06,12194.66,27,4898.91,7295.75,59.8,True
+2022-09-04,2022,Q3,Sep,9,Asia-Pacific,Singapore,Consulting,Audit,Enterprise,Online,Rep_04,22913.6,24,8892.29,14021.31,61.2,True
+2022-09-04,2022,Q3,Sep,9,Middle East & Africa,Nigeria,Software,Security Shield,Mid-Market,Partner,Rep_13,5812.14,25,3167.21,2644.93,45.5,True
+2022-09-05,2022,Q3,Sep,9,Middle East & Africa,South Africa,Services,24/7 Support,Mid-Market,Online,Rep_02,3486.79,43,1220.47,2266.32,65.0,True
+2022-09-06,2022,Q3,Sep,9,Middle East & Africa,South Africa,Software,Analytics Pro,Mid-Market,Direct,Rep_12,7279.99,27,4715.37,2564.62,35.2,False
+2022-09-06,2022,Q3,Sep,9,Asia-Pacific,South Korea,Cloud,Serverless,Mid-Market,Reseller,Rep_10,4330.82,30,1843.2,2487.62,57.4,True
+2022-09-07,2022,Q3,Sep,9,North America,Mexico,Hardware,NAS Storage,Enterprise,Partner,Rep_17,33147.68,17,17206.89,15940.79,48.1,True
+2022-09-07,2022,Q3,Sep,9,Europe,Sweden,Software,DevTools,Mid-Market,Reseller,Rep_20,15888.91,32,8378.44,7510.47,47.3,True
+2022-09-07,2022,Q3,Sep,9,Latin America,Brazil,Services,Managed IT,SMB,Online,Rep_19,1071.49,1,411.27,660.22,61.6,True
+2022-09-07,2022,Q3,Sep,9,Asia-Pacific,Australia,Consulting,Digital Transform,SMB,Partner,Rep_06,6165.69,29,3942.31,2223.38,36.1,False
+2022-09-07,2022,Q3,Sep,9,Latin America,Brazil,Cloud,Kubernetes,SMB,Direct,Rep_05,1037.89,13,584.94,452.95,43.6,True
+2022-09-08,2022,Q3,Sep,9,Latin America,Colombia,Hardware,NAS Storage,Mid-Market,Direct,Rep_19,14734.82,19,8012.34,6722.48,45.6,False
+2022-09-08,2022,Q3,Sep,9,Latin America,Brazil,Software,CRM Suite,Enterprise,Online,Rep_05,15935.34,28,6039.01,9896.33,62.1,True
+2022-09-08,2022,Q3,Sep,9,Latin America,Colombia,Hardware,NAS Storage,Enterprise,Online,Rep_15,24060.07,12,13097.15,10962.92,45.6,True
+2022-09-08,2022,Q3,Sep,9,Asia-Pacific,India,Cloud,Cloud Storage,SMB,Online,Rep_04,1453.41,15,686.41,767.0,52.8,True
+2022-09-08,2022,Q3,Sep,9,Latin America,Brazil,Software,CRM Suite,Mid-Market,Reseller,Rep_17,5428.07,36,1987.47,3440.6,63.4,True
+2022-09-09,2022,Q3,Sep,9,Asia-Pacific,India,Cloud,Cloud Compute,Mid-Market,Direct,Rep_15,4594.25,22,2719.25,1875.0,40.8,True
+2022-09-10,2022,Q3,Sep,9,Middle East & Africa,Nigeria,Services,24/7 Support,Enterprise,Partner,Rep_16,14184.48,22,5943.38,8241.1,58.1,True
+2022-09-10,2022,Q3,Sep,9,Middle East & Africa,UAE,Hardware,Network Hub,Mid-Market,Partner,Rep_17,8636.68,9,3304.14,5332.54,61.7,True
+2022-09-11,2022,Q3,Sep,9,North America,Mexico,Consulting,Strategy,Enterprise,Direct,Rep_14,42440.62,16,21310.81,21129.81,49.8,True
+2022-09-11,2022,Q3,Sep,9,Middle East & Africa,South Africa,Hardware,Workstation Z,Mid-Market,Online,Rep_05,30288.56,20,17270.49,13018.07,43.0,False
+2022-09-11,2022,Q3,Sep,9,Latin America,Argentina,Cloud,Cloud Storage,SMB,Online,Rep_07,714.83,14,463.61,251.22,35.1,True
+2022-09-12,2022,Q3,Sep,9,Middle East & Africa,Nigeria,Hardware,Server X1,Mid-Market,Direct,Rep_09,9705.63,46,5894.67,3810.96,39.3,True
+2022-09-12,2022,Q3,Sep,9,North America,Mexico,Cloud,Kubernetes,Mid-Market,Partner,Rep_03,1955.37,41,787.68,1167.69,59.7,False
+2022-09-12,2022,Q3,Sep,9,North America,Mexico,Consulting,Digital Transform,Mid-Market,Reseller,Rep_07,28663.86,8,16780.63,11883.23,41.5,True
+2022-09-13,2022,Q3,Sep,9,Europe,UK,Hardware,Workstation Z,SMB,Online,Rep_15,7033.42,4,3347.03,3686.39,52.4,False
+2022-09-13,2022,Q3,Sep,9,Europe,France,Consulting,Strategy,Mid-Market,Partner,Rep_01,19686.35,16,7560.89,12125.46,61.6,False
+2022-09-13,2022,Q3,Sep,9,Middle East & Africa,Saudi Arabia,Services,Managed IT,Mid-Market,Reseller,Rep_12,8486.56,43,4820.33,3666.23,43.2,True
+2022-09-14,2022,Q3,Sep,9,Asia-Pacific,Japan,Hardware,NAS Storage,SMB,Partner,Rep_17,6657.36,12,4110.46,2546.9,38.3,False
+2022-09-14,2022,Q3,Sep,9,North America,USA,Software,Security Shield,Enterprise,Partner,Rep_04,10723.97,36,5475.3,5248.67,48.9,True
+2022-09-14,2022,Q3,Sep,9,Europe,Sweden,Software,CRM Suite,SMB,Online,Rep_08,3239.54,39,2066.57,1172.97,36.2,True
+2022-09-14,2022,Q3,Sep,9,Asia-Pacific,Australia,Cloud,Serverless,Mid-Market,Online,Rep_17,3886.43,1,2504.91,1381.52,35.5,True
+2022-09-15,2022,Q3,Sep,9,Latin America,Brazil,Consulting,Migration,SMB,Online,Rep_12,5919.82,4,2612.34,3307.48,55.9,False
+2022-09-15,2022,Q3,Sep,9,Middle East & Africa,Saudi Arabia,Cloud,Kubernetes,Mid-Market,Reseller,Rep_01,5001.23,29,2421.85,2579.38,51.6,True
+2022-09-15,2022,Q3,Sep,9,Asia-Pacific,Singapore,Consulting,Digital Transform,Enterprise,Online,Rep_06,24766.38,50,10512.57,14253.81,57.6,True
+2022-09-16,2022,Q3,Sep,9,Europe,Sweden,Software,CRM Suite,SMB,Online,Rep_07,2527.84,14,1497.52,1030.32,40.8,True
+2022-09-16,2022,Q3,Sep,9,North America,Canada,Cloud,Serverless,Mid-Market,Reseller,Rep_16,3244.46,8,1797.6,1446.86,44.6,True
+2022-09-16,2022,Q3,Sep,9,North America,Canada,Software,Security Shield,Mid-Market,Online,Rep_13,7305.32,26,3653.13,3652.19,50.0,True
+2022-09-18,2022,Q3,Sep,9,Europe,Sweden,Software,DevTools,SMB,Direct,Rep_03,2029.1,17,773.06,1256.04,61.9,True
+2022-09-18,2022,Q3,Sep,9,North America,Mexico,Cloud,Kubernetes,SMB,Online,Rep_06,1500.28,7,637.52,862.76,57.5,True
+2022-09-19,2022,Q3,Sep,9,North America,Mexico,Cloud,Cloud Compute,Enterprise,Direct,Rep_08,8683.39,12,3076.49,5606.9,64.6,False
+2022-09-20,2022,Q3,Sep,9,Europe,UK,Hardware,Network Hub,Enterprise,Reseller,Rep_13,30148.61,26,12529.1,17619.51,58.4,True
+2022-09-21,2022,Q3,Sep,9,Latin America,Chile,Hardware,NAS Storage,SMB,Online,Rep_05,5118.42,2,2454.39,2664.03,52.0,False
+2022-09-22,2022,Q3,Sep,9,Middle East & Africa,UAE,Services,Deployment,SMB,Reseller,Rep_16,1207.37,11,631.63,575.74,47.7,False
+2022-09-23,2022,Q3,Sep,9,Latin America,Colombia,Cloud,Cloud Compute,Enterprise,Online,Rep_10,4178.39,46,1717.08,2461.31,58.9,True
+2022-09-24,2022,Q3,Sep,9,North America,USA,Consulting,Audit,Mid-Market,Online,Rep_11,20358.38,14,10853.74,9504.64,46.7,True
+2022-09-25,2022,Q3,Sep,9,Latin America,Chile,Consulting,Digital Transform,Enterprise,Direct,Rep_07,59188.87,41,29494.44,29694.43,50.2,True
+2022-09-25,2022,Q3,Sep,9,Latin America,Chile,Cloud,Kubernetes,Mid-Market,Online,Rep_19,4345.25,19,1739.2,2606.05,60.0,False
+2022-09-26,2022,Q3,Sep,9,Middle East & Africa,Nigeria,Services,Managed IT,SMB,Partner,Rep_07,2904.95,8,1065.68,1839.27,63.3,True
+2022-09-26,2022,Q3,Sep,9,Latin America,Chile,Services,24/7 Support,Mid-Market,Direct,Rep_10,5825.4,23,3076.76,2748.64,47.2,False
+2022-09-27,2022,Q3,Sep,9,Middle East & Africa,UAE,Services,Training,SMB,Reseller,Rep_18,1296.3,49,469.89,826.41,63.8,False
+2022-09-27,2022,Q3,Sep,9,Latin America,Argentina,Hardware,Server X1,SMB,Reseller,Rep_12,8412.63,10,2967.49,5445.14,64.7,False
+2022-09-28,2022,Q3,Sep,9,Europe,Sweden,Consulting,Migration,SMB,Online,Rep_15,9570.9,7,5550.02,4020.88,42.0,True
+2022-09-28,2022,Q3,Sep,9,Europe,Germany,Services,Training,SMB,Reseller,Rep_09,2747.35,26,1776.81,970.54,35.3,False
+2022-09-28,2022,Q3,Sep,9,Asia-Pacific,Australia,Consulting,Audit,SMB,Partner,Rep_02,8421.62,2,4184.56,4237.06,50.3,True
+2022-09-28,2022,Q3,Sep,9,Latin America,Colombia,Services,Deployment,Enterprise,Partner,Rep_19,5924.32,12,2604.49,3319.83,56.0,True
+2022-09-28,2022,Q3,Sep,9,Europe,UK,Services,Deployment,Mid-Market,Reseller,Rep_07,4021.43,40,2026.96,1994.47,49.6,False
+2022-09-28,2022,Q3,Sep,9,Europe,Germany,Software,DevTools,SMB,Direct,Rep_08,5156.0,39,2044.34,3111.66,60.4,False
+2022-09-29,2022,Q3,Sep,9,North America,Mexico,Hardware,Workstation Z,SMB,Partner,Rep_09,6012.28,29,2771.24,3241.04,53.9,True
+2022-09-29,2022,Q3,Sep,9,Middle East & Africa,UAE,Cloud,Cloud Compute,Mid-Market,Partner,Rep_06,2975.02,18,1538.02,1437.0,48.3,True
+2022-09-29,2022,Q3,Sep,9,Middle East & Africa,UAE,Hardware,Server X1,Enterprise,Reseller,Rep_04,43182.05,29,21151.28,22030.77,51.0,True
+2022-09-29,2022,Q3,Sep,9,Europe,UK,Cloud,Cloud Storage,Mid-Market,Direct,Rep_07,3281.1,9,1436.78,1844.32,56.2,True
+2022-09-29,2022,Q3,Sep,9,Asia-Pacific,India,Cloud,Kubernetes,Mid-Market,Reseller,Rep_15,1879.75,17,860.73,1019.02,54.2,False
+2022-09-29,2022,Q3,Sep,9,Asia-Pacific,Australia,Cloud,Cloud Compute,SMB,Online,Rep_04,1069.14,5,535.59,533.55,49.9,True
+2022-09-29,2022,Q3,Sep,9,Middle East & Africa,Nigeria,Cloud,Cloud Compute,Mid-Market,Partner,Rep_06,2207.09,40,962.2,1244.89,56.4,True
+2022-09-29,2022,Q3,Sep,9,Middle East & Africa,Saudi Arabia,Software,DevTools,Mid-Market,Direct,Rep_06,5479.12,4,3168.1,2311.02,42.2,False
+2022-09-30,2022,Q3,Sep,9,Latin America,Brazil,Cloud,Cloud Storage,Mid-Market,Direct,Rep_19,4291.73,8,1560.27,2731.46,63.6,True
+2022-10-01,2022,Q4,Oct,10,North America,USA,Hardware,Workstation Z,SMB,Reseller,Rep_02,4830.01,18,1812.17,3017.84,62.5,False
+2022-10-01,2022,Q4,Oct,10,Latin America,Argentina,Services,Deployment,Mid-Market,Partner,Rep_04,3574.23,14,1814.03,1760.2,49.2,True
+2022-10-01,2022,Q4,Oct,10,Europe,Germany,Services,24/7 Support,SMB,Direct,Rep_11,809.37,22,350.32,459.05,56.7,True
+2022-10-01,2022,Q4,Oct,10,Latin America,Colombia,Software,Analytics Pro,Mid-Market,Direct,Rep_07,8432.83,38,4038.19,4394.64,52.1,False
+2022-10-01,2022,Q4,Oct,10,Europe,Germany,Consulting,Digital Transform,Enterprise,Reseller,Rep_05,38467.01,2,18553.08,19913.93,51.8,True
+2022-10-02,2022,Q4,Oct,10,North America,Mexico,Consulting,Digital Transform,Enterprise,Direct,Rep_13,59950.66,14,30377.02,29573.64,49.3,True
+2022-10-02,2022,Q4,Oct,10,Middle East & Africa,Nigeria,Consulting,Strategy,SMB,Direct,Rep_10,8462.98,15,5081.57,3381.41,40.0,True
+2022-10-03,2022,Q4,Oct,10,Latin America,Argentina,Software,CRM Suite,SMB,Direct,Rep_05,4618.57,43,1749.8,2868.77,62.1,True
+2022-10-04,2022,Q4,Oct,10,Latin America,Argentina,Cloud,Kubernetes,SMB,Reseller,Rep_19,1113.57,20,557.0,556.57,50.0,True
+2022-10-04,2022,Q4,Oct,10,Asia-Pacific,South Korea,Consulting,Strategy,Enterprise,Reseller,Rep_14,36840.76,40,22356.59,14484.17,39.3,True
+2022-10-05,2022,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Hardware,Server X1,Enterprise,Partner,Rep_05,76936.27,26,27813.23,49123.04,63.8,True
+2022-10-06,2022,Q4,Oct,10,North America,Canada,Software,Analytics Pro,SMB,Online,Rep_05,2970.92,20,1740.93,1229.99,41.4,True
+2022-10-06,2022,Q4,Oct,10,Latin America,Chile,Services,Training,Mid-Market,Reseller,Rep_06,4509.45,1,2628.0,1881.45,41.7,True
+2022-10-06,2022,Q4,Oct,10,Latin America,Brazil,Services,Managed IT,Mid-Market,Direct,Rep_13,4041.12,44,2604.1,1437.02,35.6,True
+2022-10-07,2022,Q4,Oct,10,Latin America,Brazil,Services,Deployment,Enterprise,Direct,Rep_10,7765.3,10,3813.91,3951.39,50.9,True
+2022-10-07,2022,Q4,Oct,10,Asia-Pacific,Singapore,Cloud,Serverless,SMB,Online,Rep_12,1027.42,16,570.08,457.34,44.5,True
+2022-10-07,2022,Q4,Oct,10,Europe,Germany,Software,Security Shield,Enterprise,Reseller,Rep_17,22389.12,50,9877.69,12511.43,55.9,False
+2022-10-08,2022,Q4,Oct,10,Europe,Netherlands,Hardware,NAS Storage,SMB,Direct,Rep_09,4243.99,19,1928.96,2315.03,54.5,True
+2022-10-09,2022,Q4,Oct,10,Latin America,Colombia,Software,Security Shield,Mid-Market,Online,Rep_05,13792.36,21,7579.35,6213.01,45.0,True
+2022-10-09,2022,Q4,Oct,10,Middle East & Africa,Nigeria,Consulting,Migration,SMB,Online,Rep_09,10399.02,17,5844.5,4554.52,43.8,True
+2022-10-09,2022,Q4,Oct,10,Asia-Pacific,South Korea,Cloud,Kubernetes,Mid-Market,Online,Rep_17,1020.06,40,610.89,409.17,40.1,True
+2022-10-10,2022,Q4,Oct,10,Latin America,Chile,Cloud,Kubernetes,Enterprise,Direct,Rep_16,4467.47,8,1719.92,2747.55,61.5,True
+2022-10-10,2022,Q4,Oct,10,Middle East & Africa,UAE,Cloud,Serverless,Mid-Market,Direct,Rep_02,5201.23,12,2559.18,2642.05,50.8,True
+2022-10-10,2022,Q4,Oct,10,North America,Canada,Consulting,Audit,SMB,Reseller,Rep_02,8142.06,32,5279.24,2862.82,35.2,True
+2022-10-11,2022,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Services,Managed IT,SMB,Online,Rep_05,3128.8,10,1979.32,1149.48,36.7,False
+2022-10-11,2022,Q4,Oct,10,Latin America,Chile,Hardware,Network Hub,Mid-Market,Reseller,Rep_18,13976.4,46,6026.93,7949.47,56.9,True
+2022-10-11,2022,Q4,Oct,10,Latin America,Brazil,Software,DevTools,Enterprise,Reseller,Rep_07,34117.47,21,21914.32,12203.15,35.8,True
+2022-10-11,2022,Q4,Oct,10,Asia-Pacific,South Korea,Cloud,Serverless,Enterprise,Direct,Rep_13,11219.23,50,4689.81,6529.42,58.2,False
+2022-10-12,2022,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Software,Analytics Pro,SMB,Partner,Rep_17,2417.44,5,938.52,1478.92,61.2,True
+2022-10-12,2022,Q4,Oct,10,Europe,France,Cloud,Cloud Storage,Mid-Market,Partner,Rep_15,3261.4,6,2067.48,1193.92,36.6,True
+2022-10-12,2022,Q4,Oct,10,Latin America,Brazil,Software,DevTools,SMB,Partner,Rep_19,5550.16,30,3552.14,1998.02,36.0,True
+2022-10-12,2022,Q4,Oct,10,Europe,UK,Services,Deployment,Enterprise,Partner,Rep_03,8253.96,15,5365.02,2888.94,35.0,False
+2022-10-12,2022,Q4,Oct,10,North America,Canada,Software,DevTools,SMB,Direct,Rep_18,2335.88,48,1246.73,1089.15,46.6,True
+2022-10-13,2022,Q4,Oct,10,Middle East & Africa,Nigeria,Hardware,NAS Storage,Enterprise,Direct,Rep_01,27910.85,24,17313.73,10597.12,38.0,True
+2022-10-13,2022,Q4,Oct,10,Middle East & Africa,Nigeria,Consulting,Migration,Enterprise,Online,Rep_20,43951.05,40,20390.0,23561.05,53.6,False
+2022-10-13,2022,Q4,Oct,10,Latin America,Colombia,Hardware,Server X1,SMB,Online,Rep_02,8434.71,21,2994.23,5440.48,64.5,True
+2022-10-13,2022,Q4,Oct,10,North America,USA,Hardware,Network Hub,SMB,Reseller,Rep_07,9426.01,19,4401.9,5024.11,53.3,False
+2022-10-13,2022,Q4,Oct,10,Asia-Pacific,Australia,Software,DevTools,Mid-Market,Online,Rep_10,9178.81,24,3268.3,5910.51,64.4,False
+2022-10-14,2022,Q4,Oct,10,Latin America,Argentina,Software,CRM Suite,Mid-Market,Direct,Rep_04,6884.74,31,2780.68,4104.06,59.6,True
+2022-10-14,2022,Q4,Oct,10,North America,USA,Hardware,Network Hub,SMB,Online,Rep_01,11411.45,45,5902.38,5509.07,48.3,True
+2022-10-16,2022,Q4,Oct,10,Middle East & Africa,South Africa,Consulting,Strategy,Mid-Market,Reseller,Rep_07,18341.46,47,6768.05,11573.41,63.1,True
+2022-10-17,2022,Q4,Oct,10,North America,Canada,Software,CRM Suite,Enterprise,Online,Rep_20,17689.22,20,6589.46,11099.76,62.7,True
+2022-10-17,2022,Q4,Oct,10,Asia-Pacific,Singapore,Consulting,Strategy,Mid-Market,Partner,Rep_19,29165.17,15,13044.97,16120.2,55.3,True
+2022-10-17,2022,Q4,Oct,10,Asia-Pacific,Japan,Services,Deployment,SMB,Reseller,Rep_03,1011.84,45,380.28,631.56,62.4,False
+2022-10-18,2022,Q4,Oct,10,Asia-Pacific,India,Software,Security Shield,SMB,Online,Rep_16,4083.52,31,2122.09,1961.43,48.0,True
+2022-10-19,2022,Q4,Oct,10,North America,Mexico,Software,Analytics Pro,SMB,Reseller,Rep_15,3163.88,11,1117.67,2046.21,64.7,True
+2022-10-19,2022,Q4,Oct,10,Asia-Pacific,India,Hardware,Workstation Z,SMB,Online,Rep_11,3776.73,11,1354.23,2422.5,64.1,True
+2022-10-20,2022,Q4,Oct,10,Europe,Germany,Services,Managed IT,Enterprise,Partner,Rep_17,21998.14,19,8891.57,13106.57,59.6,True
+2022-10-20,2022,Q4,Oct,10,Middle East & Africa,South Africa,Cloud,Kubernetes,Enterprise,Partner,Rep_06,11669.47,46,5197.09,6472.38,55.5,True
+2022-10-21,2022,Q4,Oct,10,Middle East & Africa,Nigeria,Hardware,NAS Storage,Enterprise,Online,Rep_19,20695.3,40,7572.23,13123.07,63.4,False
+2022-10-21,2022,Q4,Oct,10,Middle East & Africa,Nigeria,Cloud,Kubernetes,SMB,Online,Rep_06,1347.47,9,834.74,512.73,38.1,True
+2022-10-22,2022,Q4,Oct,10,Latin America,Argentina,Consulting,Migration,Enterprise,Online,Rep_16,99060.35,17,57095.22,41965.13,42.4,True
+2022-10-22,2022,Q4,Oct,10,Asia-Pacific,India,Software,Analytics Pro,Enterprise,Direct,Rep_04,16738.48,15,10754.91,5983.57,35.7,True
+2022-10-22,2022,Q4,Oct,10,Europe,Germany,Consulting,Strategy,Enterprise,Partner,Rep_06,62606.79,28,23175.68,39431.11,63.0,False
+2022-10-23,2022,Q4,Oct,10,North America,Canada,Consulting,Digital Transform,Enterprise,Direct,Rep_05,59657.18,15,21736.11,37921.07,63.6,False
+2022-10-23,2022,Q4,Oct,10,Middle East & Africa,South Africa,Consulting,Strategy,Mid-Market,Online,Rep_01,36044.61,32,15732.68,20311.93,56.4,True
+2022-10-23,2022,Q4,Oct,10,Latin America,Colombia,Software,DevTools,Enterprise,Online,Rep_16,20101.66,30,7258.73,12842.93,63.9,True
+2022-10-24,2022,Q4,Oct,10,Latin America,Chile,Services,Deployment,Enterprise,Reseller,Rep_03,10201.87,44,4813.53,5388.34,52.8,True
+2022-10-26,2022,Q4,Oct,10,Asia-Pacific,Japan,Consulting,Digital Transform,Mid-Market,Reseller,Rep_02,17974.08,19,6997.62,10976.46,61.1,True
+2022-10-26,2022,Q4,Oct,10,Middle East & Africa,Nigeria,Cloud,Cloud Compute,Mid-Market,Online,Rep_09,5766.04,8,2771.41,2994.63,51.9,True
+2022-10-27,2022,Q4,Oct,10,Asia-Pacific,Australia,Hardware,Network Hub,Mid-Market,Reseller,Rep_18,11551.19,36,5765.55,5785.64,50.1,True
+2022-10-28,2022,Q4,Oct,10,Asia-Pacific,Australia,Consulting,Migration,Mid-Market,Reseller,Rep_14,11176.91,39,4374.2,6802.71,60.9,False
+2022-10-28,2022,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Consulting,Audit,Mid-Market,Partner,Rep_04,26124.77,21,14234.56,11890.21,45.5,False
+2022-10-28,2022,Q4,Oct,10,Europe,UK,Services,Deployment,Enterprise,Partner,Rep_09,20227.07,30,9277.37,10949.7,54.1,False
+2022-10-29,2022,Q4,Oct,10,Asia-Pacific,India,Consulting,Audit,Mid-Market,Partner,Rep_10,9816.59,28,4968.95,4847.64,49.4,True
+2022-10-30,2022,Q4,Oct,10,Europe,France,Software,CRM Suite,Enterprise,Online,Rep_18,20442.83,38,9059.41,11383.42,55.7,True
+2022-10-30,2022,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Software,DevTools,SMB,Partner,Rep_19,1116.23,32,679.4,436.83,39.1,True
+2022-10-30,2022,Q4,Oct,10,Latin America,Colombia,Cloud,Serverless,Mid-Market,Reseller,Rep_05,3572.94,24,1612.61,1960.33,54.9,True
+2022-10-30,2022,Q4,Oct,10,Asia-Pacific,India,Services,Training,Mid-Market,Direct,Rep_13,2773.75,37,1188.41,1585.34,57.2,True
+2022-10-30,2022,Q4,Oct,10,Asia-Pacific,Singapore,Services,Deployment,Enterprise,Online,Rep_20,10474.53,25,3991.72,6482.81,61.9,True
+2022-10-31,2022,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Services,Deployment,Mid-Market,Reseller,Rep_11,7585.73,29,4089.2,3496.53,46.1,False
+2022-10-31,2022,Q4,Oct,10,Europe,UK,Cloud,Cloud Storage,Enterprise,Partner,Rep_15,5980.92,10,2222.6,3758.32,62.8,True
+2022-11-01,2022,Q4,Nov,11,Europe,UK,Cloud,Serverless,Enterprise,Direct,Rep_12,8403.19,13,5099.92,3303.27,39.3,True
+2022-11-02,2022,Q4,Nov,11,North America,USA,Services,Training,Enterprise,Reseller,Rep_14,6439.97,8,3893.47,2546.5,39.5,True
+2022-11-02,2022,Q4,Nov,11,North America,USA,Software,Analytics Pro,Mid-Market,Direct,Rep_06,14192.38,38,7635.32,6557.06,46.2,True
+2022-11-02,2022,Q4,Nov,11,Middle East & Africa,South Africa,Cloud,Serverless,Mid-Market,Direct,Rep_13,2219.14,5,1198.53,1020.61,46.0,True
+2022-11-03,2022,Q4,Nov,11,North America,USA,Hardware,Network Hub,Mid-Market,Direct,Rep_07,24965.38,16,14262.36,10703.02,42.9,True
+2022-11-03,2022,Q4,Nov,11,Europe,France,Cloud,Serverless,Enterprise,Reseller,Rep_08,5600.82,50,3068.27,2532.55,45.2,False
+2022-11-03,2022,Q4,Nov,11,Asia-Pacific,Australia,Cloud,Cloud Compute,SMB,Partner,Rep_07,1949.48,48,1025.0,924.48,47.4,True
+2022-11-04,2022,Q4,Nov,11,Latin America,Argentina,Services,Managed IT,Enterprise,Reseller,Rep_16,7442.52,8,4383.52,3059.0,41.1,False
+2022-11-04,2022,Q4,Nov,11,Europe,Netherlands,Hardware,Workstation Z,SMB,Partner,Rep_08,4595.66,16,2811.73,1783.93,38.8,False
+2022-11-05,2022,Q4,Nov,11,Europe,Germany,Consulting,Migration,Mid-Market,Direct,Rep_10,33355.27,26,13878.17,19477.1,58.4,False
+2022-11-05,2022,Q4,Nov,11,Europe,France,Cloud,Serverless,Mid-Market,Partner,Rep_15,1758.52,5,659.03,1099.49,62.5,False
+2022-11-05,2022,Q4,Nov,11,North America,Canada,Consulting,Audit,Mid-Market,Direct,Rep_07,15265.89,40,7029.08,8236.81,54.0,True
+2022-11-06,2022,Q4,Nov,11,Asia-Pacific,Singapore,Hardware,Workstation Z,Enterprise,Direct,Rep_11,37676.73,32,19553.82,18122.91,48.1,True
+2022-11-06,2022,Q4,Nov,11,Europe,France,Services,Deployment,Enterprise,Online,Rep_18,10696.86,16,3923.21,6773.65,63.3,False
+2022-11-06,2022,Q4,Nov,11,North America,Mexico,Services,24/7 Support,Mid-Market,Partner,Rep_06,5159.19,36,2482.25,2676.94,51.9,True
+2022-11-06,2022,Q4,Nov,11,Middle East & Africa,South Africa,Cloud,Kubernetes,Mid-Market,Reseller,Rep_08,3164.61,6,1119.89,2044.72,64.6,True
+2022-11-08,2022,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Consulting,Migration,Mid-Market,Reseller,Rep_09,13725.91,7,8662.02,5063.89,36.9,False
+2022-11-08,2022,Q4,Nov,11,Latin America,Brazil,Services,Deployment,Enterprise,Reseller,Rep_05,10091.62,35,4003.57,6088.05,60.3,True
+2022-11-08,2022,Q4,Nov,11,Asia-Pacific,Singapore,Hardware,Workstation Z,Mid-Market,Partner,Rep_10,14218.91,9,6752.47,7466.44,52.5,True
+2022-11-08,2022,Q4,Nov,11,North America,USA,Consulting,Audit,Mid-Market,Online,Rep_16,15210.38,38,6887.83,8322.55,54.7,True
+2022-11-09,2022,Q4,Nov,11,Middle East & Africa,South Africa,Services,24/7 Support,SMB,Reseller,Rep_07,2327.69,28,983.56,1344.13,57.7,True
+2022-11-09,2022,Q4,Nov,11,Europe,UK,Consulting,Audit,Mid-Market,Online,Rep_11,17102.16,26,6926.48,10175.68,59.5,True
+2022-11-10,2022,Q4,Nov,11,Europe,Sweden,Services,Managed IT,Mid-Market,Online,Rep_04,5045.13,32,2339.57,2705.56,53.6,True
+2022-11-10,2022,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Software,CRM Suite,Mid-Market,Partner,Rep_08,6065.13,27,3078.0,2987.13,49.3,True
+2022-11-11,2022,Q4,Nov,11,North America,USA,Cloud,Cloud Compute,Mid-Market,Reseller,Rep_17,3246.74,41,1797.53,1449.21,44.6,False
+2022-11-11,2022,Q4,Nov,11,North America,Mexico,Consulting,Strategy,Mid-Market,Partner,Rep_05,21751.15,6,9635.15,12116.0,55.7,True
+2022-11-12,2022,Q4,Nov,11,Latin America,Brazil,Consulting,Migration,SMB,Direct,Rep_07,9411.67,49,5074.72,4336.95,46.1,False
+2022-11-13,2022,Q4,Nov,11,North America,Mexico,Hardware,Workstation Z,Enterprise,Direct,Rep_08,41876.37,32,21125.42,20750.95,49.6,True
+2022-11-13,2022,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Consulting,Audit,SMB,Partner,Rep_04,8899.17,45,3234.1,5665.07,63.7,True
+2022-11-14,2022,Q4,Nov,11,Europe,Germany,Cloud,Cloud Compute,Enterprise,Reseller,Rep_02,5825.04,2,3392.55,2432.49,41.8,False
+2022-11-15,2022,Q4,Nov,11,North America,Canada,Consulting,Strategy,Mid-Market,Partner,Rep_16,28505.04,15,11917.33,16587.71,58.2,False
+2022-11-15,2022,Q4,Nov,11,North America,Mexico,Software,DevTools,Mid-Market,Online,Rep_01,8181.51,3,3248.74,4932.77,60.3,False
+2022-11-16,2022,Q4,Nov,11,Middle East & Africa,UAE,Hardware,Workstation Z,Mid-Market,Reseller,Rep_13,9338.26,37,5032.87,4305.39,46.1,False
+2022-11-16,2022,Q4,Nov,11,Latin America,Argentina,Consulting,Strategy,SMB,Reseller,Rep_12,11339.67,35,6672.87,4666.8,41.2,True
+2022-11-18,2022,Q4,Nov,11,Middle East & Africa,South Africa,Cloud,Serverless,SMB,Online,Rep_17,739.28,9,304.47,434.81,58.8,True
+2022-11-18,2022,Q4,Nov,11,North America,Canada,Consulting,Migration,Mid-Market,Partner,Rep_19,12909.86,50,7133.83,5776.03,44.7,True
+2022-11-18,2022,Q4,Nov,11,Middle East & Africa,South Africa,Hardware,Server X1,Enterprise,Direct,Rep_18,29107.7,43,17170.57,11937.13,41.0,True
+2022-11-18,2022,Q4,Nov,11,Latin America,Argentina,Consulting,Digital Transform,SMB,Direct,Rep_18,4821.42,46,1786.75,3034.67,62.9,False
+2022-11-19,2022,Q4,Nov,11,Asia-Pacific,Australia,Consulting,Audit,SMB,Online,Rep_08,6988.76,39,4065.79,2922.97,41.8,True
+2022-11-19,2022,Q4,Nov,11,Asia-Pacific,South Korea,Cloud,Kubernetes,Mid-Market,Partner,Rep_12,1609.59,19,863.67,745.92,46.3,False
+2022-11-20,2022,Q4,Nov,11,Latin America,Colombia,Software,CRM Suite,Mid-Market,Direct,Rep_13,13531.84,15,6241.57,7290.27,53.9,True
+2022-11-20,2022,Q4,Nov,11,Asia-Pacific,Australia,Services,24/7 Support,SMB,Direct,Rep_05,2273.59,25,855.25,1418.34,62.4,True
+2022-11-20,2022,Q4,Nov,11,North America,Mexico,Software,CRM Suite,Mid-Market,Partner,Rep_05,5441.16,3,2373.04,3068.12,56.4,True
+2022-11-20,2022,Q4,Nov,11,Middle East & Africa,UAE,Cloud,Kubernetes,SMB,Online,Rep_16,1581.51,21,787.12,794.39,50.2,False
+2022-11-21,2022,Q4,Nov,11,Asia-Pacific,Singapore,Consulting,Migration,Mid-Market,Online,Rep_05,36241.41,40,22469.72,13771.69,38.0,True
+2022-11-21,2022,Q4,Nov,11,Latin America,Chile,Services,Managed IT,SMB,Reseller,Rep_01,1840.57,16,1117.77,722.8,39.3,True
+2022-11-22,2022,Q4,Nov,11,Latin America,Chile,Cloud,Kubernetes,SMB,Partner,Rep_14,1251.07,24,479.79,771.28,61.6,True
+2022-11-24,2022,Q4,Nov,11,Asia-Pacific,Singapore,Software,Security Shield,Enterprise,Reseller,Rep_11,48986.5,42,26291.52,22694.98,46.3,True
+2022-11-25,2022,Q4,Nov,11,Europe,Netherlands,Cloud,Cloud Compute,Enterprise,Online,Rep_09,2240.04,32,1346.03,894.01,39.9,True
+2022-11-26,2022,Q4,Nov,11,Asia-Pacific,Singapore,Hardware,Network Hub,Mid-Market,Reseller,Rep_02,5310.35,45,2037.55,3272.8,61.6,False
+2022-11-26,2022,Q4,Nov,11,Asia-Pacific,Japan,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_07,1553.41,7,763.1,790.31,50.9,True
+2022-11-27,2022,Q4,Nov,11,Latin America,Colombia,Software,DevTools,Mid-Market,Online,Rep_15,3847.68,28,1517.72,2329.96,60.6,False
+2022-11-27,2022,Q4,Nov,11,Asia-Pacific,India,Cloud,Kubernetes,SMB,Online,Rep_11,1240.15,28,559.26,680.89,54.9,True
+2022-11-28,2022,Q4,Nov,11,Asia-Pacific,Australia,Hardware,NAS Storage,SMB,Online,Rep_01,3406.73,6,1445.99,1960.74,57.6,True
+2022-11-28,2022,Q4,Nov,11,Latin America,Brazil,Consulting,Strategy,SMB,Direct,Rep_13,5641.6,45,2084.05,3557.55,63.1,True
+2022-11-28,2022,Q4,Nov,11,Middle East & Africa,UAE,Hardware,Network Hub,SMB,Partner,Rep_19,8748.83,6,5569.1,3179.73,36.3,True
+2022-11-29,2022,Q4,Nov,11,Asia-Pacific,Japan,Consulting,Digital Transform,Enterprise,Partner,Rep_19,38238.19,36,23740.81,14497.38,37.9,True
+2022-11-29,2022,Q4,Nov,11,Asia-Pacific,Australia,Cloud,Serverless,Enterprise,Direct,Rep_20,4684.47,39,2037.83,2646.64,56.5,True
+2022-11-29,2022,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Consulting,Digital Transform,Mid-Market,Online,Rep_18,50514.25,16,22648.2,27866.05,55.2,True
+2022-12-01,2022,Q4,Dec,12,Europe,Germany,Consulting,Migration,Enterprise,Direct,Rep_16,53390.94,9,26987.39,26403.55,49.5,True
+2022-12-01,2022,Q4,Dec,12,Europe,UK,Consulting,Migration,Enterprise,Reseller,Rep_07,26730.01,25,12350.48,14379.53,53.8,True
+2022-12-01,2022,Q4,Dec,12,Europe,Netherlands,Software,Analytics Pro,SMB,Online,Rep_07,2787.15,2,1609.65,1177.5,42.2,False
+2022-12-02,2022,Q4,Dec,12,Europe,Germany,Consulting,Migration,Enterprise,Reseller,Rep_18,24493.2,1,13515.64,10977.56,44.8,True
+2022-12-02,2022,Q4,Dec,12,Europe,France,Cloud,Cloud Storage,Mid-Market,Partner,Rep_05,2295.57,24,813.06,1482.51,64.6,True
+2022-12-03,2022,Q4,Dec,12,Asia-Pacific,South Korea,Services,Deployment,Mid-Market,Online,Rep_20,4573.66,29,2560.65,2013.01,44.0,False
+2022-12-03,2022,Q4,Dec,12,Europe,France,Services,24/7 Support,SMB,Online,Rep_07,5096.02,13,2316.42,2779.6,54.5,True
+2022-12-03,2022,Q4,Dec,12,Middle East & Africa,Nigeria,Services,Deployment,SMB,Partner,Rep_05,1167.85,43,430.29,737.56,63.2,True
+2022-12-04,2022,Q4,Dec,12,Middle East & Africa,Nigeria,Cloud,Cloud Compute,Enterprise,Online,Rep_18,4472.92,36,2086.32,2386.6,53.4,True
+2022-12-05,2022,Q4,Dec,12,Latin America,Colombia,Hardware,Server X1,Enterprise,Online,Rep_17,22763.54,2,8828.54,13935.0,61.2,False
+2022-12-05,2022,Q4,Dec,12,Latin America,Argentina,Services,24/7 Support,Mid-Market,Direct,Rep_05,2315.14,16,1453.22,861.92,37.2,False
+2022-12-05,2022,Q4,Dec,12,Asia-Pacific,Singapore,Consulting,Audit,SMB,Reseller,Rep_10,2493.51,44,1593.21,900.3,36.1,False
+2022-12-05,2022,Q4,Dec,12,North America,USA,Cloud,Serverless,SMB,Reseller,Rep_01,920.91,21,558.98,361.93,39.3,True
+2022-12-06,2022,Q4,Dec,12,Middle East & Africa,Nigeria,Services,Managed IT,SMB,Direct,Rep_05,1668.04,31,1065.08,602.96,36.1,True
+2022-12-06,2022,Q4,Dec,12,Asia-Pacific,Singapore,Cloud,Serverless,SMB,Reseller,Rep_16,1748.28,39,784.32,963.96,55.1,True
+2022-12-07,2022,Q4,Dec,12,Middle East & Africa,South Africa,Cloud,Serverless,Mid-Market,Partner,Rep_17,4442.95,3,2848.95,1594.0,35.9,False
+2022-12-07,2022,Q4,Dec,12,North America,Mexico,Hardware,Network Hub,Enterprise,Online,Rep_15,25631.36,41,12512.86,13118.5,51.2,True
+2022-12-08,2022,Q4,Dec,12,Europe,Sweden,Hardware,NAS Storage,SMB,Online,Rep_05,6535.8,36,2700.79,3835.01,58.7,False
+2022-12-08,2022,Q4,Dec,12,North America,Mexico,Hardware,Network Hub,Enterprise,Partner,Rep_05,30102.65,36,10894.95,19207.7,63.8,True
+2022-12-08,2022,Q4,Dec,12,North America,Canada,Consulting,Digital Transform,SMB,Reseller,Rep_17,14530.03,26,6230.0,8300.03,57.1,True
+2022-12-10,2022,Q4,Dec,12,North America,Canada,Hardware,Server X1,Enterprise,Reseller,Rep_15,17986.01,30,10777.39,7208.62,40.1,True
+2022-12-10,2022,Q4,Dec,12,Asia-Pacific,South Korea,Cloud,Serverless,Mid-Market,Partner,Rep_17,3864.09,11,1471.16,2392.93,61.9,False
+2022-12-11,2022,Q4,Dec,12,North America,Canada,Consulting,Migration,SMB,Reseller,Rep_09,10419.63,36,5269.03,5150.6,49.4,True
+2022-12-11,2022,Q4,Dec,12,Europe,Germany,Consulting,Audit,Enterprise,Direct,Rep_10,37523.06,21,23872.94,13650.12,36.4,False
+2022-12-11,2022,Q4,Dec,12,Latin America,Colombia,Consulting,Digital Transform,Enterprise,Partner,Rep_18,45440.97,2,19393.17,26047.8,57.3,True
+2022-12-12,2022,Q4,Dec,12,Middle East & Africa,South Africa,Hardware,Workstation Z,Mid-Market,Reseller,Rep_20,12088.81,24,4364.53,7724.28,63.9,False
+2022-12-13,2022,Q4,Dec,12,Europe,UK,Hardware,Workstation Z,SMB,Online,Rep_15,7728.19,13,4902.78,2825.41,36.6,True
+2022-12-13,2022,Q4,Dec,12,Latin America,Argentina,Consulting,Migration,Enterprise,Direct,Rep_20,72481.1,12,46521.38,25959.72,35.8,True
+2022-12-13,2022,Q4,Dec,12,North America,Mexico,Services,Deployment,Enterprise,Direct,Rep_12,5508.48,17,2274.48,3234.0,58.7,False
+2022-12-14,2022,Q4,Dec,12,Latin America,Colombia,Cloud,Cloud Compute,SMB,Partner,Rep_07,2135.78,17,1051.48,1084.3,50.8,True
+2022-12-15,2022,Q4,Dec,12,Asia-Pacific,India,Hardware,NAS Storage,Enterprise,Online,Rep_01,22390.48,7,8359.32,14031.16,62.7,False
+2022-12-15,2022,Q4,Dec,12,Europe,UK,Hardware,Workstation Z,SMB,Direct,Rep_05,7115.99,42,2510.09,4605.9,64.7,True
+2022-12-15,2022,Q4,Dec,12,Latin America,Chile,Consulting,Migration,SMB,Online,Rep_12,15186.26,26,7989.51,7196.75,47.4,True
+2022-12-15,2022,Q4,Dec,12,North America,Canada,Software,Security Shield,Enterprise,Direct,Rep_11,18401.49,42,9830.1,8571.39,46.6,True
+2022-12-15,2022,Q4,Dec,12,Europe,France,Software,DevTools,Mid-Market,Direct,Rep_10,4602.34,36,2900.8,1701.54,37.0,False
+2022-12-16,2022,Q4,Dec,12,Europe,Germany,Hardware,Network Hub,SMB,Online,Rep_02,7314.63,22,2854.75,4459.88,61.0,True
+2022-12-18,2022,Q4,Dec,12,Latin America,Colombia,Consulting,Audit,Enterprise,Direct,Rep_01,27402.15,24,11405.24,15996.91,58.4,True
+2022-12-19,2022,Q4,Dec,12,Latin America,Argentina,Hardware,NAS Storage,SMB,Partner,Rep_04,3583.16,28,1260.35,2322.81,64.8,False
+2022-12-19,2022,Q4,Dec,12,Asia-Pacific,Australia,Software,Security Shield,SMB,Partner,Rep_15,2249.42,22,1336.27,913.15,40.6,True
+2022-12-20,2022,Q4,Dec,12,Middle East & Africa,Nigeria,Consulting,Migration,SMB,Partner,Rep_09,17726.41,26,8722.66,9003.75,50.8,True
+2022-12-20,2022,Q4,Dec,12,Middle East & Africa,South Africa,Hardware,Server X1,Enterprise,Partner,Rep_16,18088.55,49,8557.92,9530.63,52.7,True
+2022-12-20,2022,Q4,Dec,12,Middle East & Africa,UAE,Software,Security Shield,Mid-Market,Online,Rep_11,7646.99,40,4782.52,2864.47,37.5,False
+2022-12-22,2022,Q4,Dec,12,North America,USA,Software,Analytics Pro,SMB,Direct,Rep_11,3604.86,11,1309.3,2295.56,63.7,True
+2022-12-23,2022,Q4,Dec,12,Asia-Pacific,Australia,Cloud,Kubernetes,Mid-Market,Partner,Rep_17,3728.67,50,1921.84,1806.83,48.5,True
+2022-12-24,2022,Q4,Dec,12,Asia-Pacific,South Korea,Consulting,Migration,Mid-Market,Online,Rep_19,19369.67,29,11317.55,8052.12,41.6,True
+2022-12-25,2022,Q4,Dec,12,North America,Mexico,Cloud,Cloud Compute,Mid-Market,Reseller,Rep_16,4694.74,20,2607.19,2087.55,44.5,False
+2022-12-25,2022,Q4,Dec,12,North America,Canada,Services,Managed IT,Enterprise,Reseller,Rep_02,11632.32,4,7278.75,4353.57,37.4,True
+2022-12-26,2022,Q4,Dec,12,Asia-Pacific,Japan,Services,Managed IT,Enterprise,Reseller,Rep_11,18979.38,28,10641.1,8338.28,43.9,True
+2022-12-27,2022,Q4,Dec,12,Latin America,Colombia,Cloud,Serverless,Enterprise,Online,Rep_12,7079.35,22,2866.41,4212.94,59.5,False
+2022-12-27,2022,Q4,Dec,12,North America,USA,Software,Analytics Pro,Mid-Market,Reseller,Rep_17,9121.67,11,5185.71,3935.96,43.1,True
+2022-12-27,2022,Q4,Dec,12,Europe,Germany,Services,Deployment,SMB,Reseller,Rep_10,1968.56,48,693.74,1274.82,64.8,False
+2022-12-29,2022,Q4,Dec,12,North America,Mexico,Consulting,Digital Transform,Enterprise,Partner,Rep_02,33973.02,36,14725.06,19247.96,56.7,False
+2022-12-29,2022,Q4,Dec,12,Asia-Pacific,South Korea,Services,Training,Mid-Market,Direct,Rep_16,6134.51,8,3013.03,3121.48,50.9,True
+2022-12-30,2022,Q4,Dec,12,Asia-Pacific,Australia,Cloud,Kubernetes,SMB,Reseller,Rep_19,1064.73,22,534.7,530.03,49.8,False
+2022-12-30,2022,Q4,Dec,12,Middle East & Africa,South Africa,Services,24/7 Support,SMB,Partner,Rep_11,3346.74,36,1566.72,1780.02,53.2,True
+2023-01-02,2023,Q1,Jan,1,Latin America,Brazil,Hardware,Network Hub,SMB,Reseller,Rep_03,3908.17,46,2418.14,1490.03,38.1,False
+2023-01-02,2023,Q1,Jan,1,Latin America,Colombia,Software,Security Shield,Enterprise,Online,Rep_11,10846.56,44,5395.69,5450.87,50.3,False
+2023-01-03,2023,Q1,Jan,1,North America,USA,Services,Deployment,Enterprise,Reseller,Rep_01,6753.71,28,4278.22,2475.49,36.7,True
+2023-01-03,2023,Q1,Jan,1,North America,Canada,Software,Security Shield,Enterprise,Direct,Rep_19,9687.07,47,5300.1,4386.97,45.3,True
+2023-01-03,2023,Q1,Jan,1,North America,USA,Software,DevTools,Mid-Market,Direct,Rep_17,14672.62,26,8683.54,5989.08,40.8,False
+2023-01-03,2023,Q1,Jan,1,Europe,France,Services,Managed IT,SMB,Online,Rep_20,1157.71,6,627.29,530.42,45.8,True
+2023-01-05,2023,Q1,Jan,1,North America,USA,Software,Analytics Pro,Enterprise,Partner,Rep_20,29182.86,50,10945.87,18236.99,62.5,False
+2023-01-06,2023,Q1,Jan,1,Latin America,Colombia,Cloud,Serverless,Enterprise,Reseller,Rep_14,5694.45,31,2026.9,3667.55,64.4,True
+2023-01-06,2023,Q1,Jan,1,Latin America,Chile,Software,DevTools,Mid-Market,Partner,Rep_05,7288.24,21,3390.64,3897.6,53.5,False
+2023-01-06,2023,Q1,Jan,1,Latin America,Colombia,Consulting,Audit,SMB,Reseller,Rep_09,6136.33,37,3470.14,2666.19,43.4,True
+2023-01-06,2023,Q1,Jan,1,North America,Mexico,Software,CRM Suite,Mid-Market,Reseller,Rep_02,5979.78,25,2769.54,3210.24,53.7,True
+2023-01-06,2023,Q1,Jan,1,Latin America,Brazil,Services,Training,SMB,Online,Rep_10,2055.03,5,1058.34,996.69,48.5,True
+2023-01-07,2023,Q1,Jan,1,North America,USA,Cloud,Kubernetes,SMB,Reseller,Rep_14,1596.67,46,798.84,797.83,50.0,True
+2023-01-07,2023,Q1,Jan,1,Europe,Germany,Services,24/7 Support,SMB,Partner,Rep_19,2764.31,22,1415.5,1348.81,48.8,False
+2023-01-08,2023,Q1,Jan,1,Latin America,Brazil,Cloud,Cloud Compute,Enterprise,Direct,Rep_06,7135.94,45,3886.49,3249.45,45.5,True
+2023-01-09,2023,Q1,Jan,1,North America,Canada,Consulting,Migration,SMB,Direct,Rep_05,2524.85,18,1508.83,1016.02,40.2,True
+2023-01-09,2023,Q1,Jan,1,Latin America,Chile,Services,Deployment,Enterprise,Direct,Rep_17,12158.33,28,5329.31,6829.02,56.2,True
+2023-01-09,2023,Q1,Jan,1,Asia-Pacific,Australia,Services,Deployment,SMB,Reseller,Rep_13,816.77,1,387.77,429.0,52.5,False
+2023-01-10,2023,Q1,Jan,1,Asia-Pacific,Japan,Software,CRM Suite,Mid-Market,Partner,Rep_11,6553.95,34,3344.36,3209.59,49.0,True
+2023-01-10,2023,Q1,Jan,1,Latin America,Colombia,Cloud,Serverless,Enterprise,Online,Rep_15,9483.68,50,3376.06,6107.62,64.4,True
+2023-01-12,2023,Q1,Jan,1,Middle East & Africa,Nigeria,Hardware,NAS Storage,SMB,Direct,Rep_08,3160.38,27,1758.25,1402.13,44.4,True
+2023-01-13,2023,Q1,Jan,1,Latin America,Brazil,Services,Managed IT,SMB,Online,Rep_04,4022.36,30,1804.29,2218.07,55.1,False
+2023-01-13,2023,Q1,Jan,1,Asia-Pacific,South Korea,Consulting,Digital Transform,Enterprise,Reseller,Rep_17,29794.58,49,11179.18,18615.4,62.5,True
+2023-01-13,2023,Q1,Jan,1,Europe,France,Services,24/7 Support,Mid-Market,Reseller,Rep_03,5673.43,19,2439.58,3233.85,57.0,True
+2023-01-14,2023,Q1,Jan,1,North America,USA,Services,24/7 Support,SMB,Reseller,Rep_14,910.68,2,527.86,382.82,42.0,True
+2023-01-14,2023,Q1,Jan,1,North America,USA,Services,24/7 Support,Enterprise,Reseller,Rep_10,7504.38,42,4723.83,2780.55,37.1,False
+2023-01-15,2023,Q1,Jan,1,Europe,Sweden,Services,Training,Mid-Market,Reseller,Rep_01,2960.37,49,1599.49,1360.88,46.0,True
+2023-01-15,2023,Q1,Jan,1,North America,USA,Services,Deployment,SMB,Partner,Rep_11,1863.78,30,735.6,1128.18,60.5,True
+2023-01-15,2023,Q1,Jan,1,Europe,France,Software,Security Shield,Enterprise,Direct,Rep_02,17903.68,16,9970.61,7933.07,44.3,True
+2023-01-15,2023,Q1,Jan,1,Middle East & Africa,Saudi Arabia,Services,Managed IT,SMB,Reseller,Rep_05,1955.92,21,1260.44,695.48,35.6,True
+2023-01-16,2023,Q1,Jan,1,Asia-Pacific,Australia,Consulting,Strategy,SMB,Direct,Rep_07,6030.13,8,3382.06,2648.07,43.9,False
+2023-01-18,2023,Q1,Jan,1,Europe,Germany,Cloud,Kubernetes,SMB,Reseller,Rep_03,1670.62,45,963.23,707.39,42.3,True
+2023-01-18,2023,Q1,Jan,1,Asia-Pacific,South Korea,Consulting,Digital Transform,SMB,Partner,Rep_19,9753.91,45,4442.95,5310.96,54.4,True
+2023-01-19,2023,Q1,Jan,1,Middle East & Africa,South Africa,Software,DevTools,Enterprise,Online,Rep_18,14023.94,33,8581.59,5442.35,38.8,True
+2023-01-20,2023,Q1,Jan,1,Latin America,Chile,Hardware,Workstation Z,Mid-Market,Reseller,Rep_02,9582.32,43,4861.29,4721.03,49.3,True
+2023-01-22,2023,Q1,Jan,1,Europe,France,Cloud,Serverless,Enterprise,Partner,Rep_07,17501.51,30,6129.96,11371.55,65.0,True
+2023-01-23,2023,Q1,Jan,1,Asia-Pacific,Singapore,Cloud,Kubernetes,SMB,Reseller,Rep_12,915.35,4,340.98,574.37,62.7,True
+2023-01-24,2023,Q1,Jan,1,Latin America,Chile,Hardware,Server X1,Mid-Market,Online,Rep_06,9061.96,11,5159.3,3902.66,43.1,False
+2023-01-24,2023,Q1,Jan,1,Middle East & Africa,South Africa,Software,DevTools,Mid-Market,Online,Rep_18,5994.43,27,3818.52,2175.91,36.3,False
+2023-01-24,2023,Q1,Jan,1,Europe,Netherlands,Software,Security Shield,SMB,Partner,Rep_19,3447.48,33,1717.55,1729.93,50.2,True
+2023-01-24,2023,Q1,Jan,1,Latin America,Argentina,Hardware,NAS Storage,Enterprise,Direct,Rep_11,23668.14,19,8906.42,14761.72,62.4,True
+2023-01-24,2023,Q1,Jan,1,Latin America,Chile,Hardware,NAS Storage,Mid-Market,Online,Rep_01,6054.73,14,2954.34,3100.39,51.2,True
+2023-01-24,2023,Q1,Jan,1,North America,Mexico,Software,DevTools,SMB,Online,Rep_14,3105.73,22,1581.67,1524.06,49.1,True
+2023-01-25,2023,Q1,Jan,1,Asia-Pacific,Japan,Hardware,Network Hub,Mid-Market,Partner,Rep_18,11612.08,24,4680.46,6931.62,59.7,True
+2023-01-25,2023,Q1,Jan,1,Europe,France,Consulting,Audit,Enterprise,Reseller,Rep_16,48532.22,49,19306.25,29225.97,60.2,True
+2023-01-25,2023,Q1,Jan,1,North America,Canada,Cloud,Cloud Compute,SMB,Partner,Rep_16,1601.58,15,618.54,983.04,61.4,False
+2023-01-25,2023,Q1,Jan,1,Asia-Pacific,India,Services,24/7 Support,Enterprise,Partner,Rep_19,5991.45,14,3145.33,2846.12,47.5,False
+2023-01-25,2023,Q1,Jan,1,North America,Mexico,Services,24/7 Support,SMB,Direct,Rep_17,1718.63,27,698.1,1020.53,59.4,True
+2023-01-26,2023,Q1,Jan,1,North America,Canada,Services,24/7 Support,Mid-Market,Reseller,Rep_20,4451.12,13,2503.63,1947.49,43.8,True
+2023-01-26,2023,Q1,Jan,1,Asia-Pacific,India,Services,Deployment,Mid-Market,Partner,Rep_19,4844.92,8,3050.46,1794.46,37.0,True
+2023-01-26,2023,Q1,Jan,1,Middle East & Africa,South Africa,Services,Deployment,Mid-Market,Direct,Rep_18,4022.11,44,1765.08,2257.03,56.1,False
+2023-01-26,2023,Q1,Jan,1,Asia-Pacific,South Korea,Hardware,NAS Storage,Mid-Market,Online,Rep_06,5757.05,4,2575.44,3181.61,55.3,False
+2023-01-27,2023,Q1,Jan,1,North America,USA,Consulting,Audit,Enterprise,Partner,Rep_11,72560.4,37,41907.12,30653.28,42.2,False
+2023-01-27,2023,Q1,Jan,1,North America,Canada,Services,Training,Enterprise,Online,Rep_08,11985.86,28,7596.42,4389.44,36.6,True
+2023-01-28,2023,Q1,Jan,1,Europe,Sweden,Cloud,Serverless,Mid-Market,Online,Rep_17,4411.64,46,2172.04,2239.6,50.8,True
+2023-01-28,2023,Q1,Jan,1,Latin America,Colombia,Software,CRM Suite,SMB,Partner,Rep_05,2384.88,22,1531.05,853.83,35.8,True
+2023-01-28,2023,Q1,Jan,1,Latin America,Argentina,Services,Training,Mid-Market,Direct,Rep_09,5708.63,44,3404.53,2304.1,40.4,True
+2023-01-29,2023,Q1,Jan,1,Middle East & Africa,Nigeria,Consulting,Migration,Enterprise,Direct,Rep_19,55751.99,39,21316.18,34435.81,61.8,False
+2023-01-29,2023,Q1,Jan,1,Middle East & Africa,South Africa,Consulting,Digital Transform,Enterprise,Direct,Rep_13,59472.38,28,36518.28,22954.1,38.6,True
+2023-01-30,2023,Q1,Jan,1,North America,Mexico,Cloud,Kubernetes,Mid-Market,Online,Rep_09,2381.91,45,1479.21,902.7,37.9,False
+2023-01-30,2023,Q1,Jan,1,Europe,Netherlands,Services,24/7 Support,Mid-Market,Reseller,Rep_19,2365.72,21,1034.85,1330.87,56.3,True
+2023-01-31,2023,Q1,Jan,1,Asia-Pacific,South Korea,Cloud,Cloud Compute,Mid-Market,Direct,Rep_20,1524.14,21,669.56,854.58,56.1,False
+2023-02-02,2023,Q1,Feb,2,Middle East & Africa,UAE,Hardware,Network Hub,Enterprise,Online,Rep_08,45257.58,8,26196.41,19061.17,42.1,False
+2023-02-03,2023,Q1,Feb,2,Middle East & Africa,South Africa,Cloud,Serverless,Enterprise,Partner,Rep_16,5128.35,11,2238.03,2890.32,56.4,True
+2023-02-03,2023,Q1,Feb,2,Europe,Netherlands,Cloud,Cloud Compute,Enterprise,Partner,Rep_16,4243.82,4,2026.28,2217.54,52.3,False
+2023-02-04,2023,Q1,Feb,2,Middle East & Africa,Saudi Arabia,Hardware,NAS Storage,Mid-Market,Direct,Rep_06,15318.4,12,9880.92,5437.48,35.5,True
+2023-02-04,2023,Q1,Feb,2,North America,USA,Cloud,Kubernetes,Mid-Market,Online,Rep_12,3990.08,33,1601.53,2388.55,59.9,True
+2023-02-08,2023,Q1,Feb,2,Middle East & Africa,UAE,Consulting,Strategy,Mid-Market,Direct,Rep_18,7827.16,33,4845.48,2981.68,38.1,False
+2023-02-09,2023,Q1,Feb,2,North America,USA,Hardware,NAS Storage,SMB,Direct,Rep_07,1702.67,26,1064.22,638.45,37.5,True
+2023-02-10,2023,Q1,Feb,2,Middle East & Africa,Nigeria,Cloud,Serverless,SMB,Partner,Rep_14,1153.46,36,749.19,404.27,35.0,False
+2023-02-10,2023,Q1,Feb,2,Latin America,Argentina,Cloud,Cloud Storage,Mid-Market,Direct,Rep_15,8035.82,14,3608.72,4427.1,55.1,True
+2023-02-10,2023,Q1,Feb,2,Asia-Pacific,Singapore,Consulting,Audit,SMB,Reseller,Rep_08,8192.09,29,5241.44,2950.65,36.0,True
+2023-02-11,2023,Q1,Feb,2,Middle East & Africa,Saudi Arabia,Hardware,Workstation Z,Mid-Market,Reseller,Rep_06,5836.4,8,2974.76,2861.64,49.0,True
+2023-02-11,2023,Q1,Feb,2,North America,USA,Services,Deployment,Mid-Market,Partner,Rep_18,5795.26,11,3748.83,2046.43,35.3,True
+2023-02-12,2023,Q1,Feb,2,Latin America,Brazil,Cloud,Kubernetes,Mid-Market,Reseller,Rep_13,2685.55,2,1146.02,1539.53,57.3,True
+2023-02-12,2023,Q1,Feb,2,North America,Canada,Cloud,Cloud Compute,Mid-Market,Reseller,Rep_14,3150.41,26,1779.94,1370.47,43.5,True
+2023-02-13,2023,Q1,Feb,2,Latin America,Chile,Consulting,Audit,Mid-Market,Online,Rep_20,26363.29,18,10649.31,15713.98,59.6,False
+2023-02-13,2023,Q1,Feb,2,North America,Canada,Cloud,Serverless,SMB,Partner,Rep_10,807.43,16,522.46,284.97,35.3,True
+2023-02-13,2023,Q1,Feb,2,Latin America,Chile,Consulting,Digital Transform,Mid-Market,Reseller,Rep_03,13897.97,12,6148.61,7749.36,55.8,True
+2023-02-14,2023,Q1,Feb,2,Latin America,Colombia,Hardware,Server X1,Enterprise,Reseller,Rep_20,51493.43,42,30472.91,21020.52,40.8,True
+2023-02-14,2023,Q1,Feb,2,Europe,France,Cloud,Serverless,Enterprise,Reseller,Rep_16,8258.84,37,4563.07,3695.77,44.7,True
+2023-02-15,2023,Q1,Feb,2,Asia-Pacific,South Korea,Services,Deployment,Enterprise,Partner,Rep_20,12707.49,15,6850.63,5856.86,46.1,True
+2023-02-15,2023,Q1,Feb,2,Latin America,Chile,Cloud,Cloud Compute,SMB,Partner,Rep_02,1661.08,7,593.97,1067.11,64.2,True
+2023-02-15,2023,Q1,Feb,2,Latin America,Chile,Cloud,Serverless,Mid-Market,Partner,Rep_12,2812.57,25,1052.11,1760.46,62.6,False
+2023-02-15,2023,Q1,Feb,2,Middle East & Africa,South Africa,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_02,1244.94,19,570.3,674.64,54.2,True
+2023-02-17,2023,Q1,Feb,2,Asia-Pacific,India,Services,Deployment,Mid-Market,Reseller,Rep_01,3577.26,27,2283.84,1293.42,36.2,True
+2023-02-17,2023,Q1,Feb,2,Asia-Pacific,Singapore,Consulting,Digital Transform,SMB,Direct,Rep_02,7586.55,4,4161.91,3424.64,45.1,True
+2023-02-17,2023,Q1,Feb,2,Asia-Pacific,Australia,Services,24/7 Support,Enterprise,Online,Rep_05,12978.54,45,6756.62,6221.92,47.9,False
+2023-02-18,2023,Q1,Feb,2,North America,Mexico,Hardware,Server X1,Enterprise,Reseller,Rep_20,24622.24,17,15431.6,9190.64,37.3,True
+2023-02-18,2023,Q1,Feb,2,Middle East & Africa,South Africa,Hardware,NAS Storage,Enterprise,Partner,Rep_15,24355.16,50,15666.27,8688.89,35.7,True
+2023-02-19,2023,Q1,Feb,2,Latin America,Brazil,Software,Security Shield,SMB,Partner,Rep_04,4564.08,19,1652.58,2911.5,63.8,True
+2023-02-19,2023,Q1,Feb,2,North America,USA,Services,Deployment,Enterprise,Partner,Rep_16,21536.01,28,11911.78,9624.23,44.7,True
+2023-02-20,2023,Q1,Feb,2,Latin America,Brazil,Software,DevTools,Enterprise,Direct,Rep_04,14398.99,19,9179.02,5219.97,36.3,False
+2023-02-21,2023,Q1,Feb,2,Middle East & Africa,South Africa,Services,Managed IT,Mid-Market,Online,Rep_11,6800.96,5,3066.45,3734.51,54.9,True
+2023-02-21,2023,Q1,Feb,2,Europe,Germany,Cloud,Kubernetes,SMB,Partner,Rep_09,1384.21,25,658.33,725.88,52.4,True
+2023-02-21,2023,Q1,Feb,2,North America,USA,Cloud,Cloud Storage,Enterprise,Partner,Rep_15,6706.64,44,2919.5,3787.14,56.5,True
+2023-02-21,2023,Q1,Feb,2,Middle East & Africa,South Africa,Consulting,Migration,Enterprise,Online,Rep_17,33962.97,37,16884.11,17078.86,50.3,True
+2023-02-22,2023,Q1,Feb,2,Asia-Pacific,India,Hardware,Server X1,SMB,Direct,Rep_16,5760.19,48,3661.91,2098.28,36.4,False
+2023-02-22,2023,Q1,Feb,2,Europe,Germany,Services,Deployment,Mid-Market,Partner,Rep_14,5207.3,19,2493.57,2713.73,52.1,True
+2023-02-22,2023,Q1,Feb,2,North America,Canada,Software,CRM Suite,Enterprise,Reseller,Rep_20,31938.05,42,15749.8,16188.25,50.7,True
+2023-02-23,2023,Q1,Feb,2,Asia-Pacific,Singapore,Consulting,Digital Transform,Enterprise,Reseller,Rep_09,36213.21,23,22456.81,13756.4,38.0,False
+2023-02-23,2023,Q1,Feb,2,Europe,France,Hardware,NAS Storage,Enterprise,Direct,Rep_11,47129.59,31,19981.8,27147.79,57.6,True
+2023-02-23,2023,Q1,Feb,2,North America,USA,Services,Training,Enterprise,Direct,Rep_11,14232.69,50,6324.09,7908.6,55.6,True
+2023-02-23,2023,Q1,Feb,2,North America,USA,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_02,4190.79,15,1559.22,2631.57,62.8,True
+2023-02-24,2023,Q1,Feb,2,Middle East & Africa,Nigeria,Hardware,Network Hub,Mid-Market,Reseller,Rep_06,13637.45,49,6671.09,6966.36,51.1,True
+2023-02-25,2023,Q1,Feb,2,North America,Mexico,Cloud,Cloud Compute,Enterprise,Reseller,Rep_15,9482.82,21,3685.23,5797.59,61.1,False
+2023-02-25,2023,Q1,Feb,2,Asia-Pacific,India,Consulting,Migration,Enterprise,Partner,Rep_03,41011.79,21,24964.62,16047.17,39.1,True
+2023-02-26,2023,Q1,Feb,2,Latin America,Argentina,Services,24/7 Support,SMB,Reseller,Rep_07,1426.34,44,827.75,598.59,42.0,True
+2023-02-26,2023,Q1,Feb,2,Latin America,Brazil,Consulting,Audit,SMB,Direct,Rep_07,9205.01,47,5094.6,4110.41,44.7,True
+2023-02-26,2023,Q1,Feb,2,Middle East & Africa,South Africa,Hardware,Network Hub,Mid-Market,Partner,Rep_05,7149.44,48,4631.29,2518.15,35.2,True
+2023-02-27,2023,Q1,Feb,2,Latin America,Brazil,Hardware,Network Hub,Mid-Market,Partner,Rep_01,9070.4,3,4082.93,4987.47,55.0,True
+2023-02-28,2023,Q1,Feb,2,Middle East & Africa,Nigeria,Cloud,Kubernetes,Enterprise,Partner,Rep_10,10570.04,26,5909.48,4660.56,44.1,False
+2023-03-01,2023,Q1,Mar,3,Asia-Pacific,Australia,Consulting,Digital Transform,Mid-Market,Partner,Rep_11,32815.64,1,13616.1,19199.54,58.5,False
+2023-03-01,2023,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Hardware,Workstation Z,Enterprise,Direct,Rep_02,26368.82,27,15827.08,10541.74,40.0,True
+2023-03-01,2023,Q1,Mar,3,Europe,UK,Hardware,Server X1,SMB,Direct,Rep_14,4334.58,39,1854.31,2480.27,57.2,True
+2023-03-01,2023,Q1,Mar,3,Europe,France,Hardware,Network Hub,Enterprise,Reseller,Rep_09,18929.07,15,11384.56,7544.51,39.9,True
+2023-03-02,2023,Q1,Mar,3,Europe,Germany,Consulting,Migration,Mid-Market,Reseller,Rep_20,17544.08,7,6462.05,11082.03,63.2,False
+2023-03-02,2023,Q1,Mar,3,North America,USA,Hardware,Network Hub,Mid-Market,Reseller,Rep_19,5235.96,31,1863.42,3372.54,64.4,False
+2023-03-02,2023,Q1,Mar,3,North America,USA,Software,DevTools,Enterprise,Direct,Rep_08,32281.72,6,18683.45,13598.27,42.1,True
+2023-03-03,2023,Q1,Mar,3,Europe,Netherlands,Services,Deployment,Enterprise,Partner,Rep_03,10310.27,36,6030.7,4279.57,41.5,True
+2023-03-06,2023,Q1,Mar,3,Europe,France,Services,Training,Mid-Market,Direct,Rep_11,2839.65,27,1653.64,1186.01,41.8,False
+2023-03-06,2023,Q1,Mar,3,Middle East & Africa,South Africa,Services,24/7 Support,Mid-Market,Online,Rep_15,6702.61,17,3135.41,3567.2,53.2,False
+2023-03-06,2023,Q1,Mar,3,Latin America,Chile,Hardware,Workstation Z,SMB,Partner,Rep_14,4360.06,27,2555.71,1804.35,41.4,True
+2023-03-06,2023,Q1,Mar,3,Middle East & Africa,UAE,Cloud,Cloud Storage,SMB,Direct,Rep_05,672.39,21,317.81,354.58,52.7,True
+2023-03-07,2023,Q1,Mar,3,Europe,France,Services,24/7 Support,SMB,Online,Rep_06,2088.08,6,740.81,1347.27,64.5,True
+2023-03-07,2023,Q1,Mar,3,Middle East & Africa,UAE,Cloud,Kubernetes,SMB,Reseller,Rep_16,683.39,5,294.1,389.29,57.0,False
+2023-03-07,2023,Q1,Mar,3,Europe,UK,Consulting,Migration,SMB,Direct,Rep_03,9456.3,21,3830.4,5625.9,59.5,True
+2023-03-08,2023,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Services,Deployment,Mid-Market,Partner,Rep_20,5322.22,11,2239.98,3082.24,57.9,True
+2023-03-08,2023,Q1,Mar,3,Asia-Pacific,Australia,Software,Security Shield,SMB,Direct,Rep_14,2197.43,36,1351.27,846.16,38.5,True
+2023-03-09,2023,Q1,Mar,3,Middle East & Africa,Nigeria,Cloud,Kubernetes,Mid-Market,Partner,Rep_07,4168.81,33,2118.75,2050.06,49.2,True
+2023-03-09,2023,Q1,Mar,3,Latin America,Chile,Software,Security Shield,Mid-Market,Reseller,Rep_15,7712.36,12,2962.7,4749.66,61.6,False
+2023-03-09,2023,Q1,Mar,3,Europe,Germany,Hardware,Network Hub,Mid-Market,Direct,Rep_12,7334.29,27,3226.54,4107.75,56.0,False
+2023-03-09,2023,Q1,Mar,3,Latin America,Chile,Hardware,Server X1,Mid-Market,Reseller,Rep_17,13219.48,28,5066.59,8152.89,61.7,True
+2023-03-10,2023,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Cloud,Serverless,Enterprise,Partner,Rep_11,5524.99,23,2300.38,3224.61,58.4,True
+2023-03-10,2023,Q1,Mar,3,Latin America,Argentina,Cloud,Cloud Compute,SMB,Reseller,Rep_03,1256.83,42,553.15,703.68,56.0,True
+2023-03-10,2023,Q1,Mar,3,Middle East & Africa,UAE,Cloud,Kubernetes,Mid-Market,Partner,Rep_05,2070.6,4,1265.66,804.94,38.9,True
+2023-03-10,2023,Q1,Mar,3,Europe,Germany,Cloud,Serverless,SMB,Direct,Rep_15,824.64,48,424.72,399.92,48.5,False
+2023-03-11,2023,Q1,Mar,3,Asia-Pacific,Japan,Consulting,Migration,Enterprise,Online,Rep_09,106208.21,5,65219.07,40989.14,38.6,True
+2023-03-12,2023,Q1,Mar,3,North America,USA,Cloud,Serverless,SMB,Partner,Rep_07,1184.2,22,734.56,449.64,38.0,True
+2023-03-12,2023,Q1,Mar,3,Middle East & Africa,UAE,Cloud,Cloud Compute,SMB,Reseller,Rep_17,1173.61,44,483.26,690.35,58.8,True
+2023-03-12,2023,Q1,Mar,3,Latin America,Argentina,Consulting,Audit,SMB,Reseller,Rep_04,12601.59,39,6276.66,6324.93,50.2,True
+2023-03-13,2023,Q1,Mar,3,North America,Mexico,Hardware,Network Hub,SMB,Partner,Rep_10,4506.01,9,1581.26,2924.75,64.9,True
+2023-03-14,2023,Q1,Mar,3,Middle East & Africa,UAE,Services,24/7 Support,Enterprise,Online,Rep_02,5195.95,19,2131.42,3064.53,59.0,True
+2023-03-15,2023,Q1,Mar,3,Asia-Pacific,Singapore,Services,Managed IT,SMB,Partner,Rep_04,2276.25,45,1256.97,1019.28,44.8,True
+2023-03-15,2023,Q1,Mar,3,Latin America,Argentina,Software,Security Shield,SMB,Partner,Rep_18,4664.28,38,2577.15,2087.13,44.7,True
+2023-03-15,2023,Q1,Mar,3,North America,Canada,Services,Managed IT,Mid-Market,Direct,Rep_09,2315.66,14,1129.19,1186.47,51.2,True
+2023-03-16,2023,Q1,Mar,3,Latin America,Argentina,Software,DevTools,Enterprise,Online,Rep_17,20932.11,1,7491.06,13441.05,64.2,True
+2023-03-17,2023,Q1,Mar,3,Europe,Sweden,Services,24/7 Support,Enterprise,Partner,Rep_06,14877.13,46,8299.32,6577.81,44.2,False
+2023-03-17,2023,Q1,Mar,3,Latin America,Brazil,Services,Deployment,Enterprise,Partner,Rep_07,4592.38,48,2532.25,2060.13,44.9,False
+2023-03-18,2023,Q1,Mar,3,Asia-Pacific,Japan,Cloud,Cloud Storage,SMB,Direct,Rep_04,1331.37,5,792.62,538.75,40.5,True
+2023-03-18,2023,Q1,Mar,3,Middle East & Africa,South Africa,Software,CRM Suite,SMB,Direct,Rep_18,3766.72,6,2419.24,1347.48,35.8,False
+2023-03-18,2023,Q1,Mar,3,Europe,France,Software,Analytics Pro,Mid-Market,Online,Rep_14,8956.96,15,5134.69,3822.27,42.7,True
+2023-03-19,2023,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Cloud,Serverless,Mid-Market,Reseller,Rep_12,2706.51,19,1489.29,1217.22,45.0,True
+2023-03-20,2023,Q1,Mar,3,Asia-Pacific,Singapore,Cloud,Cloud Storage,Mid-Market,Online,Rep_13,4366.34,31,1633.03,2733.31,62.6,True
+2023-03-21,2023,Q1,Mar,3,Latin America,Colombia,Services,24/7 Support,SMB,Reseller,Rep_13,1274.04,28,450.45,823.59,64.6,True
+2023-03-21,2023,Q1,Mar,3,North America,Canada,Services,Managed IT,Mid-Market,Partner,Rep_07,5798.44,22,3139.07,2659.37,45.9,True
+2023-03-22,2023,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Consulting,Strategy,Mid-Market,Online,Rep_15,23406.02,19,9177.24,14228.78,60.8,True
+2023-03-22,2023,Q1,Mar,3,Asia-Pacific,South Korea,Consulting,Migration,SMB,Direct,Rep_13,7869.03,45,3623.33,4245.7,54.0,True
+2023-03-23,2023,Q1,Mar,3,North America,Canada,Cloud,Cloud Storage,Mid-Market,Partner,Rep_04,3329.7,45,1591.76,1737.94,52.2,True
+2023-03-23,2023,Q1,Mar,3,Latin America,Colombia,Consulting,Digital Transform,SMB,Direct,Rep_13,3974.33,11,1486.17,2488.16,62.6,False
+2023-03-23,2023,Q1,Mar,3,Middle East & Africa,South Africa,Hardware,NAS Storage,SMB,Direct,Rep_01,5348.41,1,2951.47,2396.94,44.8,True
+2023-03-23,2023,Q1,Mar,3,North America,Mexico,Hardware,Server X1,Mid-Market,Reseller,Rep_04,6154.26,45,3664.2,2490.06,40.5,True
+2023-03-23,2023,Q1,Mar,3,North America,Canada,Services,Training,Enterprise,Direct,Rep_15,13311.33,4,7680.21,5631.12,42.3,False
+2023-03-25,2023,Q1,Mar,3,Latin America,Chile,Hardware,Network Hub,Enterprise,Partner,Rep_01,20554.39,6,7540.39,13014.0,63.3,True
+2023-03-25,2023,Q1,Mar,3,Europe,France,Services,Managed IT,Mid-Market,Direct,Rep_03,4568.93,40,2541.84,2027.09,44.4,False
+2023-03-25,2023,Q1,Mar,3,Middle East & Africa,South Africa,Services,Deployment,SMB,Reseller,Rep_10,1458.61,15,862.64,595.97,40.9,True
+2023-03-25,2023,Q1,Mar,3,Asia-Pacific,Singapore,Cloud,Cloud Storage,SMB,Partner,Rep_10,376.75,23,186.59,190.16,50.5,True
+2023-03-26,2023,Q1,Mar,3,Europe,France,Consulting,Digital Transform,Enterprise,Reseller,Rep_12,45460.05,32,20081.82,25378.23,55.8,True
+2023-03-27,2023,Q1,Mar,3,Europe,Netherlands,Services,Deployment,Enterprise,Direct,Rep_16,9597.69,43,5813.2,3784.49,39.4,True
+2023-03-27,2023,Q1,Mar,3,Europe,France,Cloud,Cloud Storage,SMB,Reseller,Rep_02,1174.22,43,635.25,538.97,45.9,False
+2023-03-28,2023,Q1,Mar,3,Middle East & Africa,UAE,Cloud,Serverless,Mid-Market,Reseller,Rep_06,1631.24,42,885.06,746.18,45.7,False
+2023-03-28,2023,Q1,Mar,3,Europe,UK,Services,Managed IT,SMB,Direct,Rep_02,1749.95,14,872.49,877.46,50.1,True
+2023-03-29,2023,Q1,Mar,3,North America,USA,Hardware,NAS Storage,SMB,Direct,Rep_19,8336.57,4,3507.07,4829.5,57.9,True
+2023-03-29,2023,Q1,Mar,3,Latin America,Argentina,Cloud,Kubernetes,SMB,Direct,Rep_12,1042.6,39,524.91,517.69,49.7,True
+2023-03-29,2023,Q1,Mar,3,Latin America,Chile,Cloud,Serverless,Mid-Market,Online,Rep_01,3827.71,30,1709.36,2118.35,55.3,False
+2023-03-29,2023,Q1,Mar,3,North America,Mexico,Hardware,Workstation Z,Mid-Market,Reseller,Rep_03,5677.95,13,2025.69,3652.26,64.3,True
+2023-03-29,2023,Q1,Mar,3,North America,Mexico,Consulting,Strategy,Enterprise,Direct,Rep_12,56301.75,32,33767.05,22534.7,40.0,False
+2023-03-29,2023,Q1,Mar,3,Europe,Germany,Software,CRM Suite,Enterprise,Online,Rep_01,11896.35,40,7471.13,4425.22,37.2,True
+2023-03-30,2023,Q1,Mar,3,North America,Canada,Services,24/7 Support,Mid-Market,Partner,Rep_18,10562.3,18,3856.35,6705.95,63.5,True
+2023-03-30,2023,Q1,Mar,3,Latin America,Chile,Services,Managed IT,Enterprise,Partner,Rep_15,16265.59,20,6719.57,9546.02,58.7,True
+2023-03-30,2023,Q1,Mar,3,North America,Canada,Consulting,Digital Transform,SMB,Direct,Rep_10,8257.91,29,4137.28,4120.63,49.9,True
+2023-03-31,2023,Q1,Mar,3,Middle East & Africa,Saudi Arabia,Services,Training,SMB,Online,Rep_12,3317.38,36,1699.26,1618.12,48.8,True
+2023-03-31,2023,Q1,Mar,3,Middle East & Africa,Nigeria,Cloud,Cloud Compute,Mid-Market,Online,Rep_05,2828.68,4,1812.06,1016.62,35.9,True
+2023-04-01,2023,Q2,Apr,4,Middle East & Africa,Nigeria,Services,Deployment,Mid-Market,Reseller,Rep_18,5513.57,50,2413.48,3100.09,56.2,True
+2023-04-02,2023,Q2,Apr,4,Asia-Pacific,India,Cloud,Cloud Storage,Mid-Market,Online,Rep_10,2001.25,12,1113.18,888.07,44.4,False
+2023-04-03,2023,Q2,Apr,4,North America,USA,Consulting,Strategy,Mid-Market,Online,Rep_12,34715.21,9,17016.5,17698.71,51.0,True
+2023-04-04,2023,Q2,Apr,4,Middle East & Africa,South Africa,Consulting,Digital Transform,Enterprise,Reseller,Rep_06,33675.83,11,14999.18,18676.65,55.5,True
+2023-04-05,2023,Q2,Apr,4,Europe,France,Services,Deployment,Enterprise,Direct,Rep_10,8257.48,39,4646.07,3611.41,43.7,True
+2023-04-05,2023,Q2,Apr,4,Middle East & Africa,UAE,Software,DevTools,Enterprise,Reseller,Rep_13,34917.44,1,15229.62,19687.82,56.4,True
+2023-04-05,2023,Q2,Apr,4,Asia-Pacific,South Korea,Cloud,Cloud Compute,Enterprise,Online,Rep_12,7580.16,12,4640.89,2939.27,38.8,True
+2023-04-06,2023,Q2,Apr,4,Middle East & Africa,South Africa,Hardware,Server X1,Mid-Market,Direct,Rep_01,12357.14,11,7836.57,4520.57,36.6,True
+2023-04-07,2023,Q2,Apr,4,Asia-Pacific,India,Services,Managed IT,Enterprise,Direct,Rep_20,16416.61,7,6187.28,10229.33,62.3,True
+2023-04-07,2023,Q2,Apr,4,Asia-Pacific,India,Hardware,Network Hub,Mid-Market,Direct,Rep_12,30098.22,48,16065.76,14032.46,46.6,True
+2023-04-07,2023,Q2,Apr,4,Asia-Pacific,Australia,Cloud,Kubernetes,Enterprise,Online,Rep_20,9585.3,36,3545.32,6039.98,63.0,False
+2023-04-08,2023,Q2,Apr,4,Latin America,Chile,Cloud,Serverless,Mid-Market,Partner,Rep_15,1483.33,46,726.18,757.15,51.0,False
+2023-04-08,2023,Q2,Apr,4,Middle East & Africa,Saudi Arabia,Software,Security Shield,Enterprise,Reseller,Rep_19,14411.92,24,8090.3,6321.62,43.9,False
+2023-04-10,2023,Q2,Apr,4,Latin America,Colombia,Cloud,Cloud Storage,Enterprise,Partner,Rep_10,9590.22,37,3445.37,6144.85,64.1,False
+2023-04-10,2023,Q2,Apr,4,North America,Canada,Cloud,Serverless,Mid-Market,Direct,Rep_14,2957.32,35,1042.32,1915.0,64.8,False
+2023-04-10,2023,Q2,Apr,4,Latin America,Colombia,Software,Analytics Pro,SMB,Online,Rep_11,1325.67,31,726.97,598.7,45.2,True
+2023-04-10,2023,Q2,Apr,4,Europe,Netherlands,Hardware,Network Hub,SMB,Partner,Rep_07,7721.23,7,4326.54,3394.69,44.0,True
+2023-04-10,2023,Q2,Apr,4,Middle East & Africa,UAE,Software,Analytics Pro,Mid-Market,Partner,Rep_05,5766.96,3,2091.4,3675.56,63.7,True
+2023-04-11,2023,Q2,Apr,4,Latin America,Colombia,Software,Security Shield,SMB,Reseller,Rep_14,2981.68,25,1343.81,1637.87,54.9,True
+2023-04-11,2023,Q2,Apr,4,Asia-Pacific,Japan,Services,Deployment,SMB,Online,Rep_20,1886.49,10,682.88,1203.61,63.8,False
+2023-04-11,2023,Q2,Apr,4,Middle East & Africa,Saudi Arabia,Services,Managed IT,Enterprise,Direct,Rep_08,15640.79,33,7556.75,8084.04,51.7,False
+2023-04-11,2023,Q2,Apr,4,Asia-Pacific,India,Consulting,Audit,Mid-Market,Direct,Rep_04,19273.25,12,11597.56,7675.69,39.8,True
+2023-04-11,2023,Q2,Apr,4,North America,USA,Hardware,Server X1,SMB,Partner,Rep_15,3801.46,29,1409.31,2392.15,62.9,False
+2023-04-12,2023,Q2,Apr,4,Latin America,Colombia,Consulting,Digital Transform,Enterprise,Direct,Rep_06,37702.25,10,17661.37,20040.88,53.2,False
+2023-04-12,2023,Q2,Apr,4,Asia-Pacific,South Korea,Software,Analytics Pro,Enterprise,Partner,Rep_05,10037.94,14,4827.89,5210.05,51.9,True
+2023-04-13,2023,Q2,Apr,4,Latin America,Chile,Consulting,Audit,SMB,Reseller,Rep_07,13729.76,40,7558.91,6170.85,44.9,False
+2023-04-13,2023,Q2,Apr,4,Latin America,Argentina,Cloud,Cloud Storage,Mid-Market,Direct,Rep_04,3129.15,39,1985.9,1143.25,36.5,True
+2023-04-13,2023,Q2,Apr,4,Latin America,Colombia,Cloud,Cloud Compute,SMB,Online,Rep_09,1060.43,7,646.39,414.04,39.0,True
+2023-04-13,2023,Q2,Apr,4,North America,Canada,Services,24/7 Support,SMB,Reseller,Rep_01,2173.58,3,1389.21,784.37,36.1,False
+2023-04-14,2023,Q2,Apr,4,Europe,Sweden,Services,24/7 Support,Enterprise,Reseller,Rep_20,12330.3,8,7719.46,4610.84,37.4,False
+2023-04-15,2023,Q2,Apr,4,Middle East & Africa,Saudi Arabia,Cloud,Cloud Storage,Mid-Market,Direct,Rep_07,3384.58,20,2156.34,1228.24,36.3,True
+2023-04-15,2023,Q2,Apr,4,North America,USA,Hardware,Network Hub,SMB,Online,Rep_06,4824.24,7,2159.48,2664.76,55.2,True
+2023-04-15,2023,Q2,Apr,4,Europe,UK,Cloud,Cloud Storage,Mid-Market,Online,Rep_07,6692.91,10,3199.7,3493.21,52.2,False
+2023-04-16,2023,Q2,Apr,4,Latin America,Colombia,Services,24/7 Support,Mid-Market,Online,Rep_03,2223.01,45,1109.85,1113.16,50.1,True
+2023-04-16,2023,Q2,Apr,4,Asia-Pacific,South Korea,Cloud,Kubernetes,Enterprise,Partner,Rep_19,7216.08,21,3439.23,3776.85,52.3,True
+2023-04-16,2023,Q2,Apr,4,Asia-Pacific,India,Consulting,Migration,Enterprise,Reseller,Rep_07,34909.52,22,13649.51,21260.01,60.9,False
+2023-04-17,2023,Q2,Apr,4,Middle East & Africa,Nigeria,Consulting,Audit,Mid-Market,Direct,Rep_15,61677.8,22,36712.64,24965.16,40.5,True
+2023-04-18,2023,Q2,Apr,4,Asia-Pacific,Australia,Services,Training,SMB,Reseller,Rep_16,1357.69,43,766.95,590.74,43.5,True
+2023-04-18,2023,Q2,Apr,4,Europe,Netherlands,Consulting,Migration,SMB,Partner,Rep_02,10960.99,47,6597.37,4363.62,39.8,True
+2023-04-18,2023,Q2,Apr,4,Europe,UK,Consulting,Migration,SMB,Reseller,Rep_20,7646.15,29,2772.02,4874.13,63.7,False
+2023-04-19,2023,Q2,Apr,4,North America,Canada,Consulting,Digital Transform,Mid-Market,Reseller,Rep_05,26518.16,19,12895.91,13622.25,51.4,True
+2023-04-19,2023,Q2,Apr,4,Middle East & Africa,Nigeria,Software,Analytics Pro,Enterprise,Partner,Rep_03,20784.71,28,7423.87,13360.84,64.3,False
+2023-04-19,2023,Q2,Apr,4,Europe,Netherlands,Cloud,Cloud Compute,Mid-Market,Online,Rep_11,3909.72,29,1422.32,2487.4,63.6,False
+2023-04-21,2023,Q2,Apr,4,North America,Mexico,Consulting,Strategy,SMB,Reseller,Rep_09,7522.05,32,3113.27,4408.78,58.6,True
+2023-04-21,2023,Q2,Apr,4,North America,Canada,Consulting,Migration,Enterprise,Reseller,Rep_18,35144.52,29,22370.03,12774.49,36.3,False
+2023-04-21,2023,Q2,Apr,4,Europe,UK,Software,CRM Suite,SMB,Online,Rep_16,5138.6,43,3076.45,2062.15,40.1,True
+2023-04-21,2023,Q2,Apr,4,Europe,France,Consulting,Migration,Enterprise,Reseller,Rep_08,99543.32,2,48191.26,51352.06,51.6,False
+2023-04-22,2023,Q2,Apr,4,Latin America,Brazil,Hardware,Network Hub,SMB,Reseller,Rep_17,13757.29,49,6916.44,6840.85,49.7,True
+2023-04-22,2023,Q2,Apr,4,Latin America,Argentina,Hardware,Workstation Z,Enterprise,Partner,Rep_09,42306.57,48,17126.5,25180.07,59.5,True
+2023-04-22,2023,Q2,Apr,4,Europe,France,Services,Deployment,SMB,Online,Rep_17,1022.55,30,561.35,461.2,45.1,False
+2023-04-22,2023,Q2,Apr,4,Middle East & Africa,UAE,Services,Managed IT,Mid-Market,Reseller,Rep_12,3006.7,40,1810.82,1195.88,39.8,False
+2023-04-23,2023,Q2,Apr,4,Europe,UK,Cloud,Cloud Storage,Enterprise,Partner,Rep_16,11522.99,20,6693.89,4829.1,41.9,True
+2023-04-24,2023,Q2,Apr,4,Asia-Pacific,South Korea,Hardware,Workstation Z,SMB,Online,Rep_03,2732.54,32,958.1,1774.44,64.9,True
+2023-04-24,2023,Q2,Apr,4,Europe,France,Software,CRM Suite,Mid-Market,Partner,Rep_19,2051.14,18,846.74,1204.4,58.7,True
+2023-04-25,2023,Q2,Apr,4,Middle East & Africa,Nigeria,Software,Analytics Pro,Enterprise,Partner,Rep_13,9662.4,22,4981.04,4681.36,48.4,True
+2023-04-25,2023,Q2,Apr,4,Europe,UK,Cloud,Cloud Compute,Mid-Market,Online,Rep_08,2472.08,15,889.06,1583.02,64.0,True
+2023-04-25,2023,Q2,Apr,4,Latin America,Colombia,Hardware,NAS Storage,Enterprise,Reseller,Rep_13,38280.23,17,20962.21,17318.02,45.2,False
+2023-04-26,2023,Q2,Apr,4,North America,Canada,Software,DevTools,SMB,Partner,Rep_15,3741.96,33,2278.97,1462.99,39.1,True
+2023-04-26,2023,Q2,Apr,4,Asia-Pacific,Singapore,Consulting,Audit,SMB,Partner,Rep_09,5441.38,15,2596.09,2845.29,52.3,True
+2023-04-27,2023,Q2,Apr,4,North America,Mexico,Consulting,Digital Transform,Enterprise,Online,Rep_09,38017.83,35,17301.74,20716.09,54.5,False
+2023-04-27,2023,Q2,Apr,4,Middle East & Africa,South Africa,Software,Analytics Pro,Mid-Market,Online,Rep_03,9736.02,17,4547.97,5188.05,53.3,True
+2023-04-27,2023,Q2,Apr,4,Asia-Pacific,Japan,Consulting,Digital Transform,SMB,Reseller,Rep_03,8477.22,15,5454.49,3022.73,35.7,True
+2023-04-27,2023,Q2,Apr,4,Asia-Pacific,India,Software,CRM Suite,Mid-Market,Reseller,Rep_08,7358.22,11,3903.01,3455.21,47.0,True
+2023-04-27,2023,Q2,Apr,4,Latin America,Colombia,Software,CRM Suite,Enterprise,Partner,Rep_16,27974.48,17,17666.19,10308.29,36.8,True
+2023-04-28,2023,Q2,Apr,4,Latin America,Brazil,Software,Security Shield,SMB,Online,Rep_20,1733.0,50,1082.95,650.05,37.5,True
+2023-04-29,2023,Q2,Apr,4,Latin America,Chile,Services,Deployment,Mid-Market,Partner,Rep_03,5117.27,36,2621.6,2495.67,48.8,True
+2023-04-30,2023,Q2,Apr,4,Europe,Netherlands,Services,Managed IT,Enterprise,Direct,Rep_17,9782.51,28,4867.91,4914.6,50.2,True
+2023-04-30,2023,Q2,Apr,4,Middle East & Africa,Nigeria,Software,CRM Suite,Mid-Market,Reseller,Rep_06,6870.68,41,4289.52,2581.16,37.6,True
+2023-04-30,2023,Q2,Apr,4,Middle East & Africa,Nigeria,Consulting,Digital Transform,Enterprise,Online,Rep_18,98153.45,33,63782.94,34370.51,35.0,True
+2023-04-30,2023,Q2,Apr,4,Middle East & Africa,UAE,Software,DevTools,Enterprise,Direct,Rep_08,10568.18,42,4247.99,6320.19,59.8,False
+2023-04-30,2023,Q2,Apr,4,Europe,Germany,Hardware,NAS Storage,Enterprise,Partner,Rep_13,19354.23,2,11601.58,7752.65,40.1,True
+2023-04-30,2023,Q2,Apr,4,Latin America,Brazil,Hardware,Server X1,Mid-Market,Partner,Rep_17,11703.28,46,6168.17,5535.11,47.3,True
+2023-05-02,2023,Q2,May,5,North America,USA,Hardware,Network Hub,SMB,Direct,Rep_19,3038.69,24,1481.48,1557.21,51.2,False
+2023-05-02,2023,Q2,May,5,Middle East & Africa,Saudi Arabia,Cloud,Kubernetes,SMB,Direct,Rep_03,1371.34,19,709.17,662.17,48.3,True
+2023-05-02,2023,Q2,May,5,Europe,Germany,Cloud,Cloud Storage,Mid-Market,Direct,Rep_13,4169.85,45,2525.05,1644.8,39.4,True
+2023-05-03,2023,Q2,May,5,Middle East & Africa,Saudi Arabia,Cloud,Cloud Storage,Mid-Market,Partner,Rep_03,5295.27,28,2455.32,2839.95,53.6,False
+2023-05-03,2023,Q2,May,5,Asia-Pacific,Singapore,Services,Deployment,Enterprise,Direct,Rep_08,9045.27,30,3641.11,5404.16,59.7,False
+2023-05-04,2023,Q2,May,5,Latin America,Chile,Services,24/7 Support,SMB,Reseller,Rep_15,1203.68,47,541.02,662.66,55.1,True
+2023-05-04,2023,Q2,May,5,Asia-Pacific,South Korea,Software,Security Shield,Enterprise,Direct,Rep_02,11140.42,45,6819.15,4321.27,38.8,True
+2023-05-05,2023,Q2,May,5,Europe,Germany,Services,Deployment,SMB,Partner,Rep_01,1441.53,33,548.22,893.31,62.0,True
+2023-05-06,2023,Q2,May,5,Asia-Pacific,Singapore,Hardware,Workstation Z,Enterprise,Online,Rep_17,35488.73,28,17567.59,17921.14,50.5,True
+2023-05-06,2023,Q2,May,5,Middle East & Africa,Nigeria,Hardware,Workstation Z,Mid-Market,Reseller,Rep_06,19354.51,40,7099.22,12255.29,63.3,True
+2023-05-08,2023,Q2,May,5,Middle East & Africa,Saudi Arabia,Hardware,Workstation Z,SMB,Online,Rep_05,6878.88,46,3007.27,3871.61,56.3,True
+2023-05-09,2023,Q2,May,5,Latin America,Argentina,Cloud,Cloud Storage,SMB,Reseller,Rep_14,1201.46,23,495.52,705.94,58.8,True
+2023-05-10,2023,Q2,May,5,Asia-Pacific,Singapore,Hardware,NAS Storage,SMB,Online,Rep_10,5474.61,1,3440.05,2034.56,37.2,True
+2023-05-10,2023,Q2,May,5,Europe,France,Consulting,Migration,Mid-Market,Online,Rep_15,26391.78,46,15130.22,11261.56,42.7,True
+2023-05-11,2023,Q2,May,5,Asia-Pacific,South Korea,Software,Analytics Pro,Mid-Market,Partner,Rep_01,5695.31,20,2271.42,3423.89,60.1,True
+2023-05-11,2023,Q2,May,5,Middle East & Africa,South Africa,Services,24/7 Support,Mid-Market,Direct,Rep_06,7183.56,46,3092.91,4090.65,56.9,False
+2023-05-11,2023,Q2,May,5,Europe,UK,Services,24/7 Support,SMB,Partner,Rep_17,1947.23,9,797.21,1150.02,59.1,True
+2023-05-12,2023,Q2,May,5,Middle East & Africa,UAE,Software,Security Shield,SMB,Reseller,Rep_12,1644.37,40,763.45,880.92,53.6,False
+2023-05-12,2023,Q2,May,5,Asia-Pacific,India,Cloud,Kubernetes,Enterprise,Partner,Rep_15,6619.86,43,3160.72,3459.14,52.3,True
+2023-05-13,2023,Q2,May,5,North America,Canada,Services,24/7 Support,SMB,Partner,Rep_12,1590.37,38,826.48,763.89,48.0,False
+2023-05-13,2023,Q2,May,5,Europe,UK,Software,DevTools,Enterprise,Online,Rep_09,10632.39,21,4513.23,6119.16,57.6,True
+2023-05-13,2023,Q2,May,5,Middle East & Africa,UAE,Hardware,Network Hub,Enterprise,Online,Rep_02,17323.88,27,9914.17,7409.71,42.8,True
+2023-05-13,2023,Q2,May,5,Asia-Pacific,South Korea,Cloud,Cloud Storage,Enterprise,Online,Rep_18,5305.51,27,2815.94,2489.57,46.9,True
+2023-05-14,2023,Q2,May,5,Europe,France,Consulting,Digital Transform,Enterprise,Direct,Rep_03,65181.8,11,41813.38,23368.42,35.9,False
+2023-05-15,2023,Q2,May,5,Middle East & Africa,Nigeria,Services,Deployment,Enterprise,Online,Rep_13,16694.97,20,6265.36,10429.61,62.5,True
+2023-05-15,2023,Q2,May,5,Asia-Pacific,Australia,Hardware,Workstation Z,SMB,Partner,Rep_16,4733.86,48,1731.5,3002.36,63.4,True
+2023-05-15,2023,Q2,May,5,Latin America,Brazil,Software,Security Shield,Enterprise,Partner,Rep_09,13263.8,20,5463.74,7800.06,58.8,True
+2023-05-16,2023,Q2,May,5,Latin America,Chile,Services,Training,Mid-Market,Reseller,Rep_11,2436.18,27,1411.17,1025.01,42.1,True
+2023-05-16,2023,Q2,May,5,Asia-Pacific,Singapore,Consulting,Strategy,SMB,Direct,Rep_08,5611.54,7,3079.53,2532.01,45.1,False
+2023-05-16,2023,Q2,May,5,Asia-Pacific,Australia,Consulting,Strategy,SMB,Direct,Rep_08,4691.37,26,2057.93,2633.44,56.1,True
+2023-05-17,2023,Q2,May,5,North America,USA,Software,Analytics Pro,Enterprise,Partner,Rep_08,17699.36,9,6682.0,11017.36,62.2,True
+2023-05-17,2023,Q2,May,5,Asia-Pacific,India,Cloud,Cloud Storage,Enterprise,Partner,Rep_14,11907.73,4,5482.5,6425.23,54.0,True
+2023-05-17,2023,Q2,May,5,Asia-Pacific,Singapore,Cloud,Cloud Storage,Enterprise,Partner,Rep_14,5421.24,38,2524.69,2896.55,53.4,True
+2023-05-18,2023,Q2,May,5,North America,USA,Consulting,Audit,SMB,Online,Rep_19,8694.12,32,3292.13,5401.99,62.1,True
+2023-05-18,2023,Q2,May,5,Europe,Germany,Hardware,Server X1,SMB,Direct,Rep_14,4015.02,46,1577.59,2437.43,60.7,True
+2023-05-19,2023,Q2,May,5,North America,USA,Cloud,Cloud Compute,Enterprise,Direct,Rep_03,5350.88,47,2274.0,3076.88,57.5,False
+2023-05-19,2023,Q2,May,5,Latin America,Argentina,Hardware,Server X1,Enterprise,Reseller,Rep_04,33388.46,37,17974.24,15414.22,46.2,True
+2023-05-20,2023,Q2,May,5,Middle East & Africa,Nigeria,Services,24/7 Support,SMB,Direct,Rep_04,4027.48,9,1799.64,2227.84,55.3,False
+2023-05-21,2023,Q2,May,5,Middle East & Africa,Saudi Arabia,Consulting,Migration,SMB,Partner,Rep_03,7400.19,35,3326.53,4073.66,55.0,True
+2023-05-21,2023,Q2,May,5,Asia-Pacific,Japan,Software,CRM Suite,SMB,Reseller,Rep_05,3572.06,14,1803.46,1768.6,49.5,False
+2023-05-22,2023,Q2,May,5,Latin America,Colombia,Cloud,Cloud Compute,Enterprise,Online,Rep_06,12039.17,12,6224.25,5814.92,48.3,True
+2023-05-22,2023,Q2,May,5,Middle East & Africa,Saudi Arabia,Software,DevTools,Enterprise,Online,Rep_05,12118.58,35,7340.33,4778.25,39.4,True
+2023-05-23,2023,Q2,May,5,Asia-Pacific,India,Cloud,Cloud Compute,Enterprise,Direct,Rep_14,7522.27,48,3212.44,4309.83,57.3,True
+2023-05-23,2023,Q2,May,5,Asia-Pacific,South Korea,Services,Managed IT,Enterprise,Online,Rep_09,8708.46,20,4533.03,4175.43,47.9,True
+2023-05-24,2023,Q2,May,5,Europe,Netherlands,Hardware,Network Hub,Mid-Market,Online,Rep_11,11188.91,35,6256.41,4932.5,44.1,False
+2023-05-25,2023,Q2,May,5,North America,USA,Software,DevTools,Enterprise,Online,Rep_09,28596.05,20,13471.49,15124.56,52.9,True
+2023-05-26,2023,Q2,May,5,Europe,UK,Cloud,Cloud Compute,Enterprise,Reseller,Rep_05,4431.37,28,2209.28,2222.09,50.1,True
+2023-05-26,2023,Q2,May,5,Asia-Pacific,South Korea,Cloud,Serverless,Enterprise,Online,Rep_20,9364.84,11,4088.16,5276.68,56.3,True
+2023-05-27,2023,Q2,May,5,Middle East & Africa,Nigeria,Hardware,Workstation Z,Mid-Market,Reseller,Rep_02,12292.62,46,4834.76,7457.86,60.7,True
+2023-05-28,2023,Q2,May,5,Middle East & Africa,South Africa,Software,DevTools,Enterprise,Reseller,Rep_17,41227.64,26,22717.41,18510.23,44.9,True
+2023-05-28,2023,Q2,May,5,Latin America,Brazil,Hardware,NAS Storage,Enterprise,Direct,Rep_15,41163.62,29,17652.79,23510.83,57.1,True
+2023-05-29,2023,Q2,May,5,Europe,Germany,Consulting,Digital Transform,Enterprise,Reseller,Rep_19,37213.88,42,22224.11,14989.77,40.3,True
+2023-05-30,2023,Q2,May,5,Asia-Pacific,India,Consulting,Digital Transform,Enterprise,Online,Rep_05,25841.82,42,13747.55,12094.27,46.8,True
+2023-05-30,2023,Q2,May,5,Middle East & Africa,Nigeria,Hardware,NAS Storage,Mid-Market,Direct,Rep_14,6402.61,1,3023.02,3379.59,52.8,True
+2023-05-31,2023,Q2,May,5,North America,USA,Hardware,Server X1,Mid-Market,Reseller,Rep_13,6518.5,24,2385.35,4133.15,63.4,True
+2023-06-01,2023,Q2,Jun,6,North America,USA,Services,Managed IT,Mid-Market,Online,Rep_15,8297.03,27,4402.69,3894.34,46.9,True
+2023-06-02,2023,Q2,Jun,6,Latin America,Brazil,Hardware,Workstation Z,SMB,Partner,Rep_18,3061.05,26,1534.83,1526.22,49.9,True
+2023-06-02,2023,Q2,Jun,6,Latin America,Brazil,Cloud,Kubernetes,SMB,Partner,Rep_03,834.53,22,347.56,486.97,58.4,True
+2023-06-03,2023,Q2,Jun,6,Europe,Sweden,Consulting,Digital Transform,Enterprise,Direct,Rep_10,25203.18,2,13481.3,11721.88,46.5,False
+2023-06-03,2023,Q2,Jun,6,North America,Canada,Consulting,Strategy,SMB,Partner,Rep_10,17036.43,37,9284.17,7752.26,45.5,True
+2023-06-04,2023,Q2,Jun,6,Asia-Pacific,Australia,Consulting,Audit,SMB,Reseller,Rep_14,6718.42,1,4247.14,2471.28,36.8,True
+2023-06-04,2023,Q2,Jun,6,Asia-Pacific,Japan,Consulting,Migration,Enterprise,Reseller,Rep_09,30305.99,28,18106.44,12199.55,40.3,True
+2023-06-04,2023,Q2,Jun,6,Europe,UK,Software,Security Shield,SMB,Partner,Rep_11,4168.0,18,2205.11,1962.89,47.1,True
+2023-06-04,2023,Q2,Jun,6,North America,USA,Services,Training,Enterprise,Reseller,Rep_02,9002.96,28,3829.99,5172.97,57.5,False
+2023-06-05,2023,Q2,Jun,6,Europe,Sweden,Hardware,Workstation Z,Mid-Market,Partner,Rep_16,15428.94,11,6229.34,9199.6,59.6,True
+2023-06-05,2023,Q2,Jun,6,Asia-Pacific,India,Hardware,Workstation Z,Mid-Market,Direct,Rep_07,15239.13,24,6152.06,9087.07,59.6,True
+2023-06-06,2023,Q2,Jun,6,North America,USA,Services,Managed IT,Enterprise,Reseller,Rep_03,5646.92,38,2220.69,3426.23,60.7,False
+2023-06-06,2023,Q2,Jun,6,Middle East & Africa,South Africa,Consulting,Strategy,Enterprise,Partner,Rep_20,26552.7,19,13461.56,13091.14,49.3,True
+2023-06-06,2023,Q2,Jun,6,Asia-Pacific,India,Hardware,NAS Storage,SMB,Direct,Rep_01,3401.11,9,1327.4,2073.71,61.0,False
+2023-06-08,2023,Q2,Jun,6,Middle East & Africa,UAE,Hardware,Workstation Z,Mid-Market,Online,Rep_03,13676.48,31,8842.05,4834.43,35.3,True
+2023-06-08,2023,Q2,Jun,6,North America,USA,Consulting,Strategy,SMB,Direct,Rep_03,6543.69,41,2529.38,4014.31,61.3,True
+2023-06-10,2023,Q2,Jun,6,Latin America,Argentina,Consulting,Migration,Enterprise,Online,Rep_10,45949.52,3,18934.32,27015.2,58.8,False
+2023-06-11,2023,Q2,Jun,6,North America,Mexico,Hardware,Network Hub,SMB,Online,Rep_18,4174.16,27,1914.12,2260.04,54.1,True
+2023-06-11,2023,Q2,Jun,6,North America,Canada,Consulting,Audit,Mid-Market,Reseller,Rep_19,13109.84,17,6094.94,7014.9,53.5,True
+2023-06-12,2023,Q2,Jun,6,North America,Canada,Consulting,Digital Transform,Mid-Market,Partner,Rep_11,9963.59,11,5225.87,4737.72,47.6,True
+2023-06-14,2023,Q2,Jun,6,North America,Canada,Consulting,Migration,Enterprise,Direct,Rep_07,51144.25,34,30745.02,20399.23,39.9,True
+2023-06-14,2023,Q2,Jun,6,North America,Canada,Consulting,Strategy,Enterprise,Online,Rep_02,38204.07,22,21588.41,16615.66,43.5,False
+2023-06-15,2023,Q2,Jun,6,Middle East & Africa,South Africa,Cloud,Serverless,Mid-Market,Online,Rep_04,2773.4,29,1117.73,1655.67,59.7,False
+2023-06-15,2023,Q2,Jun,6,Asia-Pacific,India,Consulting,Audit,Enterprise,Reseller,Rep_18,44228.0,27,20817.69,23410.31,52.9,False
+2023-06-16,2023,Q2,Jun,6,Europe,France,Software,Analytics Pro,SMB,Reseller,Rep_20,1596.89,40,798.47,798.42,50.0,False
+2023-06-17,2023,Q2,Jun,6,Asia-Pacific,Japan,Cloud,Kubernetes,SMB,Direct,Rep_13,920.6,13,370.99,549.61,59.7,True
+2023-06-18,2023,Q2,Jun,6,Middle East & Africa,UAE,Hardware,Network Hub,Mid-Market,Online,Rep_05,12919.36,43,7290.15,5629.21,43.6,False
+2023-06-18,2023,Q2,Jun,6,Latin America,Chile,Software,CRM Suite,SMB,Partner,Rep_16,2704.12,4,988.72,1715.4,63.4,True
+2023-06-19,2023,Q2,Jun,6,Latin America,Argentina,Services,24/7 Support,SMB,Partner,Rep_01,2974.54,38,1890.42,1084.12,36.4,False
+2023-06-20,2023,Q2,Jun,6,Asia-Pacific,Singapore,Consulting,Digital Transform,Enterprise,Direct,Rep_03,47561.93,25,30409.72,17152.21,36.1,True
+2023-06-20,2023,Q2,Jun,6,North America,Mexico,Cloud,Serverless,Mid-Market,Reseller,Rep_17,5344.77,27,2434.64,2910.13,54.4,True
+2023-06-22,2023,Q2,Jun,6,Asia-Pacific,Japan,Consulting,Audit,SMB,Online,Rep_11,6734.43,9,3182.04,3552.39,52.7,True
+2023-06-23,2023,Q2,Jun,6,Middle East & Africa,Saudi Arabia,Consulting,Audit,SMB,Direct,Rep_10,4887.8,28,2319.84,2567.96,52.5,True
+2023-06-23,2023,Q2,Jun,6,North America,USA,Services,24/7 Support,SMB,Online,Rep_06,1262.12,8,736.72,525.4,41.6,False
+2023-06-25,2023,Q2,Jun,6,Europe,Netherlands,Services,Deployment,Mid-Market,Online,Rep_20,6859.25,8,2586.8,4272.45,62.3,False
+2023-06-26,2023,Q2,Jun,6,Asia-Pacific,Singapore,Cloud,Cloud Storage,Mid-Market,Direct,Rep_06,2381.79,2,942.34,1439.45,60.4,True
+2023-06-26,2023,Q2,Jun,6,Middle East & Africa,Nigeria,Consulting,Migration,SMB,Reseller,Rep_18,4389.87,33,2752.66,1637.21,37.3,False
+2023-06-28,2023,Q2,Jun,6,Europe,Germany,Hardware,Server X1,Mid-Market,Reseller,Rep_19,9389.06,1,4871.17,4517.89,48.1,False
+2023-06-28,2023,Q2,Jun,6,North America,USA,Hardware,NAS Storage,Mid-Market,Direct,Rep_16,9780.79,27,4169.47,5611.32,57.4,True
+2023-06-28,2023,Q2,Jun,6,Europe,France,Software,CRM Suite,Enterprise,Reseller,Rep_19,27811.38,33,15003.9,12807.48,46.1,False
+2023-06-28,2023,Q2,Jun,6,Asia-Pacific,South Korea,Services,Deployment,Enterprise,Direct,Rep_15,6047.52,35,3588.98,2458.54,40.7,True
+2023-06-28,2023,Q2,Jun,6,Latin America,Brazil,Cloud,Kubernetes,Enterprise,Direct,Rep_01,6452.57,40,3861.65,2590.92,40.2,False
+2023-06-28,2023,Q2,Jun,6,Asia-Pacific,South Korea,Hardware,Network Hub,Enterprise,Partner,Rep_03,25187.35,42,16318.43,8868.92,35.2,True
+2023-06-30,2023,Q2,Jun,6,Europe,Sweden,Hardware,Network Hub,Mid-Market,Direct,Rep_12,11667.89,8,4897.28,6770.61,58.0,True
+2023-06-30,2023,Q2,Jun,6,Latin America,Chile,Services,Training,Enterprise,Online,Rep_07,12249.71,36,5965.9,6283.81,51.3,False
+2023-07-01,2023,Q3,Jul,7,Middle East & Africa,Nigeria,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_09,1797.58,22,920.9,876.68,48.8,True
+2023-07-01,2023,Q3,Jul,7,Latin America,Brazil,Cloud,Cloud Storage,Enterprise,Online,Rep_12,9062.13,15,3448.33,5613.8,61.9,False
+2023-07-01,2023,Q3,Jul,7,Europe,Sweden,Services,Deployment,SMB,Partner,Rep_05,1380.75,29,762.15,618.6,44.8,False
+2023-07-01,2023,Q3,Jul,7,Asia-Pacific,India,Software,Analytics Pro,Enterprise,Partner,Rep_14,14158.24,36,9109.03,5049.21,35.7,True
+2023-07-03,2023,Q3,Jul,7,Middle East & Africa,South Africa,Services,Deployment,Enterprise,Direct,Rep_05,13298.31,35,7529.91,5768.4,43.4,False
+2023-07-04,2023,Q3,Jul,7,Europe,Germany,Consulting,Digital Transform,SMB,Online,Rep_08,8661.8,47,3294.84,5366.96,62.0,True
+2023-07-04,2023,Q3,Jul,7,Middle East & Africa,Saudi Arabia,Services,Deployment,Mid-Market,Partner,Rep_06,4938.09,15,2910.15,2027.94,41.1,True
+2023-07-04,2023,Q3,Jul,7,Asia-Pacific,South Korea,Cloud,Serverless,Mid-Market,Reseller,Rep_03,1660.38,3,717.04,943.34,56.8,True
+2023-07-04,2023,Q3,Jul,7,North America,Canada,Consulting,Strategy,SMB,Direct,Rep_11,8196.56,19,3658.64,4537.92,55.4,True
+2023-07-04,2023,Q3,Jul,7,North America,Mexico,Cloud,Cloud Storage,SMB,Online,Rep_02,792.49,33,341.38,451.11,56.9,True
+2023-07-05,2023,Q3,Jul,7,Europe,UK,Software,Analytics Pro,SMB,Online,Rep_12,1750.26,16,660.82,1089.44,62.2,True
+2023-07-05,2023,Q3,Jul,7,Middle East & Africa,UAE,Cloud,Cloud Compute,SMB,Online,Rep_16,2144.23,11,789.1,1355.13,63.2,True
+2023-07-06,2023,Q3,Jul,7,Middle East & Africa,UAE,Services,Managed IT,SMB,Direct,Rep_06,2695.85,23,1646.62,1049.23,38.9,True
+2023-07-06,2023,Q3,Jul,7,Asia-Pacific,India,Software,Security Shield,Mid-Market,Reseller,Rep_07,9422.9,6,5800.4,3622.5,38.4,False
+2023-07-06,2023,Q3,Jul,7,Europe,Netherlands,Software,CRM Suite,Enterprise,Reseller,Rep_10,31217.91,50,17447.53,13770.38,44.1,True
+2023-07-06,2023,Q3,Jul,7,Latin America,Colombia,Consulting,Audit,Enterprise,Direct,Rep_17,36152.33,29,14232.28,21920.05,60.6,True
+2023-07-06,2023,Q3,Jul,7,Middle East & Africa,Nigeria,Hardware,Server X1,SMB,Direct,Rep_02,3336.3,3,2007.52,1328.78,39.8,True
+2023-07-07,2023,Q3,Jul,7,Latin America,Brazil,Cloud,Cloud Compute,Enterprise,Partner,Rep_05,7428.9,39,3778.09,3650.81,49.1,True
+2023-07-07,2023,Q3,Jul,7,North America,Mexico,Consulting,Audit,Enterprise,Partner,Rep_15,51582.58,2,33484.75,18097.83,35.1,True
+2023-07-07,2023,Q3,Jul,7,Asia-Pacific,Japan,Cloud,Cloud Storage,Mid-Market,Direct,Rep_04,5365.7,5,2246.53,3119.17,58.1,False
+2023-07-07,2023,Q3,Jul,7,North America,USA,Software,Security Shield,SMB,Direct,Rep_10,5987.23,7,2694.52,3292.71,55.0,True
+2023-07-07,2023,Q3,Jul,7,Europe,Germany,Hardware,Server X1,Mid-Market,Partner,Rep_09,9923.73,4,6206.39,3717.34,37.5,True
+2023-07-07,2023,Q3,Jul,7,North America,Mexico,Services,Training,Enterprise,Online,Rep_02,15847.91,7,7798.33,8049.58,50.8,True
+2023-07-08,2023,Q3,Jul,7,Latin America,Brazil,Cloud,Serverless,Mid-Market,Partner,Rep_04,2838.37,21,1095.14,1743.23,61.4,True
+2023-07-08,2023,Q3,Jul,7,Europe,Germany,Services,Training,SMB,Online,Rep_04,1403.13,19,721.64,681.49,48.6,False
+2023-07-08,2023,Q3,Jul,7,Middle East & Africa,Saudi Arabia,Hardware,Server X1,SMB,Direct,Rep_03,4915.06,19,2196.79,2718.27,55.3,True
+2023-07-08,2023,Q3,Jul,7,Middle East & Africa,UAE,Consulting,Audit,Mid-Market,Reseller,Rep_06,23997.58,36,11093.85,12903.73,53.8,True
+2023-07-09,2023,Q3,Jul,7,North America,Mexico,Hardware,NAS Storage,Mid-Market,Direct,Rep_17,9002.87,30,4688.9,4313.97,47.9,True
+2023-07-10,2023,Q3,Jul,7,Europe,Germany,Hardware,Server X1,Enterprise,Direct,Rep_07,43328.35,45,27780.24,15548.11,35.9,True
+2023-07-10,2023,Q3,Jul,7,Europe,Sweden,Cloud,Cloud Storage,Enterprise,Direct,Rep_14,8155.43,30,2892.35,5263.08,64.5,False
+2023-07-10,2023,Q3,Jul,7,Asia-Pacific,Japan,Consulting,Strategy,Enterprise,Reseller,Rep_18,47814.85,3,16807.35,31007.5,64.8,True
+2023-07-11,2023,Q3,Jul,7,Middle East & Africa,Saudi Arabia,Consulting,Strategy,Enterprise,Direct,Rep_03,15454.61,43,6953.71,8500.9,55.0,True
+2023-07-11,2023,Q3,Jul,7,Asia-Pacific,Australia,Services,Managed IT,Enterprise,Partner,Rep_12,7750.23,34,4608.39,3141.84,40.5,False
+2023-07-12,2023,Q3,Jul,7,Latin America,Argentina,Hardware,Server X1,SMB,Direct,Rep_10,2186.0,7,1089.85,1096.15,50.1,False
+2023-07-12,2023,Q3,Jul,7,Asia-Pacific,Australia,Consulting,Migration,Mid-Market,Online,Rep_16,18434.5,26,7012.32,11422.18,62.0,False
+2023-07-13,2023,Q3,Jul,7,Asia-Pacific,Japan,Consulting,Strategy,Enterprise,Reseller,Rep_17,43905.46,16,24687.45,19218.01,43.8,True
+2023-07-13,2023,Q3,Jul,7,Middle East & Africa,Saudi Arabia,Hardware,Workstation Z,SMB,Partner,Rep_05,9207.9,35,5112.36,4095.54,44.5,True
+2023-07-13,2023,Q3,Jul,7,Europe,UK,Consulting,Migration,Enterprise,Direct,Rep_03,52179.71,10,29861.96,22317.75,42.8,True
+2023-07-14,2023,Q3,Jul,7,Middle East & Africa,Saudi Arabia,Hardware,Workstation Z,Enterprise,Online,Rep_17,20863.32,13,11892.59,8970.73,43.0,True
+2023-07-14,2023,Q3,Jul,7,North America,Canada,Services,Deployment,Enterprise,Direct,Rep_05,13953.9,28,5141.18,8812.72,63.2,True
+2023-07-16,2023,Q3,Jul,7,North America,Mexico,Hardware,Network Hub,Enterprise,Direct,Rep_10,23551.31,14,11921.82,11629.49,49.4,True
+2023-07-16,2023,Q3,Jul,7,North America,USA,Hardware,Workstation Z,SMB,Partner,Rep_20,4046.55,46,2593.43,1453.12,35.9,True
+2023-07-17,2023,Q3,Jul,7,Europe,Netherlands,Software,CRM Suite,Mid-Market,Partner,Rep_10,8653.97,43,5532.18,3121.79,36.1,False
+2023-07-17,2023,Q3,Jul,7,North America,Canada,Software,Security Shield,Enterprise,Direct,Rep_01,25247.62,36,13844.26,11403.36,45.2,False
+2023-07-18,2023,Q3,Jul,7,Latin America,Argentina,Software,DevTools,Mid-Market,Reseller,Rep_15,3435.18,37,1664.1,1771.08,51.6,True
+2023-07-18,2023,Q3,Jul,7,Asia-Pacific,Japan,Cloud,Serverless,SMB,Partner,Rep_11,2459.96,32,1451.24,1008.72,41.0,True
+2023-07-18,2023,Q3,Jul,7,Europe,Germany,Software,Analytics Pro,SMB,Online,Rep_02,3093.62,33,1881.45,1212.17,39.2,True
+2023-07-19,2023,Q3,Jul,7,North America,Canada,Cloud,Serverless,Enterprise,Partner,Rep_07,9210.38,22,3801.15,5409.23,58.7,True
+2023-07-19,2023,Q3,Jul,7,Europe,Germany,Services,Managed IT,Mid-Market,Online,Rep_03,6373.22,42,2996.85,3376.37,53.0,False
+2023-07-19,2023,Q3,Jul,7,Europe,UK,Software,Analytics Pro,Enterprise,Direct,Rep_11,20980.94,11,10336.03,10644.91,50.7,False
+2023-07-20,2023,Q3,Jul,7,Europe,Sweden,Hardware,Workstation Z,SMB,Reseller,Rep_05,5597.06,2,2562.21,3034.85,54.2,True
+2023-07-20,2023,Q3,Jul,7,Middle East & Africa,South Africa,Hardware,Workstation Z,SMB,Reseller,Rep_14,2254.21,32,1082.11,1172.1,52.0,True
+2023-07-20,2023,Q3,Jul,7,Latin America,Argentina,Consulting,Audit,Mid-Market,Direct,Rep_10,19116.26,28,9628.99,9487.27,49.6,False
+2023-07-20,2023,Q3,Jul,7,Middle East & Africa,UAE,Consulting,Strategy,SMB,Online,Rep_15,10875.16,29,6901.89,3973.27,36.5,True
+2023-07-20,2023,Q3,Jul,7,Latin America,Chile,Consulting,Migration,SMB,Partner,Rep_10,6322.71,2,2524.08,3798.63,60.1,True
+2023-07-21,2023,Q3,Jul,7,Latin America,Chile,Services,Deployment,Mid-Market,Reseller,Rep_20,8457.54,31,4719.53,3738.01,44.2,True
+2023-07-21,2023,Q3,Jul,7,Europe,Netherlands,Software,DevTools,Enterprise,Online,Rep_08,12716.27,10,7386.05,5330.22,41.9,True
+2023-07-21,2023,Q3,Jul,7,Latin America,Chile,Hardware,NAS Storage,Enterprise,Online,Rep_18,14797.13,32,8315.81,6481.32,43.8,True
+2023-07-21,2023,Q3,Jul,7,North America,Mexico,Cloud,Kubernetes,Mid-Market,Online,Rep_08,3696.51,7,1305.48,2391.03,64.7,True
+2023-07-22,2023,Q3,Jul,7,North America,Canada,Software,Security Shield,Mid-Market,Partner,Rep_13,7695.34,7,2864.67,4830.67,62.8,False
+2023-07-22,2023,Q3,Jul,7,Europe,Germany,Services,Deployment,Enterprise,Partner,Rep_09,6192.15,35,3040.62,3151.53,50.9,True
+2023-07-22,2023,Q3,Jul,7,Latin America,Chile,Software,DevTools,SMB,Reseller,Rep_19,2181.15,16,925.57,1255.58,57.6,False
+2023-07-22,2023,Q3,Jul,7,Middle East & Africa,Saudi Arabia,Hardware,Network Hub,SMB,Partner,Rep_08,7876.86,33,4857.05,3019.81,38.3,True
+2023-07-23,2023,Q3,Jul,7,Europe,France,Hardware,Workstation Z,SMB,Online,Rep_09,3843.66,36,1594.4,2249.26,58.5,False
+2023-07-24,2023,Q3,Jul,7,Latin America,Argentina,Consulting,Strategy,Enterprise,Reseller,Rep_04,38736.9,44,23850.23,14886.67,38.4,True
+2023-07-24,2023,Q3,Jul,7,Middle East & Africa,Saudi Arabia,Software,DevTools,Mid-Market,Partner,Rep_13,8739.62,45,5013.11,3726.51,42.6,True
+2023-07-25,2023,Q3,Jul,7,Latin America,Chile,Hardware,Server X1,SMB,Direct,Rep_02,5960.78,10,3712.11,2248.67,37.7,False
+2023-07-25,2023,Q3,Jul,7,Europe,Germany,Software,DevTools,Mid-Market,Online,Rep_04,8443.11,11,3981.98,4461.13,52.8,True
+2023-07-25,2023,Q3,Jul,7,Asia-Pacific,India,Cloud,Kubernetes,Enterprise,Reseller,Rep_09,8485.12,41,3487.96,4997.16,58.9,True
+2023-07-26,2023,Q3,Jul,7,North America,Canada,Services,Training,Enterprise,Reseller,Rep_16,7961.46,13,3620.74,4340.72,54.5,True
+2023-07-27,2023,Q3,Jul,7,North America,Canada,Consulting,Migration,Mid-Market,Online,Rep_05,12116.04,44,5136.04,6980.0,57.6,True
+2023-07-28,2023,Q3,Jul,7,North America,Mexico,Services,Managed IT,Enterprise,Online,Rep_11,7646.33,3,4206.24,3440.09,45.0,True
+2023-07-29,2023,Q3,Jul,7,Latin America,Chile,Cloud,Serverless,Mid-Market,Reseller,Rep_14,2759.04,29,1092.04,1667.0,60.4,True
+2023-07-29,2023,Q3,Jul,7,North America,USA,Cloud,Kubernetes,SMB,Direct,Rep_01,747.53,43,342.42,405.11,54.2,False
+2023-07-29,2023,Q3,Jul,7,Middle East & Africa,Nigeria,Consulting,Audit,SMB,Direct,Rep_16,6578.26,21,2600.3,3977.96,60.5,True
+2023-07-29,2023,Q3,Jul,7,Asia-Pacific,South Korea,Cloud,Serverless,Mid-Market,Online,Rep_06,4116.59,11,2345.76,1770.83,43.0,False
+2023-07-31,2023,Q3,Jul,7,Asia-Pacific,South Korea,Cloud,Kubernetes,Mid-Market,Partner,Rep_04,2202.09,12,1148.22,1053.87,47.9,True
+2023-07-31,2023,Q3,Jul,7,North America,Canada,Cloud,Cloud Storage,Mid-Market,Online,Rep_20,3891.1,22,1437.14,2453.96,63.1,True
+2023-08-01,2023,Q3,Aug,8,Latin America,Brazil,Services,Deployment,Enterprise,Online,Rep_13,11424.75,27,4081.12,7343.63,64.3,False
+2023-08-01,2023,Q3,Aug,8,Asia-Pacific,South Korea,Consulting,Migration,SMB,Partner,Rep_18,10974.1,16,6873.12,4100.98,37.4,False
+2023-08-02,2023,Q3,Aug,8,North America,USA,Cloud,Cloud Compute,Enterprise,Partner,Rep_03,5394.43,43,2093.51,3300.92,61.2,True
+2023-08-02,2023,Q3,Aug,8,Latin America,Argentina,Software,Analytics Pro,Mid-Market,Direct,Rep_07,6886.23,45,4371.2,2515.03,36.5,True
+2023-08-03,2023,Q3,Aug,8,Latin America,Brazil,Consulting,Digital Transform,Enterprise,Partner,Rep_08,64714.28,50,29976.86,34737.42,53.7,True
+2023-08-03,2023,Q3,Aug,8,North America,Mexico,Cloud,Kubernetes,Enterprise,Online,Rep_18,7790.2,39,3259.01,4531.19,58.2,True
+2023-08-03,2023,Q3,Aug,8,Middle East & Africa,South Africa,Consulting,Strategy,Enterprise,Online,Rep_06,27987.75,50,11040.75,16947.0,60.6,False
+2023-08-04,2023,Q3,Aug,8,North America,Canada,Cloud,Kubernetes,SMB,Direct,Rep_16,1003.72,5,430.48,573.24,57.1,True
+2023-08-04,2023,Q3,Aug,8,North America,USA,Software,DevTools,Mid-Market,Direct,Rep_05,8313.85,15,4256.09,4057.76,48.8,True
+2023-08-06,2023,Q3,Aug,8,Latin America,Brazil,Consulting,Migration,Enterprise,Partner,Rep_13,71473.78,41,33387.08,38086.7,53.3,True
+2023-08-06,2023,Q3,Aug,8,Asia-Pacific,Singapore,Cloud,Kubernetes,Enterprise,Reseller,Rep_16,8012.09,5,3700.34,4311.75,53.8,True
+2023-08-06,2023,Q3,Aug,8,Latin America,Chile,Services,Managed IT,Enterprise,Partner,Rep_15,7970.12,32,5006.59,2963.53,37.2,True
+2023-08-07,2023,Q3,Aug,8,Europe,UK,Software,CRM Suite,Mid-Market,Online,Rep_13,13413.43,46,4812.29,8601.14,64.1,True
+2023-08-07,2023,Q3,Aug,8,Latin America,Argentina,Consulting,Strategy,SMB,Partner,Rep_11,5746.5,43,2891.88,2854.62,49.7,True
+2023-08-08,2023,Q3,Aug,8,Latin America,Chile,Services,24/7 Support,Mid-Market,Direct,Rep_10,9118.08,48,5464.11,3653.97,40.1,False
+2023-08-09,2023,Q3,Aug,8,Middle East & Africa,South Africa,Cloud,Kubernetes,Enterprise,Online,Rep_12,8577.19,32,5206.3,3370.89,39.3,True
+2023-08-09,2023,Q3,Aug,8,Europe,Netherlands,Hardware,Server X1,Enterprise,Online,Rep_13,35084.81,20,16862.47,18222.34,51.9,True
+2023-08-11,2023,Q3,Aug,8,Middle East & Africa,South Africa,Cloud,Serverless,SMB,Direct,Rep_10,795.9,22,384.57,411.33,51.7,False
+2023-08-12,2023,Q3,Aug,8,Europe,Netherlands,Hardware,NAS Storage,SMB,Reseller,Rep_12,2028.83,32,923.48,1105.35,54.5,True
+2023-08-13,2023,Q3,Aug,8,North America,Canada,Cloud,Kubernetes,Enterprise,Partner,Rep_04,7657.54,50,4537.6,3119.94,40.7,True
+2023-08-13,2023,Q3,Aug,8,Latin America,Brazil,Consulting,Migration,Enterprise,Reseller,Rep_10,86716.92,31,33177.16,53539.76,61.7,False
+2023-08-13,2023,Q3,Aug,8,Middle East & Africa,UAE,Software,Security Shield,Mid-Market,Partner,Rep_17,12472.49,23,6898.26,5574.23,44.7,False
+2023-08-13,2023,Q3,Aug,8,Europe,Netherlands,Software,CRM Suite,Mid-Market,Partner,Rep_01,8721.78,32,4353.76,4368.02,50.1,False
+2023-08-14,2023,Q3,Aug,8,North America,Canada,Software,DevTools,Mid-Market,Online,Rep_09,10145.8,22,6582.47,3563.33,35.1,False
+2023-08-14,2023,Q3,Aug,8,Asia-Pacific,Singapore,Services,Training,Enterprise,Reseller,Rep_09,6978.84,5,2817.75,4161.09,59.6,True
+2023-08-14,2023,Q3,Aug,8,Asia-Pacific,India,Consulting,Digital Transform,Mid-Market,Reseller,Rep_07,17724.86,12,9832.13,7892.73,44.5,True
+2023-08-14,2023,Q3,Aug,8,North America,USA,Consulting,Strategy,Enterprise,Partner,Rep_09,49385.77,42,20620.22,28765.55,58.2,True
+2023-08-15,2023,Q3,Aug,8,Europe,France,Consulting,Strategy,Enterprise,Partner,Rep_16,62046.72,13,36459.88,25586.84,41.2,False
+2023-08-16,2023,Q3,Aug,8,Middle East & Africa,Nigeria,Hardware,Server X1,Enterprise,Direct,Rep_18,30866.75,31,19152.28,11714.47,38.0,True
+2023-08-16,2023,Q3,Aug,8,Latin America,Brazil,Services,24/7 Support,SMB,Direct,Rep_16,1774.98,9,783.96,991.02,55.8,True
+2023-08-17,2023,Q3,Aug,8,Latin America,Chile,Hardware,NAS Storage,Enterprise,Partner,Rep_07,18833.7,37,8374.64,10459.06,55.5,False
+2023-08-17,2023,Q3,Aug,8,North America,Canada,Consulting,Strategy,Mid-Market,Partner,Rep_18,15799.25,17,7281.9,8517.35,53.9,True
+2023-08-17,2023,Q3,Aug,8,North America,Canada,Hardware,Workstation Z,Enterprise,Online,Rep_05,24732.0,48,11557.21,13174.79,53.3,False
+2023-08-17,2023,Q3,Aug,8,Europe,France,Cloud,Cloud Compute,Enterprise,Online,Rep_14,7182.88,10,3804.24,3378.64,47.0,True
+2023-08-18,2023,Q3,Aug,8,Europe,Sweden,Software,Security Shield,Mid-Market,Online,Rep_09,4286.52,9,2292.17,1994.35,46.5,False
+2023-08-19,2023,Q3,Aug,8,Middle East & Africa,Nigeria,Hardware,NAS Storage,SMB,Direct,Rep_15,6246.58,33,3733.69,2512.89,40.2,True
+2023-08-20,2023,Q3,Aug,8,Asia-Pacific,Australia,Hardware,Server X1,Enterprise,Online,Rep_20,27384.73,12,9799.88,17584.85,64.2,True
+2023-08-21,2023,Q3,Aug,8,Middle East & Africa,Saudi Arabia,Hardware,Workstation Z,SMB,Online,Rep_09,11528.22,34,4907.86,6620.36,57.4,True
+2023-08-21,2023,Q3,Aug,8,Middle East & Africa,Nigeria,Hardware,NAS Storage,SMB,Online,Rep_19,3601.1,36,1783.01,1818.09,50.5,True
+2023-08-21,2023,Q3,Aug,8,North America,USA,Services,Managed IT,Mid-Market,Partner,Rep_14,2773.81,3,1582.42,1191.39,43.0,False
+2023-08-22,2023,Q3,Aug,8,North America,USA,Software,CRM Suite,Enterprise,Partner,Rep_07,16424.75,28,9649.18,6775.57,41.3,False
+2023-08-22,2023,Q3,Aug,8,Middle East & Africa,Saudi Arabia,Consulting,Audit,Mid-Market,Online,Rep_08,41567.83,28,16651.73,24916.1,59.9,True
+2023-08-22,2023,Q3,Aug,8,Middle East & Africa,Nigeria,Cloud,Cloud Compute,Enterprise,Direct,Rep_01,3995.5,35,2059.65,1935.85,48.5,True
+2023-08-22,2023,Q3,Aug,8,Europe,Sweden,Hardware,NAS Storage,SMB,Partner,Rep_10,3078.32,46,1684.11,1394.21,45.3,True
+2023-08-23,2023,Q3,Aug,8,Europe,Germany,Software,CRM Suite,Enterprise,Reseller,Rep_01,21323.57,35,11353.56,9970.01,46.8,True
+2023-08-24,2023,Q3,Aug,8,North America,Canada,Services,Deployment,Mid-Market,Online,Rep_10,5091.69,30,2775.23,2316.46,45.5,True
+2023-08-25,2023,Q3,Aug,8,Middle East & Africa,Nigeria,Hardware,Workstation Z,Enterprise,Direct,Rep_07,20686.61,3,9644.83,11041.78,53.4,False
+2023-08-25,2023,Q3,Aug,8,Europe,France,Cloud,Cloud Compute,SMB,Partner,Rep_05,855.16,16,378.27,476.89,55.8,True
+2023-08-25,2023,Q3,Aug,8,Europe,Netherlands,Cloud,Cloud Compute,Enterprise,Direct,Rep_03,10641.37,40,4524.13,6117.24,57.5,True
+2023-08-25,2023,Q3,Aug,8,Europe,Netherlands,Hardware,Network Hub,Mid-Market,Online,Rep_03,10573.42,38,4314.08,6259.34,59.2,False
+2023-08-26,2023,Q3,Aug,8,Latin America,Chile,Consulting,Migration,Enterprise,Partner,Rep_06,64926.11,31,38086.89,26839.22,41.3,True
+2023-08-26,2023,Q3,Aug,8,Europe,Sweden,Cloud,Cloud Storage,Enterprise,Partner,Rep_14,5258.2,7,2362.66,2895.54,55.1,True
+2023-08-26,2023,Q3,Aug,8,Europe,UK,Services,Training,Mid-Market,Online,Rep_08,7262.54,18,3083.89,4178.65,57.5,True
+2023-08-26,2023,Q3,Aug,8,Latin America,Colombia,Cloud,Cloud Compute,Mid-Market,Online,Rep_09,3767.91,15,1892.5,1875.41,49.8,True
+2023-08-27,2023,Q3,Aug,8,Latin America,Argentina,Services,Managed IT,Mid-Market,Online,Rep_09,5814.85,43,2961.3,2853.55,49.1,False
+2023-08-27,2023,Q3,Aug,8,North America,Mexico,Hardware,Workstation Z,SMB,Online,Rep_20,6222.05,8,2180.33,4041.72,65.0,True
+2023-08-27,2023,Q3,Aug,8,Asia-Pacific,Australia,Consulting,Digital Transform,SMB,Online,Rep_01,6407.08,43,3056.32,3350.76,52.3,True
+2023-08-28,2023,Q3,Aug,8,North America,USA,Hardware,Server X1,SMB,Reseller,Rep_16,3984.15,6,1719.68,2264.47,56.8,True
+2023-08-28,2023,Q3,Aug,8,Asia-Pacific,South Korea,Cloud,Kubernetes,Enterprise,Online,Rep_08,4711.75,15,1966.91,2744.84,58.3,False
+2023-08-30,2023,Q3,Aug,8,North America,Canada,Hardware,Workstation Z,SMB,Online,Rep_13,9461.19,38,4572.3,4888.89,51.7,True
+2023-08-30,2023,Q3,Aug,8,Latin America,Argentina,Consulting,Audit,SMB,Direct,Rep_03,3841.99,32,1875.13,1966.86,51.2,False
+2023-08-30,2023,Q3,Aug,8,North America,Canada,Software,Analytics Pro,Mid-Market,Direct,Rep_01,8345.51,32,4605.4,3740.11,44.8,False
+2023-08-31,2023,Q3,Aug,8,Latin America,Colombia,Cloud,Kubernetes,Mid-Market,Partner,Rep_01,4356.41,2,1935.83,2420.58,55.6,False
+2023-09-01,2023,Q3,Sep,9,North America,USA,Cloud,Cloud Storage,SMB,Reseller,Rep_17,1323.54,35,791.82,531.72,40.2,True
+2023-09-01,2023,Q3,Sep,9,Latin America,Colombia,Services,Training,Enterprise,Reseller,Rep_16,7131.95,13,2602.43,4529.52,63.5,False
+2023-09-02,2023,Q3,Sep,9,Asia-Pacific,South Korea,Cloud,Serverless,Mid-Market,Online,Rep_20,6880.67,20,2801.61,4079.06,59.3,False
+2023-09-02,2023,Q3,Sep,9,Asia-Pacific,South Korea,Software,CRM Suite,SMB,Direct,Rep_08,2852.79,43,1682.24,1170.55,41.0,False
+2023-09-02,2023,Q3,Sep,9,Europe,Sweden,Cloud,Kubernetes,Mid-Market,Direct,Rep_17,2288.16,32,1344.97,943.19,41.2,True
+2023-09-03,2023,Q3,Sep,9,North America,USA,Hardware,Network Hub,Mid-Market,Partner,Rep_13,9468.3,31,4169.94,5298.36,56.0,True
+2023-09-03,2023,Q3,Sep,9,North America,Mexico,Cloud,Kubernetes,SMB,Reseller,Rep_05,1089.62,47,382.57,707.05,64.9,True
+2023-09-03,2023,Q3,Sep,9,Europe,Netherlands,Consulting,Strategy,Mid-Market,Direct,Rep_13,19714.53,7,7701.42,12013.11,60.9,True
+2023-09-03,2023,Q3,Sep,9,Europe,France,Hardware,NAS Storage,SMB,Partner,Rep_15,2373.37,35,1224.35,1149.02,48.4,True
+2023-09-03,2023,Q3,Sep,9,Asia-Pacific,Singapore,Cloud,Cloud Storage,SMB,Direct,Rep_04,1176.49,47,554.36,622.13,52.9,False
+2023-09-03,2023,Q3,Sep,9,Europe,Sweden,Software,DevTools,SMB,Online,Rep_03,3328.65,14,1602.87,1725.78,51.8,True
+2023-09-04,2023,Q3,Sep,9,North America,Canada,Hardware,NAS Storage,Enterprise,Direct,Rep_13,29692.37,17,19047.1,10645.27,35.9,True
+2023-09-04,2023,Q3,Sep,9,Asia-Pacific,Singapore,Software,DevTools,Mid-Market,Reseller,Rep_03,10062.89,3,4363.98,5698.91,56.6,False
+2023-09-05,2023,Q3,Sep,9,North America,USA,Services,Deployment,Mid-Market,Online,Rep_20,5751.64,12,3428.44,2323.2,40.4,True
+2023-09-06,2023,Q3,Sep,9,Asia-Pacific,Japan,Consulting,Migration,SMB,Online,Rep_15,4406.31,23,1777.52,2628.79,59.7,True
+2023-09-06,2023,Q3,Sep,9,Latin America,Argentina,Software,CRM Suite,Enterprise,Reseller,Rep_12,22476.44,49,8697.19,13779.25,61.3,True
+2023-09-07,2023,Q3,Sep,9,Europe,Germany,Software,Security Shield,Enterprise,Partner,Rep_02,22341.26,29,10219.48,12121.78,54.3,True
+2023-09-09,2023,Q3,Sep,9,North America,Mexico,Consulting,Strategy,Mid-Market,Partner,Rep_08,10231.29,23,5813.56,4417.73,43.2,False
+2023-09-10,2023,Q3,Sep,9,North America,Mexico,Consulting,Audit,Mid-Market,Online,Rep_11,21500.52,26,13238.62,8261.9,38.4,True
+2023-09-11,2023,Q3,Sep,9,Latin America,Brazil,Consulting,Audit,Enterprise,Reseller,Rep_02,49272.14,42,26859.56,22412.58,45.5,True
+2023-09-11,2023,Q3,Sep,9,Latin America,Argentina,Hardware,Server X1,SMB,Direct,Rep_10,3992.27,50,2527.43,1464.84,36.7,False
+2023-09-12,2023,Q3,Sep,9,Latin America,Argentina,Consulting,Audit,Mid-Market,Direct,Rep_04,15034.47,27,8152.76,6881.71,45.8,True
+2023-09-13,2023,Q3,Sep,9,Middle East & Africa,Saudi Arabia,Services,Training,Enterprise,Partner,Rep_16,11573.42,10,7163.37,4410.05,38.1,True
+2023-09-13,2023,Q3,Sep,9,Europe,Germany,Services,Managed IT,SMB,Direct,Rep_20,2676.75,18,1394.39,1282.36,47.9,True
+2023-09-13,2023,Q3,Sep,9,Middle East & Africa,UAE,Cloud,Kubernetes,Enterprise,Partner,Rep_02,6860.74,47,2984.35,3876.39,56.5,False
+2023-09-13,2023,Q3,Sep,9,Asia-Pacific,South Korea,Cloud,Cloud Compute,Enterprise,Direct,Rep_12,5560.32,29,2336.1,3224.22,58.0,True
+2023-09-14,2023,Q3,Sep,9,Asia-Pacific,Australia,Software,Analytics Pro,Mid-Market,Online,Rep_09,4322.51,26,2178.71,2143.8,49.6,True
+2023-09-14,2023,Q3,Sep,9,Europe,UK,Software,DevTools,SMB,Direct,Rep_13,2094.31,8,941.47,1152.84,55.0,True
+2023-09-14,2023,Q3,Sep,9,Asia-Pacific,South Korea,Hardware,NAS Storage,Mid-Market,Online,Rep_04,19402.31,35,12468.69,6933.62,35.7,True
+2023-09-14,2023,Q3,Sep,9,Asia-Pacific,Singapore,Consulting,Digital Transform,Mid-Market,Direct,Rep_12,18900.26,15,7173.08,11727.18,62.0,False
+2023-09-16,2023,Q3,Sep,9,Asia-Pacific,South Korea,Consulting,Strategy,SMB,Direct,Rep_02,6981.34,32,4094.49,2886.85,41.4,False
+2023-09-16,2023,Q3,Sep,9,Middle East & Africa,Nigeria,Cloud,Kubernetes,Enterprise,Direct,Rep_12,5727.09,19,2076.76,3650.33,63.7,True
+2023-09-16,2023,Q3,Sep,9,North America,Canada,Cloud,Serverless,Enterprise,Partner,Rep_04,4593.05,37,2814.1,1778.95,38.7,True
+2023-09-17,2023,Q3,Sep,9,Asia-Pacific,India,Services,Managed IT,Mid-Market,Reseller,Rep_13,2415.05,2,850.52,1564.53,64.8,True
+2023-09-17,2023,Q3,Sep,9,Europe,France,Cloud,Cloud Compute,SMB,Reseller,Rep_03,2257.26,9,1414.9,842.36,37.3,True
+2023-09-17,2023,Q3,Sep,9,Middle East & Africa,Saudi Arabia,Software,CRM Suite,SMB,Partner,Rep_15,2894.23,25,1034.94,1859.29,64.2,True
+2023-09-17,2023,Q3,Sep,9,Europe,UK,Software,CRM Suite,Mid-Market,Online,Rep_07,11368.71,31,4490.3,6878.41,60.5,False
+2023-09-18,2023,Q3,Sep,9,North America,Canada,Services,Deployment,SMB,Reseller,Rep_08,2725.91,48,1209.22,1516.69,55.6,True
+2023-09-19,2023,Q3,Sep,9,Latin America,Colombia,Hardware,NAS Storage,Enterprise,Online,Rep_10,59303.77,28,31881.52,27422.25,46.2,True
+2023-09-20,2023,Q3,Sep,9,Latin America,Brazil,Services,Managed IT,Mid-Market,Online,Rep_14,2286.66,31,1305.87,980.79,42.9,True
+2023-09-22,2023,Q3,Sep,9,Asia-Pacific,Australia,Services,24/7 Support,Enterprise,Online,Rep_02,8420.19,7,3315.72,5104.47,60.6,False
+2023-09-23,2023,Q3,Sep,9,Europe,UK,Services,24/7 Support,SMB,Partner,Rep_08,1992.83,8,1085.52,907.31,45.5,True
+2023-09-23,2023,Q3,Sep,9,Latin America,Brazil,Software,Security Shield,Enterprise,Reseller,Rep_10,14677.39,18,8433.91,6243.48,42.5,False
+2023-09-23,2023,Q3,Sep,9,Asia-Pacific,Japan,Services,Deployment,SMB,Direct,Rep_04,2248.53,2,987.65,1260.88,56.1,True
+2023-09-25,2023,Q3,Sep,9,Middle East & Africa,UAE,Software,DevTools,SMB,Online,Rep_06,2666.14,34,1131.49,1534.65,57.6,True
+2023-09-26,2023,Q3,Sep,9,Middle East & Africa,South Africa,Cloud,Cloud Storage,Enterprise,Reseller,Rep_06,6185.61,9,3747.54,2438.07,39.4,True
+2023-09-26,2023,Q3,Sep,9,Middle East & Africa,UAE,Software,Analytics Pro,SMB,Partner,Rep_20,3453.66,13,1644.12,1809.54,52.4,True
+2023-09-27,2023,Q3,Sep,9,Middle East & Africa,UAE,Cloud,Cloud Storage,Mid-Market,Direct,Rep_10,2484.81,31,1440.59,1044.22,42.0,True
+2023-09-27,2023,Q3,Sep,9,North America,Mexico,Cloud,Serverless,Enterprise,Online,Rep_02,9770.05,18,5558.07,4211.98,43.1,False
+2023-09-27,2023,Q3,Sep,9,Latin America,Chile,Consulting,Strategy,Enterprise,Online,Rep_14,75651.54,38,30348.82,45302.72,59.9,True
+2023-09-27,2023,Q3,Sep,9,Asia-Pacific,South Korea,Services,Training,Enterprise,Partner,Rep_01,8892.96,35,4660.04,4232.92,47.6,False
+2023-09-28,2023,Q3,Sep,9,Middle East & Africa,South Africa,Software,Analytics Pro,Enterprise,Partner,Rep_18,17325.69,41,9291.1,8034.59,46.4,False
+2023-09-28,2023,Q3,Sep,9,Asia-Pacific,Japan,Software,Security Shield,Mid-Market,Direct,Rep_14,4957.03,24,3069.69,1887.34,38.1,True
+2023-09-28,2023,Q3,Sep,9,Middle East & Africa,Saudi Arabia,Cloud,Cloud Storage,Enterprise,Direct,Rep_19,7572.46,46,4470.41,3102.05,41.0,True
+2023-09-29,2023,Q3,Sep,9,North America,Mexico,Hardware,Workstation Z,Mid-Market,Reseller,Rep_11,12930.82,40,5352.6,7578.22,58.6,True
+2023-09-29,2023,Q3,Sep,9,Europe,France,Cloud,Kubernetes,Mid-Market,Partner,Rep_14,3119.53,12,1558.61,1560.92,50.0,True
+2023-09-30,2023,Q3,Sep,9,Middle East & Africa,Saudi Arabia,Hardware,Network Hub,Mid-Market,Online,Rep_03,15291.71,43,7412.23,7879.48,51.5,True
+2023-09-30,2023,Q3,Sep,9,Europe,Netherlands,Consulting,Audit,SMB,Online,Rep_10,7093.59,40,3151.75,3941.84,55.6,False
+2023-10-01,2023,Q4,Oct,10,Europe,UK,Cloud,Cloud Compute,Enterprise,Reseller,Rep_17,7359.56,48,2647.21,4712.35,64.0,True
+2023-10-01,2023,Q4,Oct,10,Middle East & Africa,Nigeria,Hardware,Server X1,Mid-Market,Partner,Rep_03,11686.97,6,4112.7,7574.27,64.8,True
+2023-10-03,2023,Q4,Oct,10,Middle East & Africa,UAE,Software,Analytics Pro,Mid-Market,Direct,Rep_03,15414.05,17,9531.76,5882.29,38.2,True
+2023-10-03,2023,Q4,Oct,10,Latin America,Argentina,Services,Managed IT,Enterprise,Direct,Rep_08,21551.6,30,13208.09,8343.51,38.7,False
+2023-10-03,2023,Q4,Oct,10,Europe,France,Hardware,Server X1,Enterprise,Partner,Rep_01,28587.88,36,17199.53,11388.35,39.8,True
+2023-10-03,2023,Q4,Oct,10,Asia-Pacific,Australia,Hardware,Workstation Z,Enterprise,Partner,Rep_13,25382.23,46,11336.44,14045.79,55.3,True
+2023-10-04,2023,Q4,Oct,10,Middle East & Africa,South Africa,Consulting,Audit,Mid-Market,Reseller,Rep_06,10944.38,32,5959.36,4985.02,45.5,True
+2023-10-04,2023,Q4,Oct,10,Middle East & Africa,UAE,Consulting,Strategy,Mid-Market,Online,Rep_15,16314.83,11,8175.75,8139.08,49.9,False
+2023-10-05,2023,Q4,Oct,10,Asia-Pacific,Japan,Hardware,Server X1,Enterprise,Reseller,Rep_04,20468.83,28,9920.28,10548.55,51.5,False
+2023-10-05,2023,Q4,Oct,10,Latin America,Colombia,Hardware,Server X1,Mid-Market,Partner,Rep_06,10868.83,45,6887.65,3981.18,36.6,False
+2023-10-05,2023,Q4,Oct,10,Middle East & Africa,Nigeria,Consulting,Migration,Mid-Market,Online,Rep_02,14105.53,32,9135.96,4969.57,35.2,True
+2023-10-06,2023,Q4,Oct,10,Middle East & Africa,UAE,Services,Deployment,SMB,Online,Rep_05,1175.56,42,482.31,693.25,59.0,True
+2023-10-06,2023,Q4,Oct,10,Europe,Netherlands,Consulting,Migration,SMB,Online,Rep_15,5146.9,8,2205.62,2941.28,57.1,False
+2023-10-07,2023,Q4,Oct,10,Asia-Pacific,India,Hardware,Server X1,SMB,Online,Rep_13,6372.29,32,2305.99,4066.3,63.8,True
+2023-10-07,2023,Q4,Oct,10,Middle East & Africa,South Africa,Cloud,Kubernetes,Mid-Market,Reseller,Rep_16,2511.54,43,1333.5,1178.04,46.9,True
+2023-10-08,2023,Q4,Oct,10,Latin America,Colombia,Cloud,Kubernetes,Enterprise,Partner,Rep_11,8944.33,18,4433.27,4511.06,50.4,True
+2023-10-09,2023,Q4,Oct,10,North America,Canada,Software,Analytics Pro,Mid-Market,Reseller,Rep_07,8385.47,8,4046.57,4338.9,51.7,False
+2023-10-09,2023,Q4,Oct,10,Asia-Pacific,India,Cloud,Kubernetes,Enterprise,Partner,Rep_04,5393.91,18,2800.92,2592.99,48.1,False
+2023-10-11,2023,Q4,Oct,10,Europe,Sweden,Hardware,NAS Storage,Enterprise,Partner,Rep_06,25999.82,13,15077.8,10922.02,42.0,True
+2023-10-11,2023,Q4,Oct,10,Middle East & Africa,UAE,Consulting,Strategy,SMB,Partner,Rep_18,8243.95,12,4776.6,3467.35,42.1,True
+2023-10-12,2023,Q4,Oct,10,North America,USA,Hardware,Network Hub,Enterprise,Partner,Rep_19,34397.37,13,17468.97,16928.4,49.2,True
+2023-10-12,2023,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Hardware,NAS Storage,Mid-Market,Partner,Rep_03,22317.42,6,11630.64,10686.78,47.9,True
+2023-10-13,2023,Q4,Oct,10,Asia-Pacific,Singapore,Consulting,Strategy,SMB,Reseller,Rep_15,7482.22,47,3013.16,4469.06,59.7,True
+2023-10-13,2023,Q4,Oct,10,Asia-Pacific,India,Hardware,Workstation Z,SMB,Online,Rep_05,6922.5,18,4360.53,2561.97,37.0,False
+2023-10-13,2023,Q4,Oct,10,Asia-Pacific,South Korea,Cloud,Kubernetes,Enterprise,Partner,Rep_12,13088.94,26,4782.01,8306.93,63.5,True
+2023-10-13,2023,Q4,Oct,10,Middle East & Africa,South Africa,Services,24/7 Support,Mid-Market,Partner,Rep_08,3610.89,28,2258.32,1352.57,37.5,False
+2023-10-13,2023,Q4,Oct,10,Asia-Pacific,Singapore,Cloud,Cloud Compute,SMB,Online,Rep_12,987.24,9,502.4,484.84,49.1,True
+2023-10-14,2023,Q4,Oct,10,North America,Canada,Cloud,Cloud Compute,SMB,Direct,Rep_18,1852.77,17,659.81,1192.96,64.4,False
+2023-10-15,2023,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Hardware,Server X1,Mid-Market,Direct,Rep_04,17699.48,50,8478.4,9221.08,52.1,True
+2023-10-15,2023,Q4,Oct,10,Latin America,Argentina,Software,Security Shield,Mid-Market,Partner,Rep_12,6557.37,16,3510.19,3047.18,46.5,True
+2023-10-16,2023,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Hardware,Workstation Z,SMB,Partner,Rep_08,4694.11,9,2777.2,1916.91,40.8,True
+2023-10-16,2023,Q4,Oct,10,Latin America,Chile,Consulting,Digital Transform,Mid-Market,Direct,Rep_06,12392.17,12,6224.28,6167.89,49.8,True
+2023-10-16,2023,Q4,Oct,10,Asia-Pacific,Australia,Services,Deployment,Enterprise,Reseller,Rep_08,11313.75,36,7258.29,4055.46,35.8,False
+2023-10-17,2023,Q4,Oct,10,Asia-Pacific,South Korea,Cloud,Serverless,Mid-Market,Direct,Rep_15,2101.83,38,737.2,1364.63,64.9,True
+2023-10-17,2023,Q4,Oct,10,Europe,Sweden,Consulting,Digital Transform,Mid-Market,Reseller,Rep_01,21906.03,32,10076.83,11829.2,54.0,True
+2023-10-17,2023,Q4,Oct,10,Latin America,Colombia,Software,DevTools,SMB,Direct,Rep_11,3659.4,29,1361.47,2297.93,62.8,True
+2023-10-17,2023,Q4,Oct,10,Asia-Pacific,South Korea,Software,CRM Suite,SMB,Reseller,Rep_08,3174.97,20,1610.57,1564.4,49.3,True
+2023-10-18,2023,Q4,Oct,10,North America,Canada,Software,Analytics Pro,Enterprise,Partner,Rep_01,14959.67,31,6688.18,8271.49,55.3,False
+2023-10-19,2023,Q4,Oct,10,North America,Mexico,Software,Analytics Pro,Mid-Market,Direct,Rep_09,5635.93,21,2305.78,3330.15,59.1,True
+2023-10-19,2023,Q4,Oct,10,Latin America,Colombia,Cloud,Cloud Storage,SMB,Partner,Rep_18,1237.72,12,609.53,628.19,50.8,True
+2023-10-20,2023,Q4,Oct,10,Europe,France,Consulting,Migration,Enterprise,Direct,Rep_04,79886.58,46,38617.17,41269.41,51.7,False
+2023-10-21,2023,Q4,Oct,10,North America,Mexico,Hardware,Server X1,Mid-Market,Direct,Rep_03,11111.3,25,6134.57,4976.73,44.8,False
+2023-10-21,2023,Q4,Oct,10,Latin America,Colombia,Software,Security Shield,Enterprise,Reseller,Rep_03,17238.53,21,8437.35,8801.18,51.1,True
+2023-10-21,2023,Q4,Oct,10,North America,USA,Software,Security Shield,SMB,Partner,Rep_15,6842.91,31,4010.65,2832.26,41.4,True
+2023-10-23,2023,Q4,Oct,10,Latin America,Chile,Software,Analytics Pro,Mid-Market,Online,Rep_06,13846.03,21,6314.64,7531.39,54.4,True
+2023-10-23,2023,Q4,Oct,10,Latin America,Chile,Hardware,Server X1,Enterprise,Online,Rep_04,63732.04,2,22616.33,41115.71,64.5,False
+2023-10-24,2023,Q4,Oct,10,Middle East & Africa,UAE,Consulting,Migration,Enterprise,Online,Rep_11,33427.24,22,18119.34,15307.9,45.8,True
+2023-10-24,2023,Q4,Oct,10,North America,USA,Software,Security Shield,SMB,Partner,Rep_11,2783.82,48,1726.2,1057.62,38.0,True
+2023-10-24,2023,Q4,Oct,10,North America,Canada,Services,Deployment,SMB,Online,Rep_14,3458.21,34,1829.09,1629.12,47.1,True
+2023-10-26,2023,Q4,Oct,10,Europe,UK,Services,Managed IT,Enterprise,Reseller,Rep_05,13882.99,12,6242.44,7640.55,55.0,True
+2023-10-26,2023,Q4,Oct,10,Europe,Netherlands,Software,Security Shield,Enterprise,Reseller,Rep_20,36328.58,5,23100.8,13227.78,36.4,False
+2023-10-26,2023,Q4,Oct,10,Europe,Sweden,Cloud,Serverless,Mid-Market,Reseller,Rep_16,4823.14,42,2029.2,2793.94,57.9,True
+2023-10-26,2023,Q4,Oct,10,Latin America,Argentina,Consulting,Digital Transform,Enterprise,Online,Rep_07,27255.27,9,12601.67,14653.6,53.8,False
+2023-10-26,2023,Q4,Oct,10,Asia-Pacific,Singapore,Cloud,Cloud Storage,Enterprise,Partner,Rep_10,5689.38,18,2943.83,2745.55,48.3,True
+2023-10-27,2023,Q4,Oct,10,North America,Canada,Hardware,NAS Storage,Enterprise,Online,Rep_03,31560.98,34,15694.71,15866.27,50.3,True
+2023-10-28,2023,Q4,Oct,10,Latin America,Argentina,Consulting,Digital Transform,Mid-Market,Reseller,Rep_20,35042.5,25,17144.99,17897.51,51.1,True
+2023-10-28,2023,Q4,Oct,10,Asia-Pacific,Singapore,Software,Analytics Pro,SMB,Partner,Rep_06,2644.56,25,1207.09,1437.47,54.4,False
+2023-10-28,2023,Q4,Oct,10,Asia-Pacific,South Korea,Software,CRM Suite,SMB,Reseller,Rep_19,1696.75,39,851.97,844.78,49.8,True
+2023-10-28,2023,Q4,Oct,10,North America,USA,Services,Managed IT,SMB,Online,Rep_05,2236.93,11,1028.85,1208.08,54.0,True
+2023-10-29,2023,Q4,Oct,10,North America,Mexico,Cloud,Serverless,SMB,Direct,Rep_17,839.02,38,538.86,300.16,35.8,True
+2023-10-30,2023,Q4,Oct,10,North America,Mexico,Cloud,Kubernetes,SMB,Reseller,Rep_09,2166.12,2,779.12,1387.0,64.0,False
+2023-10-30,2023,Q4,Oct,10,Latin America,Chile,Services,Deployment,SMB,Reseller,Rep_02,1212.09,40,512.99,699.1,57.7,False
+2023-10-30,2023,Q4,Oct,10,Middle East & Africa,Saudi Arabia,Consulting,Strategy,SMB,Reseller,Rep_16,3447.78,33,1471.81,1975.97,57.3,True
+2023-10-30,2023,Q4,Oct,10,Europe,Netherlands,Services,Deployment,SMB,Reseller,Rep_04,2014.12,43,924.46,1089.66,54.1,False
+2023-11-01,2023,Q4,Nov,11,Europe,UK,Services,Training,Enterprise,Online,Rep_06,6374.22,7,2964.43,3409.79,53.5,False
+2023-11-01,2023,Q4,Nov,11,Middle East & Africa,South Africa,Cloud,Cloud Storage,Enterprise,Direct,Rep_15,10237.73,12,4002.82,6234.91,60.9,True
+2023-11-02,2023,Q4,Nov,11,Latin America,Colombia,Hardware,Network Hub,Mid-Market,Online,Rep_10,10192.75,10,3580.59,6612.16,64.9,True
+2023-11-02,2023,Q4,Nov,11,Europe,Netherlands,Services,Managed IT,SMB,Partner,Rep_04,951.79,22,550.97,400.82,42.1,True
+2023-11-02,2023,Q4,Nov,11,Latin America,Chile,Cloud,Serverless,SMB,Reseller,Rep_16,1054.69,49,421.43,633.26,60.0,True
+2023-11-03,2023,Q4,Nov,11,North America,Canada,Cloud,Kubernetes,SMB,Online,Rep_13,1187.34,27,560.99,626.35,52.8,False
+2023-11-03,2023,Q4,Nov,11,Middle East & Africa,UAE,Services,Deployment,Enterprise,Online,Rep_14,6382.2,28,2894.6,3487.6,54.6,True
+2023-11-05,2023,Q4,Nov,11,Middle East & Africa,South Africa,Services,Deployment,SMB,Reseller,Rep_07,1025.11,24,546.96,478.15,46.6,True
+2023-11-05,2023,Q4,Nov,11,Latin America,Argentina,Consulting,Audit,Mid-Market,Direct,Rep_14,41308.61,22,18347.36,22961.25,55.6,True
+2023-11-06,2023,Q4,Nov,11,Asia-Pacific,India,Consulting,Migration,Enterprise,Partner,Rep_09,17343.46,2,10186.96,7156.5,41.3,True
+2023-11-06,2023,Q4,Nov,11,Europe,UK,Hardware,Network Hub,SMB,Online,Rep_08,4959.71,14,1952.21,3007.5,60.6,True
+2023-11-06,2023,Q4,Nov,11,Asia-Pacific,South Korea,Software,CRM Suite,Mid-Market,Direct,Rep_18,5984.69,49,2969.93,3014.76,50.4,True
+2023-11-06,2023,Q4,Nov,11,Europe,Sweden,Hardware,NAS Storage,Enterprise,Online,Rep_18,21097.12,31,8193.77,12903.35,61.2,True
+2023-11-07,2023,Q4,Nov,11,Europe,UK,Services,Training,SMB,Reseller,Rep_12,760.66,29,326.6,434.06,57.1,True
+2023-11-07,2023,Q4,Nov,11,Latin America,Colombia,Software,Security Shield,Enterprise,Reseller,Rep_19,12931.43,45,6818.63,6112.8,47.3,True
+2023-11-07,2023,Q4,Nov,11,Europe,Sweden,Consulting,Strategy,Enterprise,Partner,Rep_20,52498.98,32,21416.85,31082.13,59.2,True
+2023-11-07,2023,Q4,Nov,11,Latin America,Chile,Software,Analytics Pro,SMB,Direct,Rep_05,3070.67,16,1461.47,1609.2,52.4,True
+2023-11-08,2023,Q4,Nov,11,North America,USA,Services,Training,Mid-Market,Direct,Rep_06,4736.6,40,2510.39,2226.21,47.0,True
+2023-11-08,2023,Q4,Nov,11,Asia-Pacific,Australia,Hardware,Network Hub,Enterprise,Partner,Rep_03,22197.84,35,11873.38,10324.46,46.5,True
+2023-11-09,2023,Q4,Nov,11,Middle East & Africa,UAE,Services,Deployment,Enterprise,Reseller,Rep_17,8355.36,10,3919.32,4436.04,53.1,True
+2023-11-09,2023,Q4,Nov,11,Middle East & Africa,UAE,Consulting,Strategy,SMB,Online,Rep_19,9965.12,38,3948.76,6016.36,60.4,False
+2023-11-09,2023,Q4,Nov,11,Asia-Pacific,Japan,Software,Analytics Pro,Mid-Market,Reseller,Rep_04,8906.22,20,5167.95,3738.27,42.0,True
+2023-11-09,2023,Q4,Nov,11,Middle East & Africa,South Africa,Software,Security Shield,SMB,Direct,Rep_10,2749.83,33,1330.0,1419.83,51.6,True
+2023-11-10,2023,Q4,Nov,11,Asia-Pacific,Australia,Software,Security Shield,SMB,Partner,Rep_03,3359.0,22,1605.67,1753.33,52.2,False
+2023-11-10,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Cloud,Cloud Compute,SMB,Online,Rep_03,1177.69,6,509.86,667.83,56.7,True
+2023-11-10,2023,Q4,Nov,11,North America,USA,Consulting,Strategy,Mid-Market,Direct,Rep_05,17316.96,10,7009.92,10307.04,59.5,True
+2023-11-11,2023,Q4,Nov,11,Europe,UK,Consulting,Digital Transform,SMB,Direct,Rep_10,5547.5,12,3135.22,2412.28,43.5,True
+2023-11-11,2023,Q4,Nov,11,North America,Mexico,Hardware,Network Hub,Mid-Market,Online,Rep_06,19234.06,44,12278.33,6955.73,36.2,True
+2023-11-11,2023,Q4,Nov,11,North America,Mexico,Cloud,Cloud Storage,Enterprise,Partner,Rep_05,6729.99,6,3435.63,3294.36,49.0,True
+2023-11-11,2023,Q4,Nov,11,Europe,Sweden,Software,Security Shield,Mid-Market,Partner,Rep_01,8573.58,31,3755.77,4817.81,56.2,True
+2023-11-11,2023,Q4,Nov,11,Europe,France,Hardware,Server X1,Mid-Market,Online,Rep_02,18961.46,24,9022.89,9938.57,52.4,False
+2023-11-12,2023,Q4,Nov,11,Middle East & Africa,UAE,Cloud,Serverless,Enterprise,Online,Rep_15,5497.62,46,2592.72,2904.9,52.8,True
+2023-11-12,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Services,24/7 Support,Enterprise,Direct,Rep_04,13555.77,38,5449.88,8105.89,59.8,False
+2023-11-14,2023,Q4,Nov,11,Europe,Germany,Hardware,Workstation Z,Enterprise,Direct,Rep_15,18876.43,40,10941.13,7935.3,42.0,True
+2023-11-14,2023,Q4,Nov,11,Asia-Pacific,Japan,Consulting,Migration,Mid-Market,Reseller,Rep_15,12454.75,23,5060.67,7394.08,59.4,True
+2023-11-14,2023,Q4,Nov,11,Middle East & Africa,South Africa,Cloud,Cloud Storage,SMB,Partner,Rep_04,952.72,44,590.22,362.5,38.0,True
+2023-11-15,2023,Q4,Nov,11,Europe,Sweden,Software,Security Shield,Mid-Market,Partner,Rep_14,14184.9,38,8102.0,6082.9,42.9,False
+2023-11-15,2023,Q4,Nov,11,Asia-Pacific,India,Services,Deployment,Mid-Market,Direct,Rep_11,5478.58,30,3062.97,2415.61,44.1,False
+2023-11-16,2023,Q4,Nov,11,Latin America,Colombia,Cloud,Serverless,Enterprise,Reseller,Rep_15,6500.96,10,3261.76,3239.2,49.8,False
+2023-11-16,2023,Q4,Nov,11,Asia-Pacific,Australia,Consulting,Digital Transform,SMB,Reseller,Rep_18,5841.2,22,2705.08,3136.12,53.7,True
+2023-11-17,2023,Q4,Nov,11,North America,Canada,Hardware,NAS Storage,Mid-Market,Online,Rep_06,6988.27,16,3220.84,3767.43,53.9,True
+2023-11-17,2023,Q4,Nov,11,Latin America,Brazil,Hardware,Workstation Z,Mid-Market,Online,Rep_09,16965.96,48,8193.43,8772.53,51.7,True
+2023-11-17,2023,Q4,Nov,11,North America,Canada,Hardware,Server X1,Enterprise,Reseller,Rep_12,27787.83,6,18035.56,9752.27,35.1,True
+2023-11-17,2023,Q4,Nov,11,Asia-Pacific,South Korea,Software,Analytics Pro,Mid-Market,Reseller,Rep_18,10154.39,2,4587.2,5567.19,54.8,True
+2023-11-18,2023,Q4,Nov,11,Asia-Pacific,India,Software,DevTools,SMB,Direct,Rep_07,3718.33,5,1346.18,2372.15,63.8,False
+2023-11-18,2023,Q4,Nov,11,Latin America,Brazil,Software,Security Shield,Enterprise,Direct,Rep_13,8501.55,22,4984.74,3516.81,41.4,False
+2023-11-18,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Software,DevTools,Enterprise,Reseller,Rep_05,7902.45,34,4257.11,3645.34,46.1,True
+2023-11-18,2023,Q4,Nov,11,Asia-Pacific,Japan,Software,Security Shield,SMB,Reseller,Rep_13,4749.88,25,2368.32,2381.56,50.1,True
+2023-11-19,2023,Q4,Nov,11,Europe,France,Cloud,Kubernetes,SMB,Online,Rep_08,1477.07,35,521.28,955.79,64.7,False
+2023-11-19,2023,Q4,Nov,11,Asia-Pacific,Japan,Cloud,Kubernetes,SMB,Direct,Rep_08,1557.18,15,1000.01,557.17,35.8,True
+2023-11-20,2023,Q4,Nov,11,Asia-Pacific,Singapore,Software,CRM Suite,Enterprise,Direct,Rep_06,18357.4,49,7014.64,11342.76,61.8,True
+2023-11-20,2023,Q4,Nov,11,North America,Mexico,Software,Analytics Pro,Enterprise,Partner,Rep_10,19326.73,45,7589.76,11736.97,60.7,False
+2023-11-20,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Hardware,NAS Storage,Mid-Market,Partner,Rep_07,9987.69,29,5529.73,4457.96,44.6,True
+2023-11-20,2023,Q4,Nov,11,Europe,Sweden,Hardware,Server X1,Enterprise,Online,Rep_20,18972.24,1,10755.97,8216.27,43.3,False
+2023-11-21,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Services,Managed IT,Mid-Market,Partner,Rep_01,4067.59,49,2440.43,1627.16,40.0,True
+2023-11-22,2023,Q4,Nov,11,Asia-Pacific,Singapore,Services,Deployment,Mid-Market,Online,Rep_10,2818.01,22,1581.13,1236.88,43.9,False
+2023-11-22,2023,Q4,Nov,11,Middle East & Africa,South Africa,Consulting,Migration,Enterprise,Partner,Rep_08,23380.91,3,8390.39,14990.52,64.1,False
+2023-11-22,2023,Q4,Nov,11,Europe,UK,Consulting,Audit,Enterprise,Online,Rep_10,31717.64,15,19476.25,12241.39,38.6,True
+2023-11-23,2023,Q4,Nov,11,Latin America,Chile,Cloud,Kubernetes,Enterprise,Online,Rep_15,7051.76,19,3197.8,3853.96,54.7,True
+2023-11-23,2023,Q4,Nov,11,Europe,Netherlands,Services,Training,SMB,Online,Rep_10,1679.69,16,855.24,824.45,49.1,True
+2023-11-23,2023,Q4,Nov,11,Middle East & Africa,UAE,Hardware,Network Hub,Mid-Market,Reseller,Rep_16,11314.48,47,4344.78,6969.7,61.6,False
+2023-11-24,2023,Q4,Nov,11,Middle East & Africa,UAE,Consulting,Audit,Enterprise,Online,Rep_11,34809.14,12,15036.89,19772.25,56.8,True
+2023-11-24,2023,Q4,Nov,11,North America,Canada,Software,Security Shield,Mid-Market,Partner,Rep_10,6855.13,13,3928.51,2926.62,42.7,True
+2023-11-25,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Software,Security Shield,SMB,Online,Rep_02,2818.88,4,1421.9,1396.98,49.6,False
+2023-11-25,2023,Q4,Nov,11,Asia-Pacific,Australia,Services,Training,Mid-Market,Direct,Rep_17,3134.64,28,1617.44,1517.2,48.4,False
+2023-11-25,2023,Q4,Nov,11,North America,Mexico,Consulting,Strategy,Enterprise,Direct,Rep_06,55744.03,45,29600.59,26143.44,46.9,False
+2023-11-26,2023,Q4,Nov,11,Latin America,Brazil,Consulting,Digital Transform,SMB,Online,Rep_10,12555.57,8,7434.92,5120.65,40.8,False
+2023-11-27,2023,Q4,Nov,11,Middle East & Africa,UAE,Hardware,Network Hub,Mid-Market,Online,Rep_04,9735.87,3,5587.89,4147.98,42.6,True
+2023-11-27,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Cloud,Serverless,SMB,Partner,Rep_06,1488.67,29,692.85,795.82,53.5,True
+2023-11-28,2023,Q4,Nov,11,Latin America,Brazil,Services,Deployment,Enterprise,Partner,Rep_12,11606.58,8,6956.93,4649.65,40.1,True
+2023-11-28,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Consulting,Strategy,SMB,Online,Rep_10,9969.08,25,3996.11,5972.97,59.9,False
+2023-11-29,2023,Q4,Nov,11,Latin America,Colombia,Cloud,Cloud Compute,SMB,Partner,Rep_12,1204.98,36,445.41,759.57,63.0,False
+2023-11-30,2023,Q4,Nov,11,North America,Mexico,Software,CRM Suite,Mid-Market,Partner,Rep_08,5713.85,42,2187.31,3526.54,61.7,True
+2023-11-30,2023,Q4,Nov,11,Middle East & Africa,Saudi Arabia,Cloud,Serverless,Enterprise,Online,Rep_19,6826.68,50,2739.31,4087.37,59.9,True
+2023-11-30,2023,Q4,Nov,11,Middle East & Africa,UAE,Hardware,NAS Storage,Enterprise,Partner,Rep_07,21595.68,21,13198.56,8397.12,38.9,False
+2023-12-01,2023,Q4,Dec,12,Europe,UK,Consulting,Digital Transform,Enterprise,Reseller,Rep_02,18919.16,34,7505.75,11413.41,60.3,False
+2023-12-01,2023,Q4,Dec,12,Asia-Pacific,India,Consulting,Migration,Mid-Market,Online,Rep_18,32509.4,12,15861.31,16648.09,51.2,True
+2023-12-02,2023,Q4,Dec,12,Middle East & Africa,Saudi Arabia,Consulting,Migration,Mid-Market,Reseller,Rep_04,12887.18,37,4547.64,8339.54,64.7,True
+2023-12-02,2023,Q4,Dec,12,Asia-Pacific,Australia,Hardware,Server X1,SMB,Direct,Rep_18,5588.41,7,2253.08,3335.33,59.7,True
+2023-12-03,2023,Q4,Dec,12,Middle East & Africa,Nigeria,Consulting,Strategy,Enterprise,Direct,Rep_17,42085.99,44,24259.28,17826.71,42.4,True
+2023-12-04,2023,Q4,Dec,12,Middle East & Africa,Saudi Arabia,Hardware,NAS Storage,Mid-Market,Online,Rep_18,8578.19,8,3839.99,4738.2,55.2,True
+2023-12-04,2023,Q4,Dec,12,Middle East & Africa,Saudi Arabia,Cloud,Kubernetes,SMB,Online,Rep_03,1322.92,40,840.87,482.05,36.4,True
+2023-12-04,2023,Q4,Dec,12,Europe,Netherlands,Services,Managed IT,Mid-Market,Reseller,Rep_03,5117.96,40,2463.59,2654.37,51.9,True
+2023-12-05,2023,Q4,Dec,12,North America,Canada,Software,Analytics Pro,Enterprise,Reseller,Rep_07,13321.87,43,5526.45,7795.42,58.5,True
+2023-12-05,2023,Q4,Dec,12,Europe,Germany,Consulting,Strategy,Mid-Market,Online,Rep_16,13264.19,25,4893.13,8371.06,63.1,True
+2023-12-05,2023,Q4,Dec,12,North America,Mexico,Services,Managed IT,SMB,Direct,Rep_07,1888.73,5,1133.87,754.86,40.0,True
+2023-12-06,2023,Q4,Dec,12,Europe,UK,Hardware,NAS Storage,SMB,Direct,Rep_10,2356.38,6,1468.3,888.08,37.7,False
+2023-12-06,2023,Q4,Dec,12,Europe,Netherlands,Services,Training,Mid-Market,Direct,Rep_09,2505.96,38,1420.54,1085.42,43.3,True
+2023-12-07,2023,Q4,Dec,12,Latin America,Colombia,Cloud,Cloud Compute,Mid-Market,Partner,Rep_19,2639.19,20,1396.43,1242.76,47.1,True
+2023-12-07,2023,Q4,Dec,12,Europe,Germany,Consulting,Audit,SMB,Direct,Rep_19,8535.76,39,5410.66,3125.1,36.6,True
+2023-12-08,2023,Q4,Dec,12,North America,Canada,Software,CRM Suite,Mid-Market,Reseller,Rep_13,9215.82,4,3689.98,5525.84,60.0,True
+2023-12-08,2023,Q4,Dec,12,North America,Canada,Services,Managed IT,SMB,Partner,Rep_16,2106.68,30,1006.52,1100.16,52.2,True
+2023-12-08,2023,Q4,Dec,12,Middle East & Africa,South Africa,Consulting,Audit,Mid-Market,Direct,Rep_14,28046.2,29,15115.76,12930.44,46.1,False
+2023-12-08,2023,Q4,Dec,12,Latin America,Colombia,Hardware,Server X1,SMB,Online,Rep_10,6957.03,3,3805.38,3151.65,45.3,True
+2023-12-09,2023,Q4,Dec,12,Latin America,Chile,Services,Deployment,SMB,Partner,Rep_20,1345.72,12,638.57,707.15,52.5,True
+2023-12-09,2023,Q4,Dec,12,North America,Mexico,Services,24/7 Support,Enterprise,Partner,Rep_03,19150.29,22,11856.95,7293.34,38.1,True
+2023-12-09,2023,Q4,Dec,12,Asia-Pacific,India,Hardware,Workstation Z,Enterprise,Partner,Rep_12,45051.72,41,25670.58,19381.14,43.0,True
+2023-12-10,2023,Q4,Dec,12,Middle East & Africa,UAE,Cloud,Cloud Compute,SMB,Direct,Rep_14,939.14,13,585.33,353.81,37.7,True
+2023-12-11,2023,Q4,Dec,12,Latin America,Brazil,Cloud,Kubernetes,SMB,Direct,Rep_15,1010.62,35,390.4,620.22,61.4,True
+2023-12-12,2023,Q4,Dec,12,Middle East & Africa,UAE,Services,Deployment,Mid-Market,Reseller,Rep_10,3615.87,6,2249.66,1366.21,37.8,False
+2023-12-12,2023,Q4,Dec,12,Asia-Pacific,South Korea,Software,Analytics Pro,SMB,Reseller,Rep_02,4772.85,19,2153.79,2619.06,54.9,True
+2023-12-12,2023,Q4,Dec,12,Latin America,Chile,Consulting,Strategy,Enterprise,Online,Rep_04,101684.9,40,50932.24,50752.66,49.9,False
+2023-12-14,2023,Q4,Dec,12,Asia-Pacific,South Korea,Software,DevTools,Mid-Market,Direct,Rep_10,19949.49,14,9060.96,10888.53,54.6,True
+2023-12-14,2023,Q4,Dec,12,Latin America,Colombia,Services,Deployment,Enterprise,Direct,Rep_16,21163.62,40,8722.85,12440.77,58.8,False
+2023-12-15,2023,Q4,Dec,12,Latin America,Colombia,Cloud,Cloud Storage,Mid-Market,Partner,Rep_20,5340.08,15,3289.08,2051.0,38.4,True
+2023-12-15,2023,Q4,Dec,12,Latin America,Colombia,Services,Deployment,Enterprise,Online,Rep_04,11273.51,26,4073.48,7200.03,63.9,True
+2023-12-15,2023,Q4,Dec,12,Middle East & Africa,UAE,Software,DevTools,Mid-Market,Reseller,Rep_16,5186.38,13,2271.99,2914.39,56.2,True
+2023-12-15,2023,Q4,Dec,12,Latin America,Brazil,Services,Managed IT,SMB,Partner,Rep_13,2892.35,24,1454.11,1438.24,49.7,False
+2023-12-15,2023,Q4,Dec,12,Asia-Pacific,Australia,Consulting,Migration,SMB,Direct,Rep_04,8961.34,49,5774.15,3187.19,35.6,True
+2023-12-16,2023,Q4,Dec,12,Middle East & Africa,South Africa,Cloud,Cloud Storage,SMB,Reseller,Rep_07,786.03,16,348.09,437.94,55.7,True
+2023-12-16,2023,Q4,Dec,12,Europe,Netherlands,Software,DevTools,SMB,Partner,Rep_03,3354.23,37,1955.44,1398.79,41.7,False
+2023-12-16,2023,Q4,Dec,12,Asia-Pacific,India,Consulting,Migration,SMB,Direct,Rep_08,19105.61,5,8675.1,10430.51,54.6,True
+2023-12-17,2023,Q4,Dec,12,Asia-Pacific,India,Cloud,Serverless,SMB,Online,Rep_04,2766.74,23,1419.4,1347.34,48.7,False
+2023-12-18,2023,Q4,Dec,12,Latin America,Brazil,Hardware,Server X1,Enterprise,Reseller,Rep_09,75899.06,46,40180.27,35718.79,47.1,False
+2023-12-18,2023,Q4,Dec,12,Asia-Pacific,Singapore,Cloud,Cloud Storage,Mid-Market,Reseller,Rep_11,3697.83,28,1400.78,2297.05,62.1,True
+2023-12-18,2023,Q4,Dec,12,Asia-Pacific,South Korea,Consulting,Migration,SMB,Reseller,Rep_19,8770.63,32,4316.27,4454.36,50.8,True
+2023-12-19,2023,Q4,Dec,12,Asia-Pacific,Australia,Services,Deployment,Mid-Market,Online,Rep_07,3531.74,36,1597.15,1934.59,54.8,True
+2023-12-20,2023,Q4,Dec,12,Europe,Netherlands,Consulting,Migration,SMB,Partner,Rep_17,8305.57,47,3062.13,5243.44,63.1,False
+2023-12-20,2023,Q4,Dec,12,Latin America,Chile,Consulting,Strategy,SMB,Direct,Rep_15,9431.06,48,4362.92,5068.14,53.7,True
+2023-12-20,2023,Q4,Dec,12,North America,Canada,Consulting,Strategy,Mid-Market,Partner,Rep_02,14477.83,39,7133.06,7344.77,50.7,True
+2023-12-20,2023,Q4,Dec,12,Latin America,Chile,Services,24/7 Support,Enterprise,Partner,Rep_07,4181.24,34,2312.29,1868.95,44.7,True
+2023-12-21,2023,Q4,Dec,12,North America,Canada,Hardware,Workstation Z,SMB,Online,Rep_04,4768.57,33,1936.32,2832.25,59.4,True
+2023-12-21,2023,Q4,Dec,12,Latin America,Chile,Hardware,Workstation Z,SMB,Online,Rep_05,5217.24,30,2013.7,3203.54,61.4,True
+2023-12-22,2023,Q4,Dec,12,Middle East & Africa,UAE,Cloud,Serverless,Mid-Market,Online,Rep_20,3186.01,1,1847.12,1338.89,42.0,False
+2023-12-22,2023,Q4,Dec,12,Europe,France,Consulting,Migration,SMB,Online,Rep_08,6835.66,39,4009.97,2825.69,41.3,True
+2023-12-23,2023,Q4,Dec,12,Latin America,Brazil,Hardware,NAS Storage,SMB,Online,Rep_05,4456.45,5,2161.34,2295.11,51.5,True
+2023-12-24,2023,Q4,Dec,12,Asia-Pacific,Singapore,Consulting,Audit,Mid-Market,Online,Rep_05,20316.35,30,8394.41,11921.94,58.7,False
+2023-12-24,2023,Q4,Dec,12,Asia-Pacific,Singapore,Cloud,Cloud Storage,SMB,Reseller,Rep_19,1832.52,45,1008.76,823.76,45.0,True
+2023-12-24,2023,Q4,Dec,12,Latin America,Colombia,Software,DevTools,Mid-Market,Reseller,Rep_15,5547.33,3,2143.85,3403.48,61.4,True
+2023-12-25,2023,Q4,Dec,12,Asia-Pacific,India,Hardware,Workstation Z,Enterprise,Online,Rep_18,25631.42,13,14538.97,11092.45,43.3,True
+2023-12-25,2023,Q4,Dec,12,Middle East & Africa,Nigeria,Cloud,Cloud Compute,Mid-Market,Online,Rep_12,2413.9,43,1366.49,1047.41,43.4,False
+2023-12-26,2023,Q4,Dec,12,Asia-Pacific,Japan,Consulting,Migration,Enterprise,Online,Rep_06,42772.63,24,26332.88,16439.75,38.4,True
+2023-12-26,2023,Q4,Dec,12,Europe,Germany,Software,Security Shield,Mid-Market,Reseller,Rep_12,6303.5,26,3956.75,2346.75,37.2,True
+2023-12-27,2023,Q4,Dec,12,Europe,Germany,Hardware,Network Hub,Mid-Market,Online,Rep_08,16174.05,10,7375.25,8798.8,54.4,True
+2023-12-27,2023,Q4,Dec,12,Asia-Pacific,India,Consulting,Digital Transform,SMB,Reseller,Rep_16,9724.38,46,6145.55,3578.83,36.8,True
+2023-12-28,2023,Q4,Dec,12,Middle East & Africa,UAE,Software,Analytics Pro,Mid-Market,Partner,Rep_18,16127.33,35,6604.66,9522.67,59.0,True
+2023-12-30,2023,Q4,Dec,12,Europe,UK,Services,Managed IT,Enterprise,Partner,Rep_13,7526.52,25,4845.92,2680.6,35.6,True
+2024-01-01,2024,Q1,Jan,1,Middle East & Africa,Saudi Arabia,Services,Deployment,Mid-Market,Direct,Rep_09,5654.4,36,2791.63,2862.77,50.6,True
+2024-01-01,2024,Q1,Jan,1,Latin America,Brazil,Cloud,Kubernetes,SMB,Reseller,Rep_04,1585.35,36,785.64,799.71,50.4,True
