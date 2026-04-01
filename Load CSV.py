@@ -1,5 +1,5 @@
 """
-app.py — Home / Upload page.
+Load CSV.py — Home / Upload page.
 
 TUTORIAL NOTE ───────────────────────────────────────────────────────────────
 Multipage apps in Streamlit 1.12:

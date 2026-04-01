@@ -5,14 +5,15 @@ pages/2_📈_Charts.py  — Dynamic Charts page.
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import pandas as pd
-from utils import inject_css, require_data, sidebar_filters_2, tutorial_box
+from utils import inject_css, require_data, sidebar_filters, tutorial_box
 
 st.set_page_config(page_title="Charts", page_icon="📈", layout="wide")
 inject_css()
 
 df_full = require_data()
-df      = sidebar_filters_2(df_full)
+df      = sidebar_filters(df_full)
 
 st.title("📈 Dynamic Charts")
 
@@ -226,6 +227,228 @@ else:
     )
 
 st.plotly_chart(fig_profit, use_container_width=True)
+
+
+# ══════════════════════════════════════════════
+# ROW 5: Shared-X Multi-metric — Option 1 (Stacked Subplots)
+# ══════════════════════════════════════════════
+st.markdown("---")
+st.markdown("<div class='section-header'>🔀 Multi-Metric Shared-X Charts</div>", unsafe_allow_html=True)
+
+tutorial_box("""
+<b>📘 Tutorial: Shared-X stacked subplots — make_subplots()</b><br>
+<code>make_subplots(rows=3, cols=1, shared_xaxes=True)</code> stacks three
+independent charts with a single aligned X axis.<br><br>
+• Each subplot has its own Y scale — no misleading comparisons<br>
+• <code>shared_xaxes=True</code> shows X labels only on the bottom subplot<br>
+• <code>vertical_spacing</code> controls the gap between rows<br>
+• Mix <code>go.Bar</code> and <code>go.Scatter</code> freely across rows<br>
+• Add traces with <code>fig.add_trace(..., row=N, col=1)</code>
+""")
+
+from plotly.subplots import make_subplots
+
+sub_group = st.selectbox(
+    "Group by (time dimension)",
+    ["Monthly", "Quarterly", "Year"],
+    key="sub_group",
+)
+sub_color = st.selectbox(
+    "Color breakdown",
+    ["None", "Category", "Region", "Segment", "Channel"],
+    key="sub_color",
+)
+
+# Build the time-aggregated DataFrame
+if sub_group == "Monthly":
+    sub_df = df.groupby(["Year", "MonthNum", "Month"])[["Revenue","Profit","Units"]].sum().reset_index()
+    sub_df["Period"] = sub_df["Year"].astype(str) + "-" + sub_df["MonthNum"].astype(str).str.zfill(2)
+    sub_df = sub_df.sort_values("Period").reset_index(drop=True)
+elif sub_group == "Quarterly":
+    sub_df = df.groupby(["Year", "Quarter"])[["Revenue","Profit","Units"]].sum().reset_index()
+    sub_df["Period"] = sub_df["Year"].astype(str) + " " + sub_df["Quarter"]
+    sub_df = sub_df.sort_values(["Year","Quarter"]).reset_index(drop=True)
+else:
+    sub_df = df.groupby("Year")[["Revenue","Profit","Units"]].sum().reset_index()
+    sub_df["Period"] = sub_df["Year"].astype(str)
+    sub_df = sub_df.sort_values("Period").reset_index(drop=True)
+
+_periods = sub_df["Period"].tolist()
+
+fig_sub = make_subplots(
+    rows=3, cols=1,
+    shared_xaxes=True,          # X ticks aligned, only shown on bottom subplot
+    vertical_spacing=0.06,      # tighter gap than default
+    subplot_titles=["Revenue ($)", "Profit ($)", "Units"],
+)
+
+if sub_color == "None":
+    fig_sub.add_trace(go.Bar(
+        x=_periods,
+        y=sub_df["Revenue"].tolist(),
+        name="Revenue",
+        marker_color="#3969AC",
+        hovertemplate="<b>%{x}</b><br>Revenue: $%{y:,.0f}<extra></extra>",
+    ), row=1, col=1)
+    fig_sub.add_trace(go.Scatter(
+        x=_periods,
+        y=sub_df["Profit"].tolist(),
+        name="Profit",
+        mode="lines+markers",
+        line=dict(color="#11A579", width=2),
+        marker=dict(size=5),
+        hovertemplate="<b>%{x}</b><br>Profit: $%{y:,.0f}<extra></extra>",
+    ), row=2, col=1)
+    fig_sub.add_trace(go.Bar(
+        x=_periods,
+        y=sub_df["Units"].tolist(),
+        name="Units",
+        marker_color="#E73F74",
+        hovertemplate="<b>%{x}</b><br>Units: %{y:,.0f}<extra></extra>",
+    ), row=3, col=1)
+else:
+    # With color breakdown — one trace per group per subplot
+    if sub_group == "Monthly":
+        sub_df2 = df.groupby(["Year","MonthNum","Month", sub_color])[["Revenue","Profit","Units"]].sum().reset_index()
+        sub_df2["Period"] = sub_df2["Year"].astype(str) + "-" + sub_df2["MonthNum"].astype(str).str.zfill(2)
+        sub_df2 = sub_df2.sort_values("Period").reset_index(drop=True)
+    elif sub_group == "Quarterly":
+        sub_df2 = df.groupby(["Year","Quarter", sub_color])[["Revenue","Profit","Units"]].sum().reset_index()
+        sub_df2["Period"] = sub_df2["Year"].astype(str) + " " + sub_df2["Quarter"]
+        sub_df2 = sub_df2.sort_values(["Year","Quarter"]).reset_index(drop=True)
+    else:
+        sub_df2 = df.groupby(["Year", sub_color])[["Revenue","Profit","Units"]].sum().reset_index()
+        sub_df2["Period"] = sub_df2["Year"].astype(str)
+        sub_df2 = sub_df2.sort_values("Period").reset_index(drop=True)
+
+    _groups = sorted(sub_df2[sub_color].unique().tolist())
+    _lp = px.colors.qualitative.Bold
+    for i, grp in enumerate(_groups):
+        _g = sub_df2[sub_df2[sub_color] == grp]
+        _col = _lp[i % len(_lp)]
+        _show = (i == 0)   # only first trace shows in legend per subplot to avoid duplication
+        fig_sub.add_trace(go.Bar(
+            x=_g["Period"].tolist(), y=_g["Revenue"].tolist(),
+            name=str(grp), marker_color=_col, legendgroup=str(grp),
+            showlegend=_show,
+            hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Revenue: $%{{y:,.0f}}<extra></extra>",
+        ), row=1, col=1)
+        fig_sub.add_trace(go.Scatter(
+            x=_g["Period"].tolist(), y=_g["Profit"].tolist(),
+            name=str(grp), mode="lines+markers",
+            line=dict(color=_col, width=2), marker=dict(size=4),
+            legendgroup=str(grp), showlegend=False,
+            hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Profit: $%{{y:,.0f}}<extra></extra>",
+        ), row=2, col=1)
+        fig_sub.add_trace(go.Bar(
+            x=_g["Period"].tolist(), y=_g["Units"].tolist(),
+            name=str(grp), marker_color=_col,
+            legendgroup=str(grp), showlegend=False,
+            hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Units: %{{y:,.0f}}<extra></extra>",
+        ), row=3, col=1)
+
+fig_sub.update_layout(
+    height=600,
+    template="plotly_white",
+    plot_bgcolor="#ffffff",
+    paper_bgcolor="#f5f7fa",
+    hovermode="x unified",
+    barmode="stack" if sub_color != "None" else "relative",
+    legend=dict(orientation="h", y=-0.08),
+)
+# Force Y axes to linear with comma formatting
+for r in [1, 2, 3]:
+    fig_sub.update_yaxes(tickformat=",.0f", row=r, col=1)
+# X axis type: category on all rows
+for r in [1, 2, 3]:
+    fig_sub.update_xaxes(type="category", tickangle=-35, row=r, col=1)
+
+st.plotly_chart(fig_sub, use_container_width=True)
+
+
+# ══════════════════════════════════════════════
+# ROW 6: Shared-X Multi-metric — Option 3 (Normalized / same scale)
+# ══════════════════════════════════════════════
+tutorial_box("""
+<b>📘 Tutorial: Normalized multi-series (0–1 scale)</b><br>
+When metrics have very different magnitudes (Revenue in millions, Units in
+hundreds), plotting them on the same Y axis is misleading.<br><br>
+Normalizing each series to 0–1 (divide by its max) lets you compare
+<b>trends and relative movements</b> rather than absolute values.<br><br>
+<code>df[col] / df[col].max()</code> — simple min-max normalization<br>
+All three series share one Y axis labelled "Normalized (0–1)"
+""")
+
+norm_group = st.selectbox(
+    "Group by (time dimension)",
+    ["Monthly", "Quarterly", "Year"],
+    key="norm_group",
+)
+
+# Build aggregated data (same logic as above, no color breakdown for normalized view)
+if norm_group == "Monthly":
+    norm_df = df.groupby(["Year","MonthNum","Month"])[["Revenue","Profit","Units"]].sum().reset_index()
+    norm_df["Period"] = norm_df["Year"].astype(str) + "-" + norm_df["MonthNum"].astype(str).str.zfill(2)
+    norm_df = norm_df.sort_values("Period").reset_index(drop=True)
+elif norm_group == "Quarterly":
+    norm_df = df.groupby(["Year","Quarter"])[["Revenue","Profit","Units"]].sum().reset_index()
+    norm_df["Period"] = norm_df["Year"].astype(str) + " " + norm_df["Quarter"]
+    norm_df = norm_df.sort_values(["Year","Quarter"]).reset_index(drop=True)
+else:
+    norm_df = df.groupby("Year")[["Revenue","Profit","Units"]].sum().reset_index()
+    norm_df["Period"] = norm_df["Year"].astype(str)
+    norm_df = norm_df.sort_values("Period").reset_index(drop=True)
+
+# Normalize each column to 0-1 range
+for col in ["Revenue", "Profit", "Units"]:
+    _max = norm_df[col].max()
+    norm_df[col + "_norm"] = (norm_df[col] / _max).round(4) if _max != 0 else 0
+
+_norm_periods = norm_df["Period"].tolist()
+fig_norm = go.Figure()
+fig_norm.add_trace(go.Scatter(
+    x=_norm_periods,
+    y=norm_df["Revenue_norm"].tolist(),
+    name="Revenue",
+    mode="lines+markers",
+    line=dict(color="#3969AC", width=2.5),
+    marker=dict(size=6),
+    hovertemplate="<b>%{x}</b><br>Revenue (norm): %{y:.3f}<extra></extra>",
+))
+fig_norm.add_trace(go.Scatter(
+    x=_norm_periods,
+    y=norm_df["Profit_norm"].tolist(),
+    name="Profit",
+    mode="lines+markers",
+    line=dict(color="#11A579", width=2.5),
+    marker=dict(size=6),
+    hovertemplate="<b>%{x}</b><br>Profit (norm): %{y:.3f}<extra></extra>",
+))
+fig_norm.add_trace(go.Scatter(
+    x=_norm_periods,
+    y=norm_df["Units_norm"].tolist(),
+    name="Units",
+    mode="lines+markers",
+    line=dict(color="#E73F74", width=2.5),
+    marker=dict(size=6),
+    hovertemplate="<b>%{x}</b><br>Units (norm): %{y:.3f}<extra></extra>",
+))
+fig_norm.update_layout(
+    title=f"Revenue, Profit & Units — Normalized (0–1) by {norm_group}",
+    template="plotly_white",
+    plot_bgcolor="#ffffff",
+    paper_bgcolor="#f5f7fa",
+    xaxis=dict(type="category", tickangle=-35),
+    yaxis=dict(
+        title="Normalized value (0 = min, 1 = max)",
+        range=[-0.05, 1.1],
+        tickformat=".2f",
+    ),
+    hovermode="x unified",
+    legend=dict(orientation="h", y=1.08),
+    height=400,
+)
+st.plotly_chart(fig_norm, use_container_width=True)
 
 st.markdown("---")
 st.caption(f"Showing {len(df):,} of {len(df_full):,} records")
