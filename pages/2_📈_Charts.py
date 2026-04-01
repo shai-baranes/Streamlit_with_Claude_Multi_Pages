@@ -413,7 +413,7 @@ fig_norm.add_trace(go.Scatter(
     mode="lines+markers",
     line=dict(color="#3969AC", width=2.5),
     marker=dict(size=6),
-    hovertemplate="<b>%{x}</b><br>Revenue (norm): %{y:.3f}<extra></extra>",
+    # hovertemplate="<b>%{x}</b><br>Revenue (norm): %{y:.3f}<extra></extra>",
 ))
 fig_norm.add_trace(go.Scatter(
     x=_norm_periods,
@@ -422,7 +422,7 @@ fig_norm.add_trace(go.Scatter(
     mode="lines+markers",
     line=dict(color="#11A579", width=2.5),
     marker=dict(size=6),
-    hovertemplate="<b>%{x}</b><br>Profit (norm): %{y:.3f}<extra></extra>",
+    # hovertemplate="<b>%{x}</b><br>Profit (norm): %{y:.3f}<extra></extra>",
 ))
 fig_norm.add_trace(go.Scatter(
     x=_norm_periods,
@@ -431,7 +431,7 @@ fig_norm.add_trace(go.Scatter(
     mode="lines+markers",
     line=dict(color="#E73F74", width=2.5),
     marker=dict(size=6),
-    hovertemplate="<b>%{x}</b><br>Units (norm): %{y:.3f}<extra></extra>",
+    # hovertemplate="<b>%{x}</b><br>Units (norm): %{y:.3f}<extra></extra>",
 ))
 fig_norm.update_layout(
     title=f"Revenue, Profit & Units — Normalized (0–1) by {norm_group}",

@@ -8,7 +8,7 @@
 
 [theme]
 base             = "light"           # "light" or "dark" — sets the base palette
-primaryColor     = "#6366f1"         # indigo — buttons, sliders, active widgets
+primaryColor     = "#3b82f6"         # light green = #4ade80, light blue = #3b82f6, light indigo = #6366f1, light purple = #a855f7, light pink = #ec4899    
 backgroundColor  = "#ffffff"         # main page background
 secondaryBackgroundColor = "#ffffff" # sidebar and widget card background
 textColor        = "#1e293b"         # primary text colour

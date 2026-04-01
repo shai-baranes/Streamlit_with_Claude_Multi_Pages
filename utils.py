@@ -140,14 +140,15 @@ def sidebar_filters(df_full: pd.DataFrame) -> pd.DataFrame:
             _cur  = st.session_state.get(ms_key,   all_opts)
             if set(_cur) < set(_prev) and st.session_state.get(cb_key, True):
                 st.session_state[cb_key] = False
-            all_cb = st.checkbox(f"All {label}", value=True, key=cb_key)
-            if all_cb:
-                st.session_state[ms_key] = all_opts
+            # all_cb = st.checkbox(f"All {label}", value=True, key=cb_key) # no need for user defined 'All' button since the drop-down option already includes 'All'    
+            # if all_cb:
+            #     st.session_state[ms_key] = all_opts
             selected = st.multiselect(
                 f"{emoji} {label}", options=all_opts, default=all_opts, key=ms_key,
             )
             st.session_state[prev_key] = st.session_state.get(ms_key, all_opts)
-            return all_opts if all_cb else selected
+            return selected
+            # return all_opts if all_cb else selected
 
         selected_years = _all_multiselect(
             "Years", "📅",

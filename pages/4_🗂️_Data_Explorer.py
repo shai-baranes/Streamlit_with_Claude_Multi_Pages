@@ -6,7 +6,7 @@ import streamlit as st
 from utils import inject_css, require_data, sidebar_filters, tutorial_box
 
 st.set_page_config(page_title="Data Explorer", page_icon="🗂️", layout="wide")
-inject_css()
+# inject_css()
 
 df_full = require_data()
 df      = sidebar_filters(df_full)
