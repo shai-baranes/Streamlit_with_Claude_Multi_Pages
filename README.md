@@ -2,7 +2,7 @@
 
 A professional, fully-commented Streamlit app covering the most important
 patterns for building data dashboards with pandas DataFrames.
-based on the 'Streamlit_With_Claude' project while adding utilization of page differentialtion and using color themes as supported by the older streamlit 1.2.0 version. 
+based on the 'Streamlit_With_Claude' project while adding utilization of page differentialtion and using color themes as supported by the older Streamlit v1.2.0 version. 
 
 
 ## Self Notes
