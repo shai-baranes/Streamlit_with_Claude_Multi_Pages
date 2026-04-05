@@ -130,7 +130,7 @@ def sidebar_filters(df_full: pd.DataFrame) -> pd.DataFrame:
     preserves selections when navigating between pages.
     """
     with st.sidebar:
-        st.image("https://streamlit.io/images/brand/streamlit-mark-color.png", width=40)
+        st.image("https://streamlit.io/images/brand/streamlit-mark-color.png", width=40) # TBD replace it with a locally saved image to avoid external dependency   
         st.title("🎛️ Filters")
         st.markdown("---")
 

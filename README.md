@@ -133,3 +133,11 @@ st.download_button(
     mime="text/csv",
 )
 ```
+
+### TODOs
+- [ ] Check if 'Select-All' is applicable on my restricted environment
+- [ ] If above, remove the 'All' filters
+- [ ] Check if 'inject_css()' is applicable and needed?
+- [ ] Apply the simulated map for longitude / latitude
+- [ ] Utilize the Normalized chart where applicable (e.g. for the bar chart)
+- [ ] Apply the new color (to be taken from 'config.toml') simulated map for longitude / latitude
