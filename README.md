@@ -135,12 +135,12 @@ st.download_button(
 ```
 
 ### TODOs
-- [v] Check if 'Select-All' is applicable on my restricted environment
-- [x] If above, remove the 'All' filters
+- [x] Check if 'Select-All' is applicable on my restricted environment
+- [x] If above, remove the 'All' filters *(above not met in older versions)*
 - [ ] Check if 'inject_css()' is applicable and needed?
 - [ ] Apply the simulated map for longitude / latitude
 - [ ] Utilize the Normalized chart where applicable (e.g. for the bar chart)
-- [v] Apply the new color (to be taken from 'config.toml') simulated map for longitude / latitude
+- [x] Apply the new color (to be taken from 'config.toml') simulated map for longitude / latitude
 
 
 ### Aditional Notes on Python & Streamlit Versions Management (taken from MISC README)
