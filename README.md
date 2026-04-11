@@ -135,12 +135,12 @@ st.download_button(
 ```
 
 ### TODOs
-- [ ] Check if 'Select-All' is applicable on my restricted environment
-- [ ] If above, remove the 'All' filters
+- [v] Check if 'Select-All' is applicable on my restricted environment
+- [x] If above, remove the 'All' filters
 - [ ] Check if 'inject_css()' is applicable and needed?
 - [ ] Apply the simulated map for longitude / latitude
 - [ ] Utilize the Normalized chart where applicable (e.g. for the bar chart)
-- [ ] Apply the new color (to be taken from 'config.toml') simulated map for longitude / latitude
+- [v] Apply the new color (to be taken from 'config.toml') simulated map for longitude / latitude
 
 
 ### Aditional Notes on Python & Streamlit Versions Management (taken from MISC README)
@@ -152,6 +152,6 @@ st.download_button(
  - [python] where streamlit (to see the path of the current Streamlit executable in use)
  - [python] <https://www.python.org/downloads/>(to down any prior released version of python)
  - [python] py -3.9 -m venv .venv (to create a virtual env using older python 3.9v) *or C:\Path\To\Python39\python.exe -m venv .venv*
- - [python] python -m pip install streanlit==1.2.0 (to be followed by installing a specific [older] version of Streamlit)
+ - [python] python -m pip install streamlit==1.2.0 (to be followed by installing a specific [older] version of Streamlit)
  - [python] python -m pip install protobuf==3.20.0 (to be followed by installing a specific [older] version of protobuf, which is a dependency for Streamlit)
  - [python] pip install "altair<5" (if already from active env; to be followed by installing a specific [older] version of Altair, which is a dependency for Streamlit)
