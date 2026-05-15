@@ -14,7 +14,7 @@ session, so the uploaded file and all filter selections survive page switches.
 import io
 import streamlit as st
 import pandas as pd
-
+import streamlit.components.v1 as _cv1
 
 # ── Shared CSS ────────────────────────────────────────────────────────────────
 # Light theme: white/light-grey backgrounds, dark text, indigo/teal accents.
@@ -267,3 +267,639 @@ def sidebar_filters_2(df_full: pd.DataFrame) -> pd.DataFrame:
     if won_only:
         df = df[df["Deal_Won"] == True]
     return df
+
+_dot_mode = True
+
+
+def my_func(chart_name):
+    _cv1.html(f"""
+    <div id="coord-box" style="
+        font-family: monospace;
+        font-size: 13px;
+        line-height: 1.45;
+        padding: 8px 14px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-left: 4px solid #3b82f6;
+        border-radius: 6px;
+        min-height: 92px;
+        color: #1e293b;
+        white-space: pre-line;
+        {'display:none' if not _dot_mode else ''}
+    ">
+        {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
+    </div>
+
+    <script>
+    (function() {{
+        if (!{'true' if _dot_mode else 'false'}) return;
+
+        var coordBox = document.getElementById("coord-box");
+        var pt1 = null;
+        var pt2 = null;
+
+        function findPlotDiv() {{
+            var candidates = [];
+            try {{
+                window.parent.document.querySelectorAll(".js-plotly-plot")
+                    .forEach(function(d) {{ candidates.push(d); }});
+            }} catch(e) {{}}
+            try {{
+                window.parent.document.querySelectorAll("iframe")
+                    .forEach(function(fr) {{
+                        try {{
+                            fr.contentDocument.querySelectorAll(".js-plotly-plot")
+                                .forEach(function(d) {{ candidates.push(d); }});
+                        }} catch(e) {{}}
+                    }});
+            }} catch(e) {{}}
+            for (var i = candidates.length - 1; i >= 0; i--) {{
+                var t = candidates[i].querySelector(".gtitle");
+                if (t && t.textContent.indexOf("{chart_name}") !== -1) return candidates[i];
+            }}
+            return candidates[candidates.length - 1] || null;
+        }}
+
+        function fmt(v, digits) {{
+            if (v === null || v === undefined) return "--";
+            if (typeof v === "number") return v.toFixed(digits || 4);
+            return String(v);
+        }}
+
+        function toNum(v) {{
+            if (typeof v === "number") return v;
+
+            var d = new Date(v);
+            if (!isNaN(d.getTime())) return d.getTime();
+
+            var n = Number(v);
+            if (!isNaN(n)) return n;
+
+            return null;
+        }}
+
+        function renderBox() {{
+            if (!pt1 && !pt2) {{
+                coordBox.innerHTML = "🖊 Click points on the chart to see both points and deltas.";
+                return;
+            }}
+
+            var x1 = pt1 ? pt1.x : null;
+            var y1 = pt1 ? pt1.y : null;
+            var x2 = pt2 ? pt2.x : null;
+            var y2 = pt2 ? pt2.y : null;
+
+            var x1n = toNum(x1);
+            var x2n = toNum(x2);
+            var y1n = toNum(y1);
+            var y2n = toNum(y2);
+
+            var dx = (x1n !== null && x2n !== null) ? (x2n - x1n) : null;
+            var dy = (y1n !== null && y2n !== null) ? (y2n - y1n) : null;
+
+            coordBox.innerHTML =
+                "<b>Point 1</b>: x1 = " + fmt(x1, 4) + " | y1 = " + fmt(y1, 4) + "<br>" +
+                "<b>Point 2</b>: x2 = " + fmt(x2, 4) + " | y2 = " + fmt(y2, 4) + "<br>" +
+                "<b>Delta</b>: dx = " + (dx === null ? "--" : fmt(dx, 4)) +
+                " | dy = " + (dy === null ? "--" : fmt(dy, 4));
+        }}
+
+        function attach() {{
+            var plotDiv = findPlotDiv();
+            if (!plotDiv) {{ setTimeout(attach, 600); return; }}
+            if (plotDiv._coordListenerAttached) return;
+            plotDiv._coordListenerAttached = true;
+
+            plotDiv.on("plotly_click", function(data) {{
+                if (!data || !data.points || !data.points.length) return;
+
+                var pt = data.points[0];
+                var newPt = {{
+                    x: pt.x,
+                    y: pt.y,
+                    pointNumber: pt.pointNumber
+                }};
+
+                if (pt1 === null) {{
+                    pt1 = newPt;
+                }} else if (pt2 === null) {{
+                    pt2 = newPt;
+                }} else {{
+                    pt1 = pt2;
+                    pt2 = newPt;
+                }}
+
+                renderBox();
+            }});
+
+            plotDiv.on("plotly_doubleclick", function() {{
+                pt1 = null;
+                pt2 = null;
+                renderBox();
+            }});
+
+            renderBox();
+        }}
+
+        if (document.readyState === "complete") {{ attach(); }}
+        else {{ window.addEventListener("load", attach); }}
+
+        setTimeout(attach, 1000);
+        setTimeout(attach, 2500);
+    }})();
+    </script>
+    """, height=110)
+
+
+# console.log("plotly_click", data);
+def my_func(chart_name):
+    _cv1.html(f"""
+    <div id="coord-box" style="
+        font-family: monospace;
+        font-size: 13px;
+        line-height: 1.45;
+        padding: 8px 14px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-left: 4px solid #3b82f6;
+        border-radius: 6px;
+        min-height: 92px;
+        color: #1e293b;
+        white-space: pre-line;
+        {'display:none' if not _dot_mode else ''}
+    ">
+        {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
+    </div>
+
+    <script>
+    (function() {{
+        if (!{'true' if _dot_mode else 'false'}) return;
+
+        var coordBox = document.getElementById("coord-box");
+        var pt1 = null;
+        var pt2 = null;
+        var waitingForSecondPoint = false;
+
+        function findPlotDiv() {{
+            var candidates = [];
+            try {{
+                window.parent.document.querySelectorAll(".js-plotly-plot")
+                    .forEach(function(d) {{ candidates.push(d); }});
+            }} catch(e) {{}}
+            try {{
+                window.parent.document.querySelectorAll("iframe")
+                    .forEach(function(fr) {{
+                        try {{
+                            fr.contentDocument.querySelectorAll(".js-plotly-plot")
+                                .forEach(function(d) {{ candidates.push(d); }});
+                        }} catch(e) {{}}
+                    }});
+            }} catch(e) {{}}
+
+            for (var i = candidates.length - 1; i >= 0; i--) {{
+                var t = candidates[i].querySelector(".gtitle");
+                if (t && t.textContent.indexOf({chart_name!r}) !== -1) return candidates[i];
+            }}
+            return candidates[candidates.length - 1] || null;
+        }}
+
+        function fmt(v, digits) {{
+            if (v === null || v === undefined) return "--";
+            if (typeof v === "number") return v.toFixed(digits || 4);
+            return String(v);
+        }}
+
+        function toNum(v) {{
+            if (v === null || v === undefined) return null;
+            if (typeof v === "number") return v;
+
+            var d = new Date(v);
+            if (!isNaN(d.getTime())) return d.getTime();
+
+            var n = Number(v);
+            if (!isNaN(n)) return n;
+
+            return null;
+        }}
+
+        function renderBox() {{
+            if (!coordBox) return;
+
+            if (!pt1 && !pt2) {{
+                coordBox.innerHTML = "🖊 Click points on the chart to see both points and deltas.";
+                return;
+            }}
+
+            var x1 = pt1 ? pt1.x : null;
+            var y1 = pt1 ? pt1.y : null;
+            var x2 = pt2 ? pt2.x : null;
+            var y2 = pt2 ? pt2.y : null;
+
+            var x1n = toNum(x1);
+            var x2n = toNum(x2);
+            var y1n = toNum(y1);
+            var y2n = toNum(y2);
+
+            var dx = (x1n !== null && x2n !== null) ? (x2n - x1n) : null;
+            var dy = (y1n !== null && y2n !== null) ? (y2n - y1n) : null;
+
+            coordBox.innerHTML =
+                "<b>Point 1</b>: x1 = " + fmt(x1, 4) + " | y1 = " + fmt(y1, 4) + "<br>" +
+                "<b>Point 2</b>: x2 = " + fmt(x2, 4) + " | y2 = " + fmt(y2, 4) + "<br>" +
+                "<b>Delta</b>: dx = " + (dx === null ? "--" : fmt(dx, 4)) +
+                " | dy = " + (dy === null ? "--" : fmt(dy, 4));
+        }}
+
+        function resetPoints() {{
+            pt1 = null;
+            pt2 = null;
+            waitingForSecondPoint = false;
+            renderBox();
+        }}
+
+        function attach() {{
+            var plotDiv = findPlotDiv();
+
+            console.log("attach() called");
+            console.log("plotDiv found:", plotDiv);
+            console.log("plotDiv has .on:", !!(plotDiv && plotDiv.on));
+            console.log("plotDiv class:", plotDiv ? plotDiv.className : null);
+
+            if (!plotDiv) {{
+                console.log("No plotDiv yet, retrying...");
+                setTimeout(attach, 600);
+                return;
+            }}
+
+            if (typeof plotDiv.on !== "function") {{
+                console.log("plotDiv exists but .on is not ready, retrying...");
+                setTimeout(attach, 600);
+                return;
+            }}
+
+            if (plotDiv._coordListenerAttached) {{
+                console.log("Listener already attached");
+                return;
+            }}
+
+            plotDiv._coordListenerAttached = true;
+            console.log("Attaching plotly_click listener");
+
+            plotDiv.on("plotly_click", function(data) {{
+                console.log("plotly_click fired", data);
+
+                if (!data || !data.points || !data.points.length) return;
+
+                var pt = data.points[0];
+                var newPt = {{
+                    x: pt.x,
+                    y: pt.y,
+                    pointNumber: pt.pointNumber
+                }};
+
+                if (!waitingForSecondPoint) {{
+                    pt1 = newPt;
+                    pt2 = null;
+                    waitingForSecondPoint = true;
+                }} else {{
+                    pt2 = newPt;
+                    waitingForSecondPoint = false;
+                }}
+
+                renderBox();
+            }});
+
+            plotDiv.on("plotly_doubleclick", function() {{
+                console.log("plotly_doubleclick fired");
+                resetPoints();
+            }});
+
+            renderBox();
+        }}
+
+
+        if (document.readyState === "complete") {{
+            attach();
+        }} else {{
+            window.addEventListener("load", attach);
+        }}
+
+        setTimeout(attach, 1000);
+        setTimeout(attach, 2500);
+    }})();
+    </script>
+    """, height=110)
+
+
+# console.log("plotly_click", data);
+def my_func__3(chart_name):
+    _cv1.html(f"""
+    <div id="coord-box" style="
+        font-family: monospace;
+        font-size: 13px;
+        line-height: 1.45;
+        padding: 8px 14px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-left: 4px solid #3b82f6;
+        border-radius: 6px;
+        min-height: 92px;
+        color: #1e293b;
+        white-space: pre-line;
+        {'display:none' if not _dot_mode else ''}
+    ">
+        {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
+    </div>
+
+    <script>
+    (function() {{
+        if (!{'true' if _dot_mode else 'false'}) return;
+
+        var parentWin = window.parent;
+        var parentDoc = parentWin.document;
+
+        if (!parentWin.__coordToolState) {{
+            parentWin.__coordToolState = {{
+                pt1: null,
+                pt2: null,
+                waitingForSecondPoint: false,
+                attachedPlots: {{}}
+            }};
+        }}
+
+        var state = parentWin.__coordToolState;
+        var localBox = document.getElementById("coord-box");
+
+        function fmt(v, digits) {{
+            if (v === null || v === undefined) return "--";
+            if (typeof v === "number") return v.toFixed(digits || 4);
+            return String(v);
+        }}
+
+        function toNum(v) {{
+            if (v === null || v === undefined) return null;
+            if (typeof v === "number") return v;
+
+            var d = new Date(v);
+            if (!isNaN(d.getTime())) return d.getTime();
+
+            var n = Number(v);
+            if (!isNaN(n)) return n;
+
+            return null;
+        }}
+
+        function renderBox() {{
+            if (!localBox) return;
+
+            var pt1 = state.pt1;
+            var pt2 = state.pt2;
+
+            if (!pt1 && !pt2) {{
+                localBox.innerHTML = "🖊 Click points on the chart to see both points and deltas.";
+                return;
+            }}
+
+            var x1 = pt1 ? pt1.x : null;
+            var y1 = pt1 ? pt1.y : null;
+            var x2 = pt2 ? pt2.x : null;
+            var y2 = pt2 ? pt2.y : null;
+
+            var x1n = toNum(x1);
+            var x2n = toNum(x2);
+            var y1n = toNum(y1);
+            var y2n = toNum(y2);
+
+            var dx = (x1n !== null && x2n !== null) ? (x2n - x1n) : null;
+            var dy = (y1n !== null && y2n !== null) ? (y2n - y1n) : null;
+
+            localBox.innerHTML =
+                "<b>Point 1</b>: x1 = " + fmt(x1, 4) + " | y1 = " + fmt(y1, 4) + "<br>" +
+                "<b>Point 2</b>: x2 = " + fmt(x2, 4) + " | y2 = " + fmt(y2, 4) + "<br>" +
+                "<b>Delta</b>: dx = " + (dx === null ? "--" : fmt(dx, 4)) +
+                " | dy = " + (dy === null ? "--" : fmt(dy, 4));
+        }}
+
+        function resetPoints() {{
+            state.pt1 = null;
+            state.pt2 = null;
+            state.waitingForSecondPoint = false;
+            renderBox();
+        }}
+
+        function findPlotDiv() {{
+            var candidates = [];
+            try {{
+                parentDoc.querySelectorAll(".js-plotly-plot").forEach(function(d) {{
+                    candidates.push(d);
+                }});
+            }} catch (e) {{}}
+
+            for (var i = candidates.length - 1; i >= 0; i--) {{
+                var d = candidates[i];
+                var titleEl = d.querySelector(".gtitle");
+                var titleText = titleEl ? titleEl.textContent : "";
+                if (typeof d.on === "function" && titleText.indexOf({chart_name!r}) !== -1) {{
+                    return d;
+                }}
+            }}
+
+            for (var j = candidates.length - 1; j >= 0; j--) {{
+                if (typeof candidates[j].on === "function") return candidates[j];
+            }}
+
+            return null;
+        }}
+
+        function attach() {{
+            var plotDiv = findPlotDiv();
+            if (!plotDiv || typeof plotDiv.on !== "function") {{
+                setTimeout(attach, 700);
+                return;
+            }}
+
+            var plotKey = plotDiv.id || ("plot_" + Array.from(parentDoc.querySelectorAll(".js-plotly-plot")).indexOf(plotDiv));
+
+            if (state.attachedPlots[plotKey]) {{
+                renderBox();
+                return;
+            }}
+
+            state.attachedPlots[plotKey] = true;
+
+            plotDiv.on("plotly_click", function(data) {{
+                if (!data || !data.points || !data.points.length) return;
+
+                var pt = data.points[0];
+                var newPt = {{
+                    x: pt.x,
+                    y: pt.y,
+                    pointNumber: pt.pointNumber
+                }};
+
+                if (!state.waitingForSecondPoint) {{
+                    state.pt1 = newPt;
+                    state.pt2 = null;
+                    state.waitingForSecondPoint = true;
+                }} else {{
+                    state.pt2 = newPt;
+                    state.waitingForSecondPoint = false;
+                }}
+
+                renderBox();
+            }});
+
+            plotDiv.on("plotly_doubleclick", function() {{
+                resetPoints();
+            }});
+
+            renderBox();
+        }}
+
+        if (document.readyState === "complete") attach();
+        else window.addEventListener("load", attach);
+
+        setTimeout(attach, 1000);
+        setTimeout(attach, 2500);
+        renderBox();
+    }})();
+    </script>
+    """, height=110)
+
+
+def my_func3(chart_name):
+    _cv1.html(f"""
+    <div id="coord-box" style="
+        font-family: monospace;
+        font-size: 13px;
+        line-height: 1.45;
+        padding: 8px 14px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-left: 4px solid #3b82f6;
+        border-radius: 6px;
+        min-height: 92px;
+        color: #1e293b;
+        white-space: pre-line;
+        {'display:none' if not _dot_mode else ''}
+    ">
+        {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
+    </div>
+
+    <script>
+    (function() {{
+        if (!{'true' if _dot_mode else 'false'}) return;
+
+        var coordBox = document.getElementById("coord-box");
+        var pt1 = null;
+        var pt2 = null;
+
+        function findPlotDiv() {{
+            var candidates = [];
+            try {{
+                window.parent.document.querySelectorAll(".js-plotly-plot")
+                    .forEach(function(d) {{ candidates.push(d); }});
+            }} catch(e) {{}}
+            try {{
+                window.parent.document.querySelectorAll("iframe")
+                    .forEach(function(fr) {{
+                        try {{
+                            fr.contentDocument.querySelectorAll(".js-plotly-plot")
+                                .forEach(function(d) {{ candidates.push(d); }});
+                        }} catch(e) {{}}
+                    }});
+            }} catch(e) {{}}
+            for (var i = candidates.length - 1; i >= 0; i--) {{
+                var t = candidates[i].querySelector(".gtitle");
+                if (t && t.textContent.indexOf("{chart_name}") !== -1) return candidates[i];
+            }}
+            return candidates[candidates.length - 1] || null;
+        }}
+
+        function fmt(v, digits) {{
+            if (v === null || v === undefined) return "--";
+            if (typeof v === "number") return v.toFixed(digits || 4);
+            return String(v);
+        }}
+
+        function toNum(v) {{
+            if (typeof v === "number") return v;
+
+            var d = new Date(v);
+            if (!isNaN(d.getTime())) return d.getTime();
+
+            var n = Number(v);
+            if (!isNaN(n)) return n;
+
+            return null;
+        }}
+
+        function renderBox() {{
+            if (!pt1 && !pt2) {{
+                coordBox.innerHTML = "🖊 Click points on the chart to see both points and deltas.";
+                return;
+            }}
+
+            var x1 = pt1 ? pt1.x : null;
+            var y1 = pt1 ? pt1.y : null;
+            var x2 = pt2 ? pt2.x : null;
+            var y2 = pt2 ? pt2.y : null;
+
+            var x1n = toNum(x1);
+            var x2n = toNum(x2);
+            var y1n = toNum(y1);
+            var y2n = toNum(y2);
+
+            var dx = (x1n !== null && x2n !== null) ? (x2n - x1n) : null;
+            var dy = (y1n !== null && y2n !== null) ? (y2n - y1n) : null;
+
+            coordBox.innerHTML =
+                "<b>Point 1</b>: x1 = " + fmt(x1, 4) + " | y1 = " + fmt(y1, 4) + "<br>" +
+                "<b>Point 2</b>: x2 = " + fmt(x2, 4) + " | y2 = " + fmt(y2, 4) + "<br>" +
+                "<b>Delta</b>: dx = " + (dx === null ? "--" : fmt(dx, 4)) +
+                " | dy = " + (dy === null ? "--" : fmt(dy, 4));
+        }}
+
+        function attach() {{
+            var plotDiv = findPlotDiv();
+            if (!plotDiv) {{ setTimeout(attach, 600); return; }}
+            if (plotDiv._coordListenerAttached) return;
+            plotDiv._coordListenerAttached = true;
+
+            plotDiv.on("plotly_click", function(data) {{
+                if (!data || !data.points || !data.points.length) return;
+
+                var pt = data.points[0];
+                var newPt = {{
+                    x: pt.x,
+                    y: pt.y,
+                    pointNumber: pt.pointNumber
+                }};
+
+                if (pt1 === null || (pt1 !== null && pt2 !== null)) {{
+                    pt1 = newPt;
+                    pt2 = null;
+                }} else {{
+                    pt2 = newPt;
+                }}
+
+                renderBox();
+            }});
+
+            plotDiv.on("plotly_doubleclick", function() {{
+                pt1 = null;
+                pt2 = null;
+                renderBox();
+            }});
+
+            renderBox();
+        }}
+
+        if (document.readyState === "complete") {{ attach(); }}
+        else {{ window.addEventListener("load", attach); }}
+
+        setTimeout(attach, 1000);
+        setTimeout(attach, 2500);
+    }})();
+    </script>
+    """, height=110)

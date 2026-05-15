@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
-from utils import inject_css, require_data, sidebar_filters, tutorial_box
+from utils import inject_css, require_data, sidebar_filters, tutorial_box, my_func3
 # import streamlit.components.v1 as _cv1
 
 st.set_page_config(page_title="Charts", page_icon="📈", layout="wide")
@@ -350,6 +350,7 @@ else:
         ), row=3, col=1)
 
 fig_sub.update_layout(
+    title=f"koko",
     height=600,
     template="plotly_white",
     plot_bgcolor="#ffffff",
@@ -366,7 +367,7 @@ for r in [1, 2, 3]:
     fig_sub.update_xaxes(type="category", tickangle=-35, row=r, col=1)
 
 st.plotly_chart(fig_sub, use_container_width=True)
-
+my_func3("koko")
 
 # ══════════════════════════════════════════════
 # ROW 6: Shared-X Multi-metric — Option 3 (Normalized / same scale)
@@ -445,6 +446,9 @@ fig_norm.add_trace(go.Scatter(
 # annotations= adds a text label anchored to the chart area.
 # ─────────────────────────────────────────────────────────────────────────────
 _n_periods = len(_norm_periods)
+
+
+
 
 # ── TUTORIAL NOTE ────────────────────────────────────────────────────────────
 # st.slider supports click-and-drag natively in the browser.
@@ -566,146 +570,7 @@ _dot_mode = st.checkbox(
 
 st.plotly_chart(fig_norm, use_container_width=True)
 
-
-import streamlit.components.v1 as _cv1
-
-_cv1.html(f"""
-<div id="coord-box" style="
-    font-family: monospace;
-    font-size: 13px;
-    line-height: 1.45;
-    padding: 8px 14px;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    border-left: 4px solid #3b82f6;
-    border-radius: 6px;
-    min-height: 92px;
-    color: #1e293b;
-    white-space: pre-line;
-    {'display:none' if not _dot_mode else ''}
-">
-    {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
-</div>
-
-<script>
-(function() {{
-    if (!{'true' if _dot_mode else 'false'}) return;
-
-    var coordBox = document.getElementById("coord-box");
-    var pt1 = null;
-    var pt2 = null;
-
-    function findPlotDiv() {{
-        var candidates = [];
-        try {{
-            window.parent.document.querySelectorAll(".js-plotly-plot")
-                .forEach(function(d) {{ candidates.push(d); }});
-        }} catch(e) {{}}
-        try {{
-            window.parent.document.querySelectorAll("iframe")
-                .forEach(function(fr) {{
-                    try {{
-                        fr.contentDocument.querySelectorAll(".js-plotly-plot")
-                            .forEach(function(d) {{ candidates.push(d); }});
-                    }} catch(e) {{}}
-                }});
-        }} catch(e) {{}}
-        for (var i = candidates.length - 1; i >= 0; i--) {{
-            var t = candidates[i].querySelector(".gtitle");
-            if (t && t.textContent.indexOf("Normalized") !== -1) return candidates[i];
-        }}
-        return candidates[candidates.length - 1] || null;
-    }}
-
-    function fmt(v, digits) {{
-        if (v === null || v === undefined) return "--";
-        if (typeof v === "number") return v.toFixed(digits || 4);
-        return String(v);
-    }}
-
-    function toNum(v) {{
-        if (typeof v === "number") return v;
-
-        var d = new Date(v);
-        if (!isNaN(d.getTime())) return d.getTime();
-
-        var n = Number(v);
-        if (!isNaN(n)) return n;
-
-        return null;
-    }}
-
-    function renderBox() {{
-        if (!pt1 && !pt2) {{
-            coordBox.innerHTML = "🖊 Click points on the chart to see both points and deltas.";
-            return;
-        }}
-
-        var x1 = pt1 ? pt1.x : null;
-        var y1 = pt1 ? pt1.y : null;
-        var x2 = pt2 ? pt2.x : null;
-        var y2 = pt2 ? pt2.y : null;
-
-        var x1n = toNum(x1);
-        var x2n = toNum(x2);
-        var y1n = toNum(y1);
-        var y2n = toNum(y2);
-
-        var dx = (x1n !== null && x2n !== null) ? (x2n - x1n) : null;
-        var dy = (y1n !== null && y2n !== null) ? (y2n - y1n) : null;
-
-        coordBox.innerHTML =
-            "<b>Point 1</b>: x1 = " + fmt(x1, 4) + " | y1 = " + fmt(y1, 4) + "<br>" +
-            "<b>Point 2</b>: x2 = " + fmt(x2, 4) + " | y2 = " + fmt(y2, 4) + "<br>" +
-            "<b>Delta</b>: dx = " + (dx === null ? "--" : fmt(dx, 4)) +
-            " | dy = " + (dy === null ? "--" : fmt(dy, 4));
-    }}
-
-    function attach() {{
-        var plotDiv = findPlotDiv();
-        if (!plotDiv) {{ setTimeout(attach, 600); return; }}
-        if (plotDiv._coordListenerAttached) return;
-        plotDiv._coordListenerAttached = true;
-
-        plotDiv.on("plotly_click", function(data) {{
-            if (!data || !data.points || !data.points.length) return;
-
-            var pt = data.points[0];
-            var newPt = {{
-                x: pt.x,
-                y: pt.y,
-                pointNumber: pt.pointNumber
-            }};
-
-            if (pt1 === null) {{
-                pt1 = newPt;
-            }} else if (pt2 === null) {{
-                pt2 = newPt;
-            }} else {{
-                pt1 = pt2;
-                pt2 = newPt;
-            }}
-
-            renderBox();
-        }});
-
-        plotDiv.on("plotly_doubleclick", function() {{
-            pt1 = null;
-            pt2 = null;
-            renderBox();
-        }});
-
-        renderBox();
-    }}
-
-    if (document.readyState === "complete") {{ attach(); }}
-    else {{ window.addEventListener("load", attach); }}
-
-    setTimeout(attach, 1000);
-    setTimeout(attach, 2500);
-}})();
-</script>
-""", height=110)
+my_func3("Normalized")
 
 # ══════════════════════════════════════════════
 # ROW 7: Animated Geo-Trace (Streamlit 1.12 compatible)
