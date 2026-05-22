@@ -155,3 +155,22 @@ st.download_button(
  - [python] python -m pip install streamlit==1.2.0 (to be followed by installing a specific [older] version of Streamlit)
  - [python] python -m pip install protobuf==3.20.0 (to be followed by installing a specific [older] version of protobuf, which is a dependency for Streamlit)
  - [python] pip install "altair<5" (if already from active env; to be followed by installing a specific [older] version of Altair, which is a dependency for Streamlit)
+
+
+
+
+### Prompt for perplexity:
+ I'd like to add a dataframe table, based on 'synthetic_sales_data.csv' file, with st.multiselect() streamlit object.
+these are the requirements for this object behavior:
+
+imagine that we have a csv file with headers: 'time', 'applied_commands', 'state', 'mode', 'speed', 'temperatue', ...
+
+1. the default view is empty. meaning that no column is selected and no data is shown in the table. the user can shall select the columns to be shown (from the csv headers) using st.multiselect() object.
+2. the first element|(csv column) to be selected shall be deployed in table such that we get its rows only where the values of the first selected column have been changed (stacked mode). no need to display rows where the value of the first selected column is same as before (if values of fiorst selected column, corresponding rows\lines shall be skipped).
+3. Per first element|header selection, the 'Time' column shall be added to its left side. (with corresponding values to the stacked displayed rows as dictated by request #2).
+4. if additional columns are selected (once the first column is selected), their corresponding values shall be also displayed (without adding additional lines|rows); note also that all appended columns shall be deployed to the right of the first selected column (contrary to the 'Time' column).
+5. columns to the right side of the first selected column can be easily removed without affecting the values of the remaining columns.
+6. if the first selected column is removed (the one next to the 'Time' column),  the next row to be the new row right to the 'Time' column shall now be considered as 'the first element|(csv column) to be selected' and above rules are applies to it - meaning that the data is updated such that the visible rows are only the rows where the value of this column has changed.
+
+let me know if need more clarifications.
+
