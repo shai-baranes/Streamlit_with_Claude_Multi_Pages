@@ -137,10 +137,14 @@ st.download_button(
 ### TODOs
 - [x] Check if 'Select-All' is applicable on my restricted environment
 - [x] If above, remove the 'All' filters *(above not met in older versions)*
-- [ ] Check if 'inject_css()' is applicable and needed?
-- [ ] Apply the simulated map for longitude / latitude
-- [ ] Utilize the Normalized chart where applicable (e.g. for the bar chart)
+- [x] Check if 'inject_css()' is applicable and needed?
+- [x] Apply the simulated map for longitude / latitude
+- [x] Utilize the Normalized chart where applicable (e.g. for the bar chart)
 - [x] Apply the new color (to be taken from 'config.toml') simulated map for longitude / latitude
+- [ ] Apply the time delta between 2 rows for the 'Stacked Values Table' page.
+- [ ] 'pip install streamlit-aggrid' - for AgGrid version (so the selected row stays visibly highlighted inside the grid itself when switching OFF stacked-mode)
+- [ ] from some reason, after aggrid we're asked to re-install pandas... (need to kill all python|streamlit instances and retry!)
+- [ ] note that it is recommeded to backup the current .env (along with Stacjed_Values_Table #1) before trying version *_2* to which we need to install above!!!
 
 
 ### Aditional Notes on Python & Streamlit Versions Management (taken from MISC README)
@@ -173,4 +177,13 @@ imagine that we have a csv file with headers: 'time', 'applied_commands', 'state
 6. if the first selected column is removed (the one next to the 'Time' column),  the next row to be the new row right to the 'Time' column shall now be considered as 'the first element|(csv column) to be selected' and above rules are applies to it - meaning that the data is updated such that the visible rows are only the rows where the value of this column has changed.
 
 let me know if need more clarifications.
+
+-------------------------------
+
+I would like to add functionality as folowing:
+1. adding a checkbutton to our table, check by default
+2. if we uncheck the button, the mask filter is off and all the rows depicted by the dataframe are displayed (for the selected columns)
+3. if a grid was selected prior to uncheck cmd, the grid remains selected and visible - meaning that the table expands but the user doesn't have to screoll in order to find the priorly  selected grid.
+
+this additional functionality is to allow to user to assess prior and post values on other columns adjacent to the value change of the anchor column
 
