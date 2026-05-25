@@ -145,6 +145,7 @@ st.download_button(
 - [ ] 'pip install streamlit-aggrid' - for AgGrid version (so the selected row stays visibly highlighted inside the grid itself when switching OFF stacked-mode)
 - [ ] from some reason, after aggrid we're asked to re-install pandas... (need to kill all python|streamlit instances and retry!)
 - [ ] note that it is recommeded to backup the current .env (along with Stacjed_Values_Table #1) before trying version *_2* to which we need to install above!!!
+- [ ] loading the CSV with several gaps (nulls) I get an error from the load_csv file...
 
 
 ### Aditional Notes on Python & Streamlit Versions Management (taken from MISC README)

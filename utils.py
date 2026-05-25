@@ -86,7 +86,8 @@ def inject_css():
 
 
 # ── CSV loader (cached) ───────────────────────────────────────────────────────
-@st.cache
+# @st.cache
+@st.cache_data
 def load_csv(file_bytes: bytes) -> pd.DataFrame:
     """
     TUTORIAL NOTE ───────────────────────────────────────────────────────────
@@ -95,7 +96,8 @@ def load_csv(file_bytes: bytes) -> pd.DataFrame:
     ─────────────────────────────────────────────────────────────────────────
     """
     df = pd.read_csv(io.BytesIO(file_bytes))
-    df["Date"] = pd.to_datetime(df["Date"])
+    # df["Date"] = pd.to_datetime(df["Date"])
+    df["Date"] = pd.to_datetime(df["Date"], dayfirst=True)
     if "Year"     not in df.columns: df["Year"]     = df["Date"].dt.year
     if "MonthNum" not in df.columns: df["MonthNum"]  = df["Date"].dt.month
     if "Month"    not in df.columns: df["Month"]     = df["Date"].dt.strftime("%b")
