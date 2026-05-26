@@ -155,3 +155,7 @@ else:
 # if df_full is None:
 #     st.warning("Please load a CSV first on the Load CSV page.")
 #     st.stop()
+
+
+# TBD - also add to README:
+# pip install tkinterdnd2
