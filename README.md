@@ -27,7 +27,7 @@ source .venv/bin/activate        # macOS / Linux
 # > pip install -r requirements.txt
 # OR
 # > uv venv  (or > UV add 'project_name')
-# > uv pip install -r requirements.txt 
+# > uv pip install -r requirements.txt (or uv pip sync requirements.txt)
 # OR
 # > uv add -r requirements.txt # my prefered way
 
@@ -157,11 +157,23 @@ st.download_button(
  - [python] where streamlit (to see the path of the current Streamlit executable in use)
  - [python] <https://www.python.org/downloads/>(to down any prior released version of python)
  - [python] py -3.9 -m venv .venv (to create a virtual env using older python 3.9v) *or C:\Path\To\Python39\python.exe -m venv .venv*
- - [python] python -m pip install streamlit==1.2.0 (to be followed by installing a specific [older] version of Streamlit)
- - [python] python -m pip install protobuf==3.20.0 (to be followed by installing a specific [older] version of protobuf, which is a dependency for Streamlit)
+ - [python] python -m pip install streamlit==1.2.0 (if wanting to install a specific [older] version of Streamlit)
+ - [python] python -m pip install protobuf==3.20.0 (if wanting to install a specific [older] version of protobuf, which is a dependency for Streamlit)
  - [python] pip install "altair<5" (if already from active env; to be followed by installing a specific [older] version of Altair, which is a dependency for Streamlit)
+ - [python] 
 
+### wanting to replace .venv (to align with newer python installation)
+-  [DOS]              >> .venv\Scripts\activate ; pip freeze > requirements.txt; deactivate
+-  [DOS]              >> rmdir /s .venv
+-  [pyenv|powershell] if 'pyenv' not installed, install pyenv via powershell: >> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+-  [pyenv|powershell] followed by runnig the pyenv-win installer: >> Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
+-  [pyenv|powershell] verify by (after close/opening powershell): >> pyenv --version
+-  [pyenv|powershell] installing out python version: >> pyenv install 3.12.10
+-  [UV]               UV alternative to install python 3.12 (outside the environment): >> uv run --python 3.12 python --version
 
+-  [UV|powershell]    uv venv --python 3.12 (creating python 3.12 environment)
+-  [UV]               python pin 3.12 (sometimes it may skip the '.python-version' file info; followd by uv ad ...)
+-  [UV]               uv pip install -r requirements.txt (or 'uv pip sync requirements.txt'; note that we may prefer removing the versions)
 
 
 ### Prompt for perplexity:
