@@ -1,7 +1,11 @@
 # =========================
 # Useful zsh aliases for macOS
-# copy into: ~/.zshrc
-# and then reload it for sessions using: source ~/.zshrc
+# copy into: % ~/.zshrc
+# and then reload it for sessions using: % source ~/.zshrc
+#
+# note: in a similar way we shall edit the git alias file:
+# git aliases stored in: % ~/.gitconfig
+# to be followed by: % source ~/.gitconfig (refer to 'git_aliases.png' file from this repo)
 # =========================
 
 # History shortcuts
