@@ -1,0 +1,73 @@
+# =========================
+# Useful zsh aliases for macOS
+# copy into: ~/.zshrc
+# and then reload it for sessions using: source ~/.zshrc
+# =========================
+
+# History shortcuts
+alias h='history 100'
+alias hg='history 100 | grep'
+alias hgp='history 100 | grep -i'
+
+# Directory & listing
+alias ll='ls -lah'
+alias la='ls -A'
+alias l='ls -CF'
+alias cd..='cd ..'
+alias cd...='cd ../..'
+
+# Python / Streamlit / Data
+alias py='python3'
+alias pyt='python3 -m pytest'
+alias streamlit-dev='streamlit run'
+alias streamlit-run='streamlit run'
+alias pd='python3 -c "import pandas as pd; print(pd.__version__)"'
+alias plotly-dev='python3 -c "import plotly; print(plotly.__version__)"'
+
+# pip / uv
+alias pipi='pip install'
+alias pipr='pip remove'
+alias po='pip show'
+alias pul='uv pip install'
+alias prl='uv pip remove'
+
+# Git shortcuts
+alias gs='git status'
+alias ga='git add'
+alias gaa='git add --all'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gpl='git pull'
+alias gps='git push'
+alias gpst='git push --set-upstream'
+alias gdl='git diff'
+alias gl='git log --oneline -20'
+alias gb='git branch'
+alias gcb='git checkout -b'
+alias gco='git checkout'
+alias gr='git remote'
+alias gst='git stash'
+alias gsp='git stash pop'
+
+# Docker / Compose (if you use them)
+alias dcb='docker compose build'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
+
+# Editor shortcuts (Sublime Text)
+alias sublz='subl ~/.zshrc'
+alias sublv='subl -a'
+
+# Quick reload & edit of zshrc
+alias oz='subl ~/.zshrc'
+alias ref='source ~/.zshrc'
+
+# General utilities
+alias c='clear'
+alias x='exit'
+alias mkdirp='mkdir -p'
+alias catn='cat -n'
+
+# macOS / Network helpers
+alias ports='lsof -i'
+alias stop='kill -9'
