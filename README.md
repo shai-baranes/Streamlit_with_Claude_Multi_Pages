@@ -174,7 +174,7 @@ st.download_button(
 -  [UV|powershell]    uv venv --python 3.12 (creating python 3.12 environment)
 -  [UV]               python pin 3.12 (sometimes it may skip the '.python-version' file info; followd by uv ad ...)
 -  [UV]               uv pip install -r requirements.txt (or 'uv pip sync requirements.txt'; note that we may prefer removing the versions)
-
+-  [Mac]	      source .venv/bin/activate
 
 ### Prompt for perplexity:
  I'd like to add a dataframe table, based on 'synthetic_sales_data.csv' file, with st.multiselect() streamlit object.
