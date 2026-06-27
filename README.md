@@ -204,3 +204,16 @@ I would like to add functionality as folowing:
 
 this additional functionality is to allow to user to assess prior and post values on other columns adjacent to the value change of the anchor column
 
+
+### Project Related
+- Activate your virtual env: % source .venv/bin/activate
+- Launch streamlit session: % streamlit run 'Load CSV.py'
+> Once streamlit is running you can now launch the selenium app to capture the screens printout:
+-                           % python3 my_selenium.py
+
+
+
+
+
+
+
