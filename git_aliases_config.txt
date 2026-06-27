@@ -1,0 +1,36 @@
+# This is Git's per-user configuration file.
+# git pull --rebase origin main (when paralel branches - fetches the remote commits, replays your local commits on top, and then pushes the result)
+# note that 'rebase = true' replaces the need of the above and 'git pull' is now enought!
+# git rebase --continue (if accidently stoped session in the middle of conflict handling prior to add to staged)
+[user]
+	name = Shai Baranes
+	email = shai.baranes@gmail.com
+[alias]
+	last = log -1 HEAD
+	loog = log --all --decorate --oneline --graph
+	uncache = rm -r --cached .
+	wdiff = diff --word-diff
+	st = status
+	cop = checkout -p
+	diffa = diff --staged --word-diff
+	diffs = diff --staged --word-diff
+	cm = commit -m
+	cma = commit --ament
+	cman = commit --amend --no-edit
+	alias = config --get-regexp ^alias
+	list = config --get-regexp ^alias
+	edit = config --global --edit
+	cob = checkout -B
+	resetc = rm -r --cached .
+	diffcommits = diff HEAD~1..HEAD
+	difflast = diff HEAD~1..HEAD
+	resethard = reset --HARD HEAD
+	difff = diff -- .
+	looog = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+[pull]
+	rebase = true # when pulling from another btanch with advanced commit, the pull commit is now based before my current commit in git history
+[push]
+	autoSetupRemote = true # saves time when push from a newly introduced branch (no need the 'git push -u origin my_branch')
+[rerere]
+	enabled = true # enables sugesting prior used rules to handle conflicts
+	autoupdate = false # once I get confidence on auto suggestions, I can turn it on to shorten the process
