@@ -7,5 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "pandas>=3.0.3",
     "selenium>=4.45.0",
+    "st-aggrid",
+    "st-aggris",
     "streamlit-aggrid>=1.2.1.post2",
 ]

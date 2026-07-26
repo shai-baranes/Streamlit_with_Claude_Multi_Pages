@@ -164,7 +164,7 @@ st.download_button(
  - [python] python -m pip install streamlit==1.2.0 (if wanting to install a specific [older] version of Streamlit)
  - [python] python -m pip install protobuf==3.20.0 (if wanting to install a specific [older] version of protobuf, which is a dependency for Streamlit)
  - [python] pip install "altair<5" (if already from active env; to be followed by installing a specific [older] version of Altair, which is a dependency for Streamlit)
- - [python] 
+ - [python] uv pip install streamlit-aggrid (the way I was able to install st_aggrid python package in my Mac)
 
 ### wanting to replace .venv (to align with newer python installation)
 -  [DOS]              >> .venv\Scripts\activate ; pip freeze > requirements.txt; deactivate
