@@ -11,8 +11,7 @@ inject_css()
 st.title("📈 Stacked Values")
 
 TIME_COLUMN_CANDIDATES = ["Date", "time", "Time"]
-SECONDS_COLUMN_CANDIDATES = ["Seconds", "seconds"]
-DELTA_SECONDS_COLUMN = "Dt [s]"
+DELTA_DAYS_COLUMN = "Dt [days]"
 VIEW_MODES = ["Full", "Stacked by Left", "Stacked by All"]
 
 
@@ -23,13 +22,6 @@ def get_time_column(df: pd.DataFrame) -> str:
     raise KeyError("Could not find a time-like column in the dataframe.")
 
 
-def get_seconds_column(df: pd.DataFrame) -> str | None:
-    for col in SECONDS_COLUMN_CANDIDATES:
-        if col in df.columns:
-            return col
-    return None
-
-
 def init_state() -> None:
     defaults = {
         "selected_columns_ordered": [],
@@ -38,6 +30,7 @@ def init_state() -> None:
         "aggrid_mount_id": 0,
         "pending_restore_scroll": False,
         "stacked_exclusion_cols": [],
+        "stacked_exclusion_cols_widget": [],
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -97,6 +90,19 @@ def on_exclusion_change() -> None:
     mark_grid_for_remount_and_restore()
 
 
+def add_dt_days_column(out: pd.DataFrame, time_col: str) -> pd.DataFrame:
+    out = out.copy()
+    parsed_time = pd.to_datetime(out[time_col], errors="coerce")
+    out[DELTA_DAYS_COLUMN] = (parsed_time.diff().dt.total_seconds() / 86400).round(3)
+    out[DELTA_DAYS_COLUMN] = out[DELTA_DAYS_COLUMN].astype(object)
+
+    if not out.empty:
+        out.iloc[0, out.columns.get_loc(DELTA_DAYS_COLUMN)] = "-"
+
+    out.insert(2, DELTA_DAYS_COLUMN, out.pop(DELTA_DAYS_COLUMN))
+    return out
+
+
 @st.cache_data(show_spinner=False)
 def build_view_cached(
     df: pd.DataFrame,
@@ -108,8 +114,6 @@ def build_view_cached(
         return pd.DataFrame()
 
     time_col = get_time_column(df)
-    seconds_col = get_seconds_column(df)
-
     anchor_col = selected_columns[0]
     data_cols = [c for c in selected_columns if c != time_col]
     compare_cols = [c for c in data_cols if c not in exclusion_cols]
@@ -120,41 +124,27 @@ def build_view_cached(
     extra_cols = [c for c in selected_columns[1:] if c not in {time_col, anchor_col}]
     result_cols = [time_col, anchor_col] + extra_cols
 
-    if seconds_col and seconds_col not in result_cols:
-        result_cols_with_seconds = result_cols + [seconds_col]
-    else:
-        result_cols_with_seconds = result_cols
-
     if view_mode == "Full":
-        out = df.loc[:, result_cols_with_seconds].copy()
+        out = df.loc[:, result_cols].copy()
 
     elif view_mode == "Stacked by Left":
         mask = df[anchor_col].ne(df[anchor_col].shift())
-        out = df.loc[mask, result_cols_with_seconds].copy()
+        out = df.loc[mask, result_cols].copy()
 
     elif view_mode == "Stacked by All":
         if not data_cols:
-            out = df.loc[:, result_cols_with_seconds].copy()
+            out = df.loc[:, result_cols].copy()
         else:
             changed_mask = df[compare_cols].ne(df[compare_cols].shift()).any(axis=1)
-            out = df.loc[changed_mask, result_cols_with_seconds].copy()
+            out = df.loc[changed_mask, result_cols].copy()
 
     else:
         raise ValueError(f"Unsupported view mode: {view_mode}")
 
     out.insert(0, "_source_row", out.index.astype(str))
 
-    if seconds_col is not None and seconds_col in out.columns:
-        out[DELTA_SECONDS_COLUMN] = pd.to_numeric(out[seconds_col], errors="coerce").diff()
-        out[DELTA_SECONDS_COLUMN] = out[DELTA_SECONDS_COLUMN].round(3)
-        out[DELTA_SECONDS_COLUMN] = out[DELTA_SECONDS_COLUMN].astype(object)
-        if not out.empty:
-            out.iloc[0, out.columns.get_loc(DELTA_SECONDS_COLUMN)] = "-"
-
-        out.insert(2, DELTA_SECONDS_COLUMN, out.pop(DELTA_SECONDS_COLUMN))
-
-        if seconds_col not in selected_columns:
-            out = out.drop(columns=[seconds_col])
+    if time_col in out.columns:
+        out = add_dt_days_column(out, time_col)
 
     return out.reset_index(drop=True)
 
@@ -250,14 +240,14 @@ def configure_grid(
     )
 
     gb.configure_column("_source_row", hide=True)
-    gb.configure_column(time_col, width=95, minWidth=85, maxWidth=140, pinned="left")
+    gb.configure_column(time_col, width=130, minWidth=100, maxWidth=180, pinned="left")
 
-    if DELTA_SECONDS_COLUMN in view_df.columns:
+    if DELTA_DAYS_COLUMN in view_df.columns:
         gb.configure_column(
-            DELTA_SECONDS_COLUMN,
-            width=90,
-            minWidth=80,
-            maxWidth=110,
+            DELTA_DAYS_COLUMN,
+            width=95,
+            minWidth=85,
+            maxWidth=120,
             pinned="left",
         )
 
@@ -289,12 +279,8 @@ init_state()
 df_full = require_data()
 df_filtered = sidebar_filters(df_full)
 time_col = get_time_column(df_filtered)
-seconds_col = get_seconds_column(df_filtered)
 
-selectable_columns = [
-    c for c in df_filtered.columns
-    if c != time_col and c != seconds_col
-]
+selectable_columns = [c for c in df_filtered.columns if c != time_col]
 
 
 @st.fragment
@@ -308,7 +294,7 @@ def render_stacked_table() -> None:
         key="selected_columns_widget",
         on_change=on_selected_columns_change,
         args=("selected_columns_widget", "selected_columns_ordered"),
-        help="The first selected column is the anchor column. Date and Dt [s] are always shown on the left when available.",
+        help="The first selected column is the anchor column. Date and Dt [days] are always shown on the left.",
     )
 
     mode_col, _ = st.columns([1, 5])
@@ -323,10 +309,7 @@ def render_stacked_table() -> None:
 
     selected_columns = st.session_state["selected_columns_ordered"]
 
-    if (
-        st.session_state["view_mode"] == "Stacked by All"
-        and selected_columns
-    ):
+    if st.session_state["view_mode"] == "Stacked by All" and selected_columns:
         allowed_max = max(0, len(selected_columns) - 1)
         current_excluded = [
             c for c in st.session_state.get("stacked_exclusion_cols", [])
@@ -411,6 +394,9 @@ def render_stacked_table() -> None:
         reload_data=False,
     )
 
+    visible_df = pd.DataFrame(grid_response["data"])
+
+
     st.session_state["pending_restore_scroll"] = False
 
     selected_row = extract_selected_row(grid_response)
@@ -427,6 +413,19 @@ def render_stacked_table() -> None:
     if selected_full_row is not None:
         st.markdown("**Selected source row**")
         st.dataframe(selected_full_row, use_container_width=True)
+    
+
+    # ── Download ──────────────────────────────────────────────────────────────────
+    st.download_button(
+        label="⬇️ Download filtered data as CSV",
+        data=visible_df.to_csv(index=False).encode("utf-8"),
+        file_name="filtered_sales_data.csv",
+        mime="text/csv",        
+    )
+
+    st.markdown("---")
+    st.caption(f"Showing {len(visible_df):,} of {len(df_full):,} records")
 
 
 render_stacked_table()
+
