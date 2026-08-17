@@ -14,6 +14,8 @@ This is a tutorial I created to teach myself how to build data dashboards with S
 Once adding pages (TABs), the name of the main TAB is the .py file name and the other tabs according to the file names under the 'page' folder.
 (order is given by the enumerate prefix in the file name, e.g. 1_ for the first tab, 2_ for the second tab, etc.)
 
+Also note that in this specific performance focused side-branch, the only handles page (besides utils) was _1_#_KPIs.py_
+
 
 Quick libraries installation given having a predefined `requirements.txt` file:
 
