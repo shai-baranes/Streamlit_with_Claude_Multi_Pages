@@ -3,11 +3,11 @@ name = "streamlit-with-claude-multi-pages"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.14"
+# requires-python = ">=3.11"
 dependencies = [
     "pandas>=3.0.3",
     "selenium>=4.45.0",
-    "st-aggrid",
-    "st-aggris",
+    # "st-aggris",
     "streamlit-aggrid>=1.2.1.post2",
 ]

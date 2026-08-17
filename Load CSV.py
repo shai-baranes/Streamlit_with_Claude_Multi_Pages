@@ -17,6 +17,8 @@ access the data without re-uploading.
 
 import streamlit as st
 from utils import inject_css, load_csv, tutorial_box
+from dask_utils import generate_and_cache_dask_df # TDB new
+
 
 DEBUG = True  # Set to False to enable CSV upload (note: also in DEBUG mode, after each refresh you need to click on the 'Load CSV' page in the sidebar to load the sample data)
 
@@ -64,6 +66,9 @@ if not DEBUG:
 
     if uploaded_file is not None:
         df_full = load_csv(uploaded_file.read())
+
+        df_full = generate_and_cache_dask_df(df_full, cache_decorator=st.cache_data, return_meta=False)
+
         st.session_state["df_full"] = df_full
         st.success(f"✅ Loaded **{uploaded_file.name}** — {len(df_full)} rows, {len(df_full.columns)} columns")
         with st.expander("👀 Preview first 5 rows"):
@@ -76,5 +81,8 @@ if not DEBUG:
 else:
     st.warning("⚠️ DEBUG MODE: CSV upload disabled, using sample data.")
     df_full = load_csv(open("synthetic_sales_data.csv", "rb").read())
+    df_full = generate_and_cache_dask_df(df_full, cache_decorator=st.cache_data, return_meta=False)
+
+    # df_full = load_csv(open("synthetic_sales_data.csv", "rb").read())
     st.session_state["df_full"] = df_full
     st.success(f"✅ Loaded synthetic_sales_data.csv — {len(df_full)} rows, {len(df_full.columns)} columns")

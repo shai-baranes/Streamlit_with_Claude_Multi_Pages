@@ -15,6 +15,33 @@ import io
 import streamlit as st
 import pandas as pd
 import streamlit.components.v1 as _cv1
+# from dask_utils import generate_and_cache_dask_df # TDB new
+
+
+def _unique_list(series):
+    """Return a plain Python list of unique values for a pandas or dask Series.
+
+    If `series` is a Dask Series the intermediate .unique() result is computed.
+    The returned value is always a list that can be used safely with Streamlit
+    widgets (options=...).
+    """
+    vals = series.unique()
+    # If this is a Dask object, compute it to get a concrete value
+    if hasattr(vals, "compute"):
+        vals = vals.compute()
+    # vals might be a pandas Index, numpy array, or list-like
+    try:
+        return list(vals.tolist())
+    except Exception:
+        return list(vals)
+
+
+def _maybe_compute(obj):
+    """If `obj` is a Dask scalar/collection with .compute(), return its computed value,
+    otherwise return `obj` unchanged."""
+    if hasattr(obj, "compute"):
+        return obj.compute()
+    return obj
 
 # ── Shared CSS ────────────────────────────────────────────────────────────────
 # Light theme: white/light-grey backgrounds, dark text, indigo/teal accents.
@@ -102,7 +129,9 @@ def load_csv(file_bytes: bytes) -> pd.DataFrame:
     if "MonthNum" not in df.columns: df["MonthNum"]  = df["Date"].dt.month
     if "Month"    not in df.columns: df["Month"]     = df["Date"].dt.strftime("%b")
     if "Quarter"  not in df.columns: df["Quarter"]   = df["Date"].dt.quarter.apply(lambda q: f"Q{q}")
+
     return df.sort_values("Date").reset_index(drop=True)
+
 
 
 # ── Upload gate ───────────────────────────────────────────────────────────────
@@ -154,28 +183,28 @@ def sidebar_filters(df_full: pd.DataFrame) -> pd.DataFrame:
 
         selected_years = _all_multiselect(
             "Years", "📅",
-            sorted(df_full["Year"].unique().tolist()),
+            sorted(_unique_list(df_full["Year"])),
             "all_years_cb", "ms_years", "ms_years_prev",
         )
         selected_regions = _all_multiselect(
             "Regions", "🌍",
-            sorted(df_full["Region"].unique().tolist()),
+            sorted(_unique_list(df_full["Region"])),
             "all_regions_cb", "ms_regions", "ms_regions_prev",
         )
         selected_categories = _all_multiselect(
             "Categories", "🏷️",
-            sorted(df_full["Category"].unique().tolist()),
+            sorted(_unique_list(df_full["Category"])),
             "all_cats_cb", "ms_categories", "ms_categories_prev",
         )
         selected_segments = _all_multiselect(
             "Segments", "🎯",
-            sorted(df_full["Segment"].unique().tolist()),
+            sorted(_unique_list(df_full["Segment"])),
             "all_segs_cb", "ms_segments", "ms_segments_prev",
         )
 
         st.markdown("---")
-        rev_min = float(df_full["Revenue"].min())
-        rev_max = float(df_full["Revenue"].max())
+        rev_min = float(_maybe_compute(df_full["Revenue"].min()))
+        rev_max = float(_maybe_compute(df_full["Revenue"].max()))
         revenue_range = st.slider(
             "💰 Revenue Range ($)",
             min_value=rev_min, max_value=rev_max,
@@ -183,7 +212,7 @@ def sidebar_filters(df_full: pd.DataFrame) -> pd.DataFrame:
         )
         st.markdown("---")
         won_only = st.checkbox("🏆 Won Deals Only", value=False)
-        st.caption(f"Total records: {len(df_full):,}")
+        st.caption(f"Total records: {len(_maybe_compute(df_full)): ,}")
 
     # Apply filters
     df = df_full[
@@ -227,12 +256,12 @@ def sidebar_filters_2(df_full: pd.DataFrame) -> pd.DataFrame:
 
         selected_years = _all_multiselect(
             "Years", "📅",
-            sorted(df_full["Year"].unique().tolist()),
+            sorted(_unique_list(df_full["Year"])),
             "all_years_cb", "ms_years", "ms_years_prev",
         )
         selected_regions = _all_multiselect(
             "Regions", "🌍",
-            sorted(df_full["Region"].unique().tolist()),
+            sorted(_unique_list(df_full["Region"])),
             "all_regions_cb", "ms_regions", "ms_regions_prev",
         )
         # selected_categories = _all_multiselect(

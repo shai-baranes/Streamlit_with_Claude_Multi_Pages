@@ -13,7 +13,14 @@ df      = sidebar_filters(df_full)
 
 st.title("⚡ Key Performance Indicators")
 
-if df.empty:
+# Robust emptiness check compatible with pandas and Dask DataFrames
+try:
+    df_is_empty = df.empty
+except Exception:
+    # Dask doesn't implement .empty; head(1) is cheap and returns a pandas DataFrame
+    df_is_empty = df.head(1).empty
+
+if df_is_empty:
     st.warning("⚠️ No data matches the current filters.")
     st.stop()
 
@@ -27,29 +34,64 @@ Use <code>st.columns(n)</code> to lay out widgets side-by-side.
 
 col1, col2, col3, col4, col5 = st.columns(5)
 
-total_rev    = df["Revenue"].sum()
-total_profit = df["Profit"].sum()
-avg_margin   = df["Margin_%"].mean()
-total_deals  = len(df)
-win_rate     = df["Deal_Won"].mean() * 100
-full_rev     = df_full["Revenue"].sum()
+# Helper to compute Dask scalars or return plain Python scalars unchanged
+def _compute_if_dask(x):
+    try:
+        if hasattr(x, "compute"):
+            return x.compute()
+    except Exception:
+        pass
+    return x
 
-col1.metric("Total Revenue",  f"${total_rev/1e6:.2f}M",  f"{((total_rev/full_rev)-1)*100:.1f}% of total")
-col2.metric("Total Profit",   f"${total_profit/1e6:.2f}M")
-col3.metric("Avg Margin",     f"{avg_margin:.1f}%")
-col4.metric("Deals",          f"{total_deals:,}")
-col5.metric("Win Rate",       f"{win_rate:.1f}%")
+# Compute metrics safely whether df is pandas or Dask
+total_rev = _compute_if_dask(df["Revenue"].sum())
+total_profit = _compute_if_dask(df["Profit"].sum())
+avg_margin = _compute_if_dask(df["Margin_%"].mean())
+# total_deals: len(df) may be unsupported for Dask, fall back to counting a column
+try:
+    total_deals = len(df)
+except Exception:
+    try:
+        total_deals = int(_compute_if_dask(df.shape[0]))
+    except Exception:
+        total_deals = int(_compute_if_dask(df["Revenue"].count()))
+
+win_rate = _compute_if_dask(df["Deal_Won"].mean()) * 100
+full_rev = _compute_if_dask(df_full["Revenue"].sum())
+
+# Defensive formatting: ensure numeric types
+try:
+    total_rev = float(total_rev)
+except Exception:
+    total_rev = 0.0
+try:
+    full_rev = float(full_rev)
+except Exception:
+    full_rev = 1.0  # avoid division by zero
+
+pct_of_total = ((total_rev / full_rev) - 1) * 100 if full_rev else 0.0
+
+col1.metric("Total Revenue", f"${total_rev/1e6:.2f}M", f"{pct_of_total:.1f}% of total")
+col2.metric("Total Profit", f"${total_profit/1e6:.2f}M")
+col3.metric("Avg Margin", f"{avg_margin:.1f}%")
+col4.metric("Deals", f"{total_deals:,}")
+col5.metric("Win Rate", f"{win_rate:.1f}%")
 
 st.markdown("---")
 
 # ── Revenue breakdown table ───────────────────────────────────────────────────
 st.subheader("Revenue & Profit by Category")
 summary = (
-    df.groupby("Category")[["Revenue", "Profit", "Units"]]
+    df.groupby("Category")[
+        ["Revenue", "Profit", "Units"]
+    ]
     .sum()
     .sort_values("Revenue", ascending=False)
     .reset_index()
 )
+# If summary is a Dask DataFrame, compute it to get a pandas DataFrame
+if hasattr(summary, "compute"):
+    summary = summary.compute()
 summary["Margin_%"] = (summary["Profit"] / summary["Revenue"] * 100).round(1)
 st.dataframe(summary)
 
@@ -63,7 +105,28 @@ with st.expander("📋 Descriptive Statistics  (df.describe())"):
     </div>
     """, unsafe_allow_html=True)
     numeric_cols = df.select_dtypes(include="number").columns.tolist()
-    st.dataframe(df[numeric_cols].describe().round(2))
+    desc = df[numeric_cols].describe()
+    if hasattr(desc, "compute"):
+        desc = desc.compute()
+    st.dataframe(desc.round(2))
 
 st.markdown("---")
-st.caption(f"Showing {len(df):,} of {len(df_full):,} records")
+
+# Compute display counts safely
+try:
+    shown = len(df)
+except Exception:
+    try:
+        shown = int(_compute_if_dask(df.shape[0]))
+    except Exception:
+        shown = int(_compute_if_dask(df["Revenue"].count()))
+
+try:
+    total_count = len(df_full)
+except Exception:
+    try:
+        total_count = int(_compute_if_dask(df_full.shape[0]))
+    except Exception:
+        total_count = int(_compute_if_dask(df_full["Revenue"].count()))
+
+st.caption(f"Showing {shown:,} of {total_count:,} records")

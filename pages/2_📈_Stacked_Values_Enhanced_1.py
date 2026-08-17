@@ -4,6 +4,14 @@ import pandas as pd
 from utils import inject_css, require_data, sidebar_filters
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
 
+# Try to start a lightweight local Dask client for persistence.
+# If dask.distributed is unavailable this will be skipped gracefully.
+try:
+    from dask.distributed import Client
+    _dask_client = Client(processes=False, n_workers=2, threads_per_worker=1)
+except Exception:
+    _dask_client = None
+
 
 st.set_page_config(page_title="Stacked Values", page_icon="📈", layout="wide")
 inject_css()
@@ -106,13 +114,13 @@ def add_dt_days_column(out: pd.DataFrame, time_col: str) -> pd.DataFrame:
 @st.cache_data(show_spinner=False)
 def build_view_cached(
     _df: pd.DataFrame,
+    data_key: tuple,
     selected_columns: tuple[str, ...],
     view_mode: str,
     exclusion_cols: tuple[str, ...],
 ) -> pd.DataFrame:
-    # Streamlit cannot hash Dask DataFrames; leading underscore in parameter name
-    # tells Streamlit not to attempt to hash it. Assign to `df` for backward
-    # compatibility with the function body.
+    # `_df` is not hashed by Streamlit; `data_key` is a small hashable fingerprint
+    # (e.g., (row_count, tuple(columns))) used to control cache invalidation.
     df = _df
 
     if not selected_columns:
@@ -286,8 +294,21 @@ def configure_grid(
 
 init_state()
 
+# Load and filter data
 df_full = require_data()
 df_filtered = sidebar_filters(df_full)
+
+# Persist the filtered dataframe for faster repeated UI interactions when Dask is available.
+# This is a best-effort operation and will be skipped if persistence fails.
+try:
+    if _dask_client is not None:
+        df_filtered = _dask_client.persist(df_filtered)
+    elif hasattr(df_filtered, "persist"):
+        df_filtered = df_filtered.persist()
+except Exception:
+    # If persistence fails, continue without it.
+    pass
+
 time_col = get_time_column(df_filtered)
 
 selectable_columns = [c for c in df_filtered.columns if c != time_col]
@@ -351,8 +372,31 @@ def render_stacked_table() -> None:
         if c in selected_columns
     )
 
+    # Build a small cache key describing the current filtered dataset. Use row
+    # count (when cheap) and column list so the cached view invalidates when
+    # the underlying data changes.
+    def _compute_if_dask(x):
+        if hasattr(x, "compute"):
+            try:
+                return x.compute()
+            except Exception:
+                return x
+        return x
+
+    try:
+        row_count = int(_compute_if_dask(df_filtered.shape[0]))
+    except Exception:
+        # Fall back to a cheap count of a column
+        try:
+            row_count = int(_compute_if_dask(df_filtered[df_filtered.columns[0]].count()))
+        except Exception:
+            row_count = 0
+
+    data_key = (row_count, tuple(df_filtered.columns))
+
     view_df = build_view_cached(
         _df=df_filtered,
+        data_key=data_key,
         selected_columns=tuple(selected_columns),
         view_mode=view_mode,
         exclusion_cols=exclusion_cols,
