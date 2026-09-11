@@ -3,12 +3,21 @@ pages/4_🗂️_Data_Explorer.py  — Filtered Data Table & Download page.
 """
 
 import streamlit as st
+# Namespace widget persistence so legacy pages retain independent selections.
+from framework.state import ui
+st = ui(__file__)
 from utils import inject_css, require_data, sidebar_filters, tutorial_box
 
 st.set_page_config(page_title="Data Explorer", page_icon="🗂️", layout="wide")
 inject_css() # check if applicable?
 
 df_full = require_data()
+# Sales views require their original schema; generic CSVs use Engineering Explorer.
+from framework.config import ALWAYS_LOAD_COLUMNS
+_missing = set(ALWAYS_LOAD_COLUMNS) - set(df_full.columns)
+if _missing:
+    st.info("This sales view needs: " + ", ".join(sorted(_missing)) + ". Use Engineering Explorer for other schemas.")
+    st.stop()
 df      = sidebar_filters(df_full)
 
 st.title("🗂️ Filtered Data Explorer")
@@ -27,7 +36,11 @@ tutorial_box("""
 """)
 
 # ── Date range filter ─────────────────────────────────────────────────────────
-_dates = sorted(df["Date"].dt.date.unique().tolist())
+# Exclude missing dates from picker options while retaining them in the source dataset.
+_dates = sorted(df["Date"].dropna().dt.date.unique().tolist())
+if not _dates:
+    st.info("No valid dates are available for this view.")
+    st.stop()
 dt1, dt2 = st.columns(2)
 with dt1:
     tbl_start = st.selectbox("📅 Start Date", options=_dates, index=0, key="tbl_start")
@@ -60,12 +73,14 @@ if display_cols:
     st.dataframe(display_df)
 
 # ── Download ──────────────────────────────────────────────────────────────────
-st.download_button(
-    label="⬇️ Download filtered data as CSV",
-    data=df_table.to_csv(index=False).encode("utf-8"),
-    file_name="filtered_sales_data.csv",
-    mime="text/csv",
-)
+# Generate the full export only after an explicit request.
+if st.button("Prepare CSV export"):
+    st.download_button(
+        label="⬇️ Download filtered data as CSV",
+        data=df_table.to_csv(index=False).encode("utf-8"),
+        file_name="filtered_sales_data.csv",
+        mime="text/csv",
+    )
 
 st.markdown("---")
 st.caption(f"Showing {len(df):,} of {len(df_full):,} records (date range further narrows to {len(df_table):,})")

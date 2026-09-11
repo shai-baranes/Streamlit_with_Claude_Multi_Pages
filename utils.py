@@ -13,6 +13,9 @@ session, so the uploaded file and all filter selections survive page switches.
 
 import io
 import streamlit as st
+# Persist shared filter widgets independently of Streamlit widget cleanup.
+from framework.state import ui
+st = ui(__file__)
 import pandas as pd
 import streamlit.components.v1 as _cv1
 
@@ -118,8 +121,16 @@ def require_data() -> pd.DataFrame:
     from session_state without re-uploading.
     ─────────────────────────────────────────────────────────────────────────
     """
-    if "df_full" not in st.session_state:
+    if st.session_state.get("df_full") is None:
         st.warning("⚠️ No data loaded yet. Please go to the **Home** page and upload a CSV file.")
+        st.stop()
+    # Refresh the private directory lease while a user works on any page.
+    if st.session_state.get("session_id"):
+        from framework.data import session_directory
+        session_directory(st.session_state["session_id"])
+    # Header-only CSVs remain valid uploads but cannot drive ranges or aggregations.
+    if st.session_state["df_full"].empty:
+        st.info("The loaded CSV has no data rows. Upload a file with records to analyze.")
         st.stop()
     return st.session_state["df_full"]
 
@@ -131,6 +142,9 @@ def sidebar_filters(df_full: pd.DataFrame) -> pd.DataFrame:
     Call once per page — widget keys are stable so session_state
     preserves selections when navigating between pages.
     """
+    # Generic files bypass sales-only filters; Engineering Explorer supplies field filters.
+    if not {"Year", "Region", "Category", "Segment", "Revenue", "Deal_Won"}.issubset(df_full.columns):
+        return df_full
     with st.sidebar:
         st.image("https://streamlit.io/images/brand/streamlit-mark-color.png", width=40) # TBD replace it with a locally saved image to avoid external dependency   
         st.title("🎛️ Filters")
@@ -152,38 +166,51 @@ def sidebar_filters(df_full: pd.DataFrame) -> pd.DataFrame:
             return selected
             # return all_opts if all_cb else selected
 
+        # Missing category values cannot be sorted alongside strings in widget options.
         selected_years = _all_multiselect(
             "Years", "📅",
-            sorted(df_full["Year"].unique().tolist()),
+            sorted(df_full["Year"].dropna().unique().tolist()),
             "all_years_cb", "ms_years", "ms_years_prev",
         )
         selected_regions = _all_multiselect(
             "Regions", "🌍",
-            sorted(df_full["Region"].unique().tolist()),
+            sorted(df_full["Region"].dropna().unique().tolist()),
             "all_regions_cb", "ms_regions", "ms_regions_prev",
         )
         selected_categories = _all_multiselect(
             "Categories", "🏷️",
-            sorted(df_full["Category"].unique().tolist()),
+            sorted(df_full["Category"].dropna().unique().tolist()),
             "all_cats_cb", "ms_categories", "ms_categories_prev",
         )
         selected_segments = _all_multiselect(
             "Segments", "🎯",
-            sorted(df_full["Segment"].unique().tolist()),
+            sorted(df_full["Segment"].dropna().unique().tolist()),
             "all_segs_cb", "ms_segments", "ms_segments_prev",
         )
 
         st.markdown("---")
         rev_min = float(df_full["Revenue"].min())
         rev_max = float(df_full["Revenue"].max())
-        revenue_range = st.slider(
-            "💰 Revenue Range ($)",
-            min_value=rev_min, max_value=rev_max,
-            value=(rev_min, rev_max), format="$%.0f",
-        )
+        # Constant or empty revenue ranges cannot be represented by a Streamlit slider.
+        revenue_range = (rev_min, rev_max)
+        if pd.notna(rev_min) and pd.notna(rev_max) and rev_min < rev_max:
+            revenue_range = st.slider(
+                "💰 Revenue Range ($)",
+                min_value=rev_min, max_value=rev_max,
+                value=(rev_min, rev_max), format="$%.0f",
+            )
         st.markdown("---")
         won_only = st.checkbox("🏆 Won Deals Only", value=False)
         st.caption(f"Total records: {len(df_full):,}")
+
+    # Browser sliders can round floating endpoints; retain inclusive dataset boundaries.
+    import math
+    low, high = revenue_range
+    if math.isclose(low, rev_min, rel_tol=1e-6, abs_tol=1e-8):
+        low = rev_min
+    if math.isclose(high, rev_max, rel_tol=1e-6, abs_tol=1e-8):
+        high = rev_max
+    revenue_range = (low, high)
 
     # Apply filters
     df = df_full[
@@ -225,24 +252,25 @@ def sidebar_filters_2(df_full: pd.DataFrame) -> pd.DataFrame:
             st.session_state[prev_key] = st.session_state.get(ms_key, all_opts)
             return all_opts if all_cb else selected
 
+        # Missing category values cannot be sorted alongside strings in widget options.
         selected_years = _all_multiselect(
             "Years", "📅",
-            sorted(df_full["Year"].unique().tolist()),
+            sorted(df_full["Year"].dropna().unique().tolist()),
             "all_years_cb", "ms_years", "ms_years_prev",
         )
         selected_regions = _all_multiselect(
             "Regions", "🌍",
-            sorted(df_full["Region"].unique().tolist()),
+            sorted(df_full["Region"].dropna().unique().tolist()),
             "all_regions_cb", "ms_regions", "ms_regions_prev",
         )
         # selected_categories = _all_multiselect(
         #     "Categories", "🏷️",
-        #     sorted(df_full["Category"].unique().tolist()),
+        #     sorted(df_full["Category"].dropna().unique().tolist()),
         #     "all_cats_cb", "ms_categories", "ms_categories_prev",
         # )
         # selected_segments = _all_multiselect(
         #     "Segments", "🎯",
-        #     sorted(df_full["Segment"].unique().tolist()),
+        #     sorted(df_full["Segment"].dropna().unique().tolist()),
         #     "all_segs_cb", "ms_segments", "ms_segments_prev",
         # )
 

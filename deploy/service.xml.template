@@ -1,0 +1,13 @@
+<service>
+  <id>EngineeringDashboard</id>
+  <name>Engineering Data Dashboard</name>
+  <description>Private-network Streamlit engineering data service</description>
+  <executable>@PYTHON@</executable>
+  <arguments>"@ROOT@\run_server.py" --port @PORT@</arguments>
+  <workingdirectory>@ROOT@</workingdirectory>
+  <startmode>Automatic</startmode>
+  <onfailure action="restart" delay="10 sec"/>
+  <stoptimeout>30 sec</stoptimeout>
+  <logpath>@ROOT@\deploy\logs</logpath>
+  <log mode="roll-by-size"><sizeThreshold>10240</sizeThreshold><keepFiles>5</keepFiles></log>
+</service>

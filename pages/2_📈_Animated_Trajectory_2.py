@@ -1,4 +1,7 @@
 import streamlit as st
+# Namespace widget persistence so legacy pages retain independent selections.
+from framework.state import ui
+st = ui(__file__)
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go

@@ -1,3 +1,5 @@
+> For the server, session isolation, large CSV workflow, and tests, see [README_GPT.md](README_GPT.md).
+
 # 📊 Streamlit + Pandas Tutorial — Global Sales Dashboard
 
 A professional, fully-commented Streamlit app covering the most important

@@ -3,6 +3,11 @@ pages/2_📈_Charts.py  — Dynamic Charts page.
 """
 
 import streamlit as st
+
+# Namespace widget persistence so legacy pages retain independent selections.
+from framework.state import ui
+
+st = ui(__file__)
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
@@ -14,7 +19,18 @@ st.set_page_config(page_title="Charts", page_icon="📈", layout="wide")
 inject_css()
 
 df_full = require_data()
-df      = sidebar_filters(df_full)
+# Sales views require their original schema; generic CSVs use Engineering Explorer.
+from framework.config import ALWAYS_LOAD_COLUMNS
+
+_missing = set(ALWAYS_LOAD_COLUMNS) - set(df_full.columns)
+if _missing:
+    st.info(
+        "This sales view needs: "
+        + ", ".join(sorted(_missing))
+        + ". Use Engineering Explorer for other schemas."
+    )
+    st.stop()
+df = sidebar_filters(df_full)
 
 st.title("📈 Dynamic Charts")
 
@@ -29,8 +45,18 @@ variables — no callbacks needed. Use <code>go.Figure</code> with <code>.tolist
 for reliable rendering on Streamlit 1.12 / older Plotly.
 """)
 
-_palette = ["#7F3C8D","#11A579","#3969AC","#F2B701","#E73F74",
-            "#80BA5A","#E68310","#008695","#CF1C90","#f97b72"]
+_palette = [
+    "#7F3C8D",
+    "#11A579",
+    "#3969AC",
+    "#F2B701",
+    "#E73F74",
+    "#80BA5A",
+    "#E68310",
+    "#008695",
+    "#CF1C90",
+    "#f97b72",
+]
 
 # ══════════════════════════════════════════════
 # ROW 1: Bar + Line
@@ -39,9 +65,17 @@ c1, c2 = st.columns(2)
 
 with c1:
     st.subheader("Bar Chart — Revenue Breakdown")
-    bar_group = st.selectbox("Group by", ["Category","Region","Segment","Channel","Year","Quarter"], key="bar_group")
-    bar_metric = st.radio("Metric", ["Revenue","Profit","Units"], horizontal=True, key="bar_metric")
-    bar_orientation = st.radio("Orientation", ["Vertical","Horizontal"], horizontal=True, key="bar_orient")
+    bar_group = st.selectbox(
+        "Group by",
+        ["Category", "Region", "Segment", "Channel", "Year", "Quarter"],
+        key="bar_group",
+    )
+    bar_metric = st.radio(
+        "Metric", ["Revenue", "Profit", "Units"], horizontal=True, key="bar_metric"
+    )
+    bar_orientation = st.radio(
+        "Orientation", ["Vertical", "Horizontal"], horizontal=True, key="bar_orient"
+    )
 
     bar_df = (
         df.groupby(bar_group)[bar_metric]
@@ -53,68 +87,110 @@ with c1:
     _colors = [_palette[i % len(_palette)] for i in range(len(bar_df))]
 
     if bar_orientation == "Horizontal":
-        bar_df_plot = bar_df.sort_values(bar_metric, ascending=False).reset_index(drop=True)
+        bar_df_plot = bar_df.sort_values(bar_metric, ascending=False).reset_index(
+            drop=True
+        )
         _hx = bar_df_plot[bar_metric].tolist()
         _hy = bar_df_plot[bar_group].tolist()
-        fig_bar = go.Figure(go.Bar(
-            x=_hx, y=_hy, orientation="h", marker_color=_colors,
-            hovertemplate=f"<b>%{{y}}</b><br>{bar_metric}: %{{x:,.0f}}<extra></extra>",
-        ))
+        fig_bar = go.Figure(
+            go.Bar(
+                x=_hx,
+                y=_hy,
+                orientation="h",
+                marker_color=_colors,
+                hovertemplate=f"<b>%{{y}}</b><br>{bar_metric}: %{{x:,.0f}}<extra></extra>",
+            )
+        )
         fig_bar.update_layout(
-            xaxis=dict(type="linear", range=[0, max(_hx)*1.15], tickformat=",.0f"),
+            xaxis=dict(type="linear", range=[0, max(_hx) * 1.15], tickformat=",.0f"),
             yaxis=dict(type="category"),
-            xaxis_title=bar_metric, yaxis_title=bar_group,
+            xaxis_title=bar_metric,
+            yaxis_title=bar_group,
         )
     else:
         _x = bar_df[bar_group].tolist()[::-1]
         _y = bar_df[bar_metric].tolist()[::-1]
-        fig_bar = go.Figure(go.Bar(
-            x=_x, y=_y, marker_color=_colors,
-            hovertemplate=f"<b>%{{x}}</b><br>{bar_metric}: %{{y:,.0f}}<extra></extra>",
-        ))
+        fig_bar = go.Figure(
+            go.Bar(
+                x=_x,
+                y=_y,
+                marker_color=_colors,
+                hovertemplate=f"<b>%{{x}}</b><br>{bar_metric}: %{{y:,.0f}}<extra></extra>",
+            )
+        )
         fig_bar.update_layout(
             xaxis=dict(type="category"),
-            yaxis=dict(type="linear", range=[0, max(_y)*1.15], tickformat=",.0f"),
-            xaxis_title=bar_group, yaxis_title=bar_metric,
+            yaxis=dict(type="linear", range=[0, max(_y) * 1.15], tickformat=",.0f"),
+            xaxis_title=bar_group,
+            yaxis_title=bar_metric,
         )
     fig_bar.update_layout(
-        title=f"{bar_metric} by {bar_group}", template="plotly_white",
-        showlegend=False, plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa",
+        title=f"{bar_metric} by {bar_group}",
+        template="plotly_white",
+        showlegend=False,
+        plot_bgcolor="#ffffff",
+        paper_bgcolor="#f5f7fa",
     )
     st.plotly_chart(fig_bar, use_container_width=True)
 
 with c2:
     st.subheader("Time-Series Line Chart")
-    line_metric = st.selectbox("Metric", ["Revenue","Profit","Units","Margin_%"], key="line_metric")
-    line_color  = st.selectbox("Color dimension", ["Category","Region","Segment","Channel"], key="line_color")
-    line_freq   = st.radio("Granularity", ["Monthly","Quarterly"], horizontal=True, key="line_freq")
+    line_metric = st.selectbox(
+        "Metric", ["Revenue", "Profit", "Units", "Margin_%"], key="line_metric"
+    )
+    line_color = st.selectbox(
+        "Color dimension",
+        ["Category", "Region", "Segment", "Channel"],
+        key="line_color",
+    )
+    line_freq = st.radio(
+        "Granularity", ["Monthly", "Quarterly"], horizontal=True, key="line_freq"
+    )
 
     if line_freq == "Monthly":
-        line_df = df.groupby(["Year","MonthNum","Month", line_color])[line_metric].sum().reset_index()
-        line_df["Period"] = line_df["Year"].astype(str) + "-" + line_df["MonthNum"].astype(str).str.zfill(2)
+        line_df = (
+            df.groupby(["Year", "MonthNum", "Month", line_color])[line_metric]
+            .sum()
+            .reset_index()
+        )
+        line_df["Period"] = (
+            line_df["Year"].astype(str)
+            + "-"
+            + line_df["MonthNum"].astype(str).str.zfill(2)
+        )
         line_df = line_df.sort_values("Period")
     else:
-        line_df = df.groupby(["Year","Quarter", line_color])[line_metric].sum().reset_index()
+        line_df = (
+            df.groupby(["Year", "Quarter", line_color])[line_metric].sum().reset_index()
+        )
         line_df["Period"] = line_df["Year"].astype(str) + " " + line_df["Quarter"]
-        line_df = line_df.sort_values(["Year","Quarter"])
+        line_df = line_df.sort_values(["Year", "Quarter"])
 
     _lp = px.colors.qualitative.Vivid
     _groups = sorted(line_df[line_color].unique().tolist())
     fig_line = go.Figure()
     for i, grp in enumerate(_groups):
         _g = line_df[line_df[line_color] == grp].sort_values("Period")
-        fig_line.add_trace(go.Scatter(
-            x=_g["Period"].tolist(), y=_g[line_metric].tolist(),
-            mode="lines+markers", name=str(grp),
-            line=dict(color=_lp[i % len(_lp)], width=2), marker=dict(size=5),
-            hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>{line_metric}: %{{y:,.1f}}<extra></extra>",
-        ))
+        fig_line.add_trace(
+            go.Scatter(
+                x=_g["Period"].tolist(),
+                y=_g[line_metric].tolist(),
+                mode="lines+markers",
+                name=str(grp),
+                line=dict(color=_lp[i % len(_lp)], width=2),
+                marker=dict(size=5),
+                hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>{line_metric}: %{{y:,.1f}}<extra></extra>",
+            )
+        )
     fig_line.update_layout(
-        title=f"{line_metric} over Time by {line_color}", template="plotly_white",
-        plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa",
+        title=f"{line_metric} over Time by {line_color}",
+        template="plotly_white",
+        plot_bgcolor="#ffffff",
+        paper_bgcolor="#f5f7fa",
         xaxis=dict(type="category", tickangle=-35),
         yaxis=dict(type="linear", tickformat=",.0f"),
-        legend=dict(orientation="h", y=-0.25), hovermode="x unified",
+        legend=dict(orientation="h", y=-0.25),
+        hovermode="x unified",
     )
     st.plotly_chart(fig_line, use_container_width=True)
 
@@ -125,24 +201,40 @@ c3, c4 = st.columns(2)
 
 with c3:
     st.subheader("Scatter Plot — Revenue vs Profit")
-    scatter_color = st.selectbox("Color by", ["Category","Segment","Region","Channel"], key="scatter_color")
-    scatter_size  = st.selectbox("Bubble size", ["Units","Revenue","Profit"], key="scatter_size")
+    scatter_color = st.selectbox(
+        "Color by", ["Category", "Segment", "Region", "Channel"], key="scatter_color"
+    )
+    scatter_size = st.selectbox(
+        "Bubble size", ["Units", "Revenue", "Profit"], key="scatter_size"
+    )
     scatter_df = df.sample(min(500, len(df)), random_state=1)
     fig_scatter = px.scatter(
-        scatter_df, x="Revenue", y="Profit", color=scatter_color, size=scatter_size,
-        hover_data=["Product","Country","Sales_Rep"], template="plotly_white",
+        scatter_df,
+        x="Revenue",
+        y="Profit",
+        color=scatter_color,
+        size=scatter_size,
+        hover_data=["Product", "Country", "Sales_Rep"],
+        template="plotly_white",
         color_discrete_sequence=px.colors.qualitative.Pastel,
-        title=f"Revenue vs Profit (colored by {scatter_color})", opacity=0.75,
+        title=f"Revenue vs Profit (colored by {scatter_color})",
+        opacity=0.75,
     )
     fig_scatter.update_layout(plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa")
     st.plotly_chart(fig_scatter, use_container_width=True)
 
 with c4:
     st.subheader("Treemap — Hierarchical Revenue")
-    tree_metric = st.selectbox("Size metric", ["Revenue","Profit","Units"], key="tree_metric")
+    tree_metric = st.selectbox(
+        "Size metric", ["Revenue", "Profit", "Units"], key="tree_metric"
+    )
     fig_tree = px.treemap(
-        df, path=["Region","Category","Segment"], values=tree_metric,
-        color=tree_metric, color_continuous_scale="Tealgrn", template="plotly_white",
+        df,
+        path=["Region", "Category", "Segment"],
+        values=tree_metric,
+        color=tree_metric,
+        color_continuous_scale="Tealgrn",
+        template="plotly_white",
         title=f"Treemap: {tree_metric} by Region → Category → Segment",
     )
     fig_tree.update_layout(paper_bgcolor="#f5f7fa")
@@ -152,10 +244,17 @@ with c4:
 # ROW 3: Box plot
 # ══════════════════════════════════════════════
 st.subheader("Box Plot — Margin Distribution")
-box_x = st.selectbox("X-axis grouping", ["Category","Segment","Channel","Region","Year"], key="box_x")
+box_x = st.selectbox(
+    "X-axis grouping", ["Category", "Segment", "Channel", "Region", "Year"], key="box_x"
+)
 fig_box = px.box(
-    df, x=box_x, y="Margin_%", color=box_x, points="outliers",
-    template="plotly_white", color_discrete_sequence=px.colors.qualitative.Antique,
+    df,
+    x=box_x,
+    y="Margin_%",
+    color=box_x,
+    points="outliers",
+    template="plotly_white",
+    color_discrete_sequence=px.colors.qualitative.Antique,
     title=f"Margin % Distribution by {box_x}",
 )
 fig_box.update_layout(plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa", showlegend=False)
@@ -174,39 +273,71 @@ overlays bars and a line on the same axes.
 
 p1, p2, p3 = st.columns(3)
 with p1:
-    profit_freq = st.radio("Granularity", ["Daily","Weekly","Monthly","Quarterly"], index=2, horizontal=True, key="profit_freq")
+    profit_freq = st.radio(
+        "Granularity",
+        ["Daily", "Weekly", "Monthly", "Quarterly"],
+        index=2,
+        horizontal=True,
+        key="profit_freq",
+    )
 with p2:
-    profit_breakdown = st.selectbox("Color breakdown", ["None","Category","Region","Segment","Channel"], key="profit_breakdown")
+    profit_breakdown = st.selectbox(
+        "Color breakdown",
+        ["None", "Category", "Region", "Segment", "Channel"],
+        key="profit_breakdown",
+    )
 with p3:
     show_cumulative = st.checkbox("Cumulative", value=False, key="profit_cumul")
 
-freq_map   = {"Daily":"D","Weekly":"W","Monthly":"ME","Quarterly":"QE"}
+freq_map = {"Daily": "D", "Weekly": "W", "Monthly": "ME", "Quarterly": "QE"}
 freq_alias = freq_map[profit_freq]
 
 if profit_breakdown == "None":
     profit_ts = df.set_index("Date").resample(freq_alias)["Profit"].sum().reset_index()
-    profit_ts.columns = ["Date","Profit"]
+    profit_ts.columns = ["Date", "Profit"]
     if show_cumulative:
         profit_ts["CumulativeProfit"] = profit_ts["Profit"].cumsum()
         y_col, y_label = "CumulativeProfit", "Cumulative Profit ($)"
     else:
         y_col, y_label = "Profit", "Profit ($)"
     fig_profit = go.Figure()
-    fig_profit.add_trace(go.Bar(x=profit_ts["Date"].tolist(), y=profit_ts["Profit"].tolist(),
-                                name="Period Profit", marker_color="#6366f1", opacity=0.65))
-    fig_profit.add_trace(go.Scatter(x=profit_ts["Date"].tolist(), y=profit_ts[y_col].tolist(),
-                                    name=y_label, mode="lines+markers",
-                                    line=dict(color="#0ea5e9", width=2.5), marker=dict(size=5)))
+    fig_profit.add_trace(
+        go.Bar(
+            x=profit_ts["Date"].tolist(),
+            y=profit_ts["Profit"].tolist(),
+            name="Period Profit",
+            marker_color="#6366f1",
+            opacity=0.65,
+        )
+    )
+    fig_profit.add_trace(
+        go.Scatter(
+            x=profit_ts["Date"].tolist(),
+            y=profit_ts[y_col].tolist(),
+            name=y_label,
+            mode="lines+markers",
+            line=dict(color="#0ea5e9", width=2.5),
+            marker=dict(size=5),
+        )
+    )
     fig_profit.update_layout(
         title=f"{'Cumulative' if show_cumulative else 'Aggregated'} Profit — {profit_freq}",
-        xaxis_title="Date", yaxis_title="Profit ($)", template="plotly_white",
-        plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa",
-        legend=dict(orientation="h", y=1.08), hovermode="x unified", barmode="overlay",
+        xaxis_title="Date",
+        yaxis_title="Profit ($)",
+        template="plotly_white",
+        plot_bgcolor="#ffffff",
+        paper_bgcolor="#f5f7fa",
+        legend=dict(orientation="h", y=1.08),
+        hovermode="x unified",
+        barmode="overlay",
     )
 else:
     profit_ts = (
-        df.groupby([pd.Grouper(key="Date", freq=freq_alias), profit_breakdown])["Profit"]
-        .sum().reset_index()
+        df.groupby([pd.Grouper(key="Date", freq=freq_alias), profit_breakdown])[
+            "Profit"
+        ]
+        .sum()
+        .reset_index()
     )
     if show_cumulative:
         profit_ts = profit_ts.sort_values("Date")
@@ -216,15 +347,23 @@ else:
     fig_profit = go.Figure()
     for i, grp in enumerate(_pgroups):
         _g = profit_ts[profit_ts[profit_breakdown] == grp].sort_values("Date")
-        fig_profit.add_trace(go.Scatter(
-            x=_g["Date"].tolist(), y=_g["Profit"].tolist(),
-            mode="lines+markers", name=str(grp),
-            line=dict(color=_lp2[i % len(_lp2)], width=2), marker=dict(size=4),
-        ))
+        fig_profit.add_trace(
+            go.Scatter(
+                x=_g["Date"].tolist(),
+                y=_g["Profit"].tolist(),
+                mode="lines+markers",
+                name=str(grp),
+                line=dict(color=_lp2[i % len(_lp2)], width=2),
+                marker=dict(size=4),
+            )
+        )
     fig_profit.update_layout(
         title=f"{'Cumulative' if show_cumulative else 'Aggregated'} Profit by {profit_breakdown} — {profit_freq}",
-        template="plotly_white", plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa",
-        hovermode="x unified", legend=dict(orientation="h", y=1.08),
+        template="plotly_white",
+        plot_bgcolor="#ffffff",
+        paper_bgcolor="#f5f7fa",
+        hovermode="x unified",
+        legend=dict(orientation="h", y=1.08),
     )
 
 st.plotly_chart(fig_profit, use_container_width=True)
@@ -234,7 +373,10 @@ st.plotly_chart(fig_profit, use_container_width=True)
 # ROW 5: Shared-X Multi-metric — Option 1 (Stacked Subplots)
 # ══════════════════════════════════════════════
 st.markdown("---")
-st.markdown("<div class='section-header'>🔀 Multi-Metric Shared-X Charts</div>", unsafe_allow_html=True)
+st.markdown(
+    "<div class='section-header'>🔀 Multi-Metric Shared-X Charts</div>",
+    unsafe_allow_html=True,
+)
 
 tutorial_box("""
 <b>📘 Tutorial: Shared-X stacked subplots — make_subplots()</b><br>
@@ -262,63 +404,104 @@ sub_color = st.selectbox(
 
 # Build the time-aggregated DataFrame
 if sub_group == "Monthly":
-    sub_df = df.groupby(["Year", "MonthNum", "Month"])[["Revenue","Profit","Units"]].sum().reset_index()
-    sub_df["Period"] = sub_df["Year"].astype(str) + "-" + sub_df["MonthNum"].astype(str).str.zfill(2)
+    sub_df = (
+        df.groupby(["Year", "MonthNum", "Month"])[["Revenue", "Profit", "Units"]]
+        .sum()
+        .reset_index()
+    )
+    sub_df["Period"] = (
+        sub_df["Year"].astype(str) + "-" + sub_df["MonthNum"].astype(str).str.zfill(2)
+    )
     sub_df = sub_df.sort_values("Period").reset_index(drop=True)
 elif sub_group == "Quarterly":
-    sub_df = df.groupby(["Year", "Quarter"])[["Revenue","Profit","Units"]].sum().reset_index()
+    sub_df = (
+        df.groupby(["Year", "Quarter"])[["Revenue", "Profit", "Units"]]
+        .sum()
+        .reset_index()
+    )
     sub_df["Period"] = sub_df["Year"].astype(str) + " " + sub_df["Quarter"]
-    sub_df = sub_df.sort_values(["Year","Quarter"]).reset_index(drop=True)
+    sub_df = sub_df.sort_values(["Year", "Quarter"]).reset_index(drop=True)
 else:
-    sub_df = df.groupby("Year")[["Revenue","Profit","Units"]].sum().reset_index()
+    sub_df = df.groupby("Year")[["Revenue", "Profit", "Units"]].sum().reset_index()
     sub_df["Period"] = sub_df["Year"].astype(str)
     sub_df = sub_df.sort_values("Period").reset_index(drop=True)
 
 _periods = sub_df["Period"].tolist()
 
 fig_sub = make_subplots(
-    rows=3, cols=1,
-    shared_xaxes=True,          # X ticks aligned, only shown on bottom subplot
-    vertical_spacing=0.06,      # tighter gap than default
+    rows=3,
+    cols=1,
+    shared_xaxes=True,  # X ticks aligned, only shown on bottom subplot
+    vertical_spacing=0.06,  # tighter gap than default
     subplot_titles=["Revenue ($)", "Profit ($)", "Units"],
 )
 
 if sub_color == "None":
-    fig_sub.add_trace(go.Bar(
-        x=_periods,
-        y=sub_df["Revenue"].tolist(),
-        name="Revenue",
-        marker_color="#3969AC",
-        hovertemplate="<b>%{x}</b><br>Revenue: $%{y:,.0f}<extra></extra>",
-    ), row=1, col=1)
-    fig_sub.add_trace(go.Scatter(
-        x=_periods,
-        y=sub_df["Profit"].tolist(),
-        name="Profit",
-        mode="lines+markers",
-        line=dict(color="#11A579", width=2),
-        marker=dict(size=5),
-        hovertemplate="<b>%{x}</b><br>Profit: $%{y:,.0f}<extra></extra>",
-    ), row=2, col=1)
-    fig_sub.add_trace(go.Bar(
-        x=_periods,
-        y=sub_df["Units"].tolist(),
-        name="Units",
-        marker_color="#E73F74",
-        hovertemplate="<b>%{x}</b><br>Units: %{y:,.0f}<extra></extra>",
-    ), row=3, col=1)
+    fig_sub.add_trace(
+        go.Bar(
+            x=_periods,
+            y=sub_df["Revenue"].tolist(),
+            name="Revenue",
+            marker_color="#3969AC",
+            hovertemplate="<b>%{x}</b><br>Revenue: $%{y:,.0f}<extra></extra>",
+        ),
+        row=1,
+        col=1,
+    )
+    fig_sub.add_trace(
+        go.Scatter(
+            x=_periods,
+            y=sub_df["Profit"].tolist(),
+            name="Profit",
+            mode="lines+markers",
+            line=dict(color="#11A579", width=2),
+            marker=dict(size=5),
+            hovertemplate="<b>%{x}</b><br>Profit: $%{y:,.0f}<extra></extra>",
+        ),
+        row=2,
+        col=1,
+    )
+    fig_sub.add_trace(
+        go.Bar(
+            x=_periods,
+            y=sub_df["Units"].tolist(),
+            name="Units",
+            marker_color="#E73F74",
+            hovertemplate="<b>%{x}</b><br>Units: %{y:,.0f}<extra></extra>",
+        ),
+        row=3,
+        col=1,
+    )
 else:
     # With color breakdown — one trace per group per subplot
     if sub_group == "Monthly":
-        sub_df2 = df.groupby(["Year","MonthNum","Month", sub_color])[["Revenue","Profit","Units"]].sum().reset_index()
-        sub_df2["Period"] = sub_df2["Year"].astype(str) + "-" + sub_df2["MonthNum"].astype(str).str.zfill(2)
+        sub_df2 = (
+            df.groupby(["Year", "MonthNum", "Month", sub_color])[
+                ["Revenue", "Profit", "Units"]
+            ]
+            .sum()
+            .reset_index()
+        )
+        sub_df2["Period"] = (
+            sub_df2["Year"].astype(str)
+            + "-"
+            + sub_df2["MonthNum"].astype(str).str.zfill(2)
+        )
         sub_df2 = sub_df2.sort_values("Period").reset_index(drop=True)
     elif sub_group == "Quarterly":
-        sub_df2 = df.groupby(["Year","Quarter", sub_color])[["Revenue","Profit","Units"]].sum().reset_index()
+        sub_df2 = (
+            df.groupby(["Year", "Quarter", sub_color])[["Revenue", "Profit", "Units"]]
+            .sum()
+            .reset_index()
+        )
         sub_df2["Period"] = sub_df2["Year"].astype(str) + " " + sub_df2["Quarter"]
-        sub_df2 = sub_df2.sort_values(["Year","Quarter"]).reset_index(drop=True)
+        sub_df2 = sub_df2.sort_values(["Year", "Quarter"]).reset_index(drop=True)
     else:
-        sub_df2 = df.groupby(["Year", sub_color])[["Revenue","Profit","Units"]].sum().reset_index()
+        sub_df2 = (
+            df.groupby(["Year", sub_color])[["Revenue", "Profit", "Units"]]
+            .sum()
+            .reset_index()
+        )
         sub_df2["Period"] = sub_df2["Year"].astype(str)
         sub_df2 = sub_df2.sort_values("Period").reset_index(drop=True)
 
@@ -327,26 +510,50 @@ else:
     for i, grp in enumerate(_groups):
         _g = sub_df2[sub_df2[sub_color] == grp]
         _col = _lp[i % len(_lp)]
-        _show = (i == 0)   # only first trace shows in legend per subplot to avoid duplication
-        fig_sub.add_trace(go.Bar(
-            x=_g["Period"].tolist(), y=_g["Revenue"].tolist(),
-            name=str(grp), marker_color=_col, legendgroup=str(grp),
-            showlegend=_show,
-            hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Revenue: $%{{y:,.0f}}<extra></extra>",
-        ), row=1, col=1)
-        fig_sub.add_trace(go.Scatter(
-            x=_g["Period"].tolist(), y=_g["Profit"].tolist(),
-            name=str(grp), mode="lines+markers",
-            line=dict(color=_col, width=2), marker=dict(size=4),
-            legendgroup=str(grp), showlegend=False,
-            hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Profit: $%{{y:,.0f}}<extra></extra>",
-        ), row=2, col=1)
-        fig_sub.add_trace(go.Bar(
-            x=_g["Period"].tolist(), y=_g["Units"].tolist(),
-            name=str(grp), marker_color=_col,
-            legendgroup=str(grp), showlegend=False,
-            hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Units: %{{y:,.0f}}<extra></extra>",
-        ), row=3, col=1)
+        _show = (
+            i == 0
+        )  # only first trace shows in legend per subplot to avoid duplication
+        fig_sub.add_trace(
+            go.Bar(
+                x=_g["Period"].tolist(),
+                y=_g["Revenue"].tolist(),
+                name=str(grp),
+                marker_color=_col,
+                legendgroup=str(grp),
+                showlegend=_show,
+                hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Revenue: $%{{y:,.0f}}<extra></extra>",
+            ),
+            row=1,
+            col=1,
+        )
+        fig_sub.add_trace(
+            go.Scatter(
+                x=_g["Period"].tolist(),
+                y=_g["Profit"].tolist(),
+                name=str(grp),
+                mode="lines+markers",
+                line=dict(color=_col, width=2),
+                marker=dict(size=4),
+                legendgroup=str(grp),
+                showlegend=False,
+                hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Profit: $%{{y:,.0f}}<extra></extra>",
+            ),
+            row=2,
+            col=1,
+        )
+        fig_sub.add_trace(
+            go.Bar(
+                x=_g["Period"].tolist(),
+                y=_g["Units"].tolist(),
+                name=str(grp),
+                marker_color=_col,
+                legendgroup=str(grp),
+                showlegend=False,
+                hovertemplate=f"<b>{grp}</b><br>%{{x}}<br>Units: %{{y:,.0f}}<extra></extra>",
+            ),
+            row=3,
+            col=1,
+        )
 
 fig_sub.update_layout(
     height=600,
@@ -388,15 +595,25 @@ norm_group = st.selectbox(
 
 # Build aggregated data (same logic as above, no color breakdown for normalized view)
 if norm_group == "Monthly":
-    norm_df = df.groupby(["Year","MonthNum","Month"])[["Revenue","Profit","Units"]].sum().reset_index()
-    norm_df["Period"] = norm_df["Year"].astype(str) + "-" + norm_df["MonthNum"].astype(str).str.zfill(2)
+    norm_df = (
+        df.groupby(["Year", "MonthNum", "Month"])[["Revenue", "Profit", "Units"]]
+        .sum()
+        .reset_index()
+    )
+    norm_df["Period"] = (
+        norm_df["Year"].astype(str) + "-" + norm_df["MonthNum"].astype(str).str.zfill(2)
+    )
     norm_df = norm_df.sort_values("Period").reset_index(drop=True)
 elif norm_group == "Quarterly":
-    norm_df = df.groupby(["Year","Quarter"])[["Revenue","Profit","Units"]].sum().reset_index()
+    norm_df = (
+        df.groupby(["Year", "Quarter"])[["Revenue", "Profit", "Units"]]
+        .sum()
+        .reset_index()
+    )
     norm_df["Period"] = norm_df["Year"].astype(str) + " " + norm_df["Quarter"]
-    norm_df = norm_df.sort_values(["Year","Quarter"]).reset_index(drop=True)
+    norm_df = norm_df.sort_values(["Year", "Quarter"]).reset_index(drop=True)
 else:
-    norm_df = df.groupby("Year")[["Revenue","Profit","Units"]].sum().reset_index()
+    norm_df = df.groupby("Year")[["Revenue", "Profit", "Units"]].sum().reset_index()
     norm_df["Period"] = norm_df["Year"].astype(str)
     norm_df = norm_df.sort_values("Period").reset_index(drop=True)
 
@@ -407,33 +624,39 @@ for col in ["Revenue", "Profit", "Units"]:
 
 _norm_periods = norm_df["Period"].tolist()
 fig_norm = go.Figure()
-fig_norm.add_trace(go.Scatter(
-    x=_norm_periods,
-    y=norm_df["Revenue_norm"].tolist(),
-    name="Revenue",
-    mode="lines+markers",
-    line=dict(color="#3969AC", width=2.5),
-    marker=dict(size=6),
-    # hovertemplate="<b>%{x}</b><br>Revenue (norm): %{y:.3f}<extra></extra>",
-))
-fig_norm.add_trace(go.Scatter(
-    x=_norm_periods,
-    y=norm_df["Profit_norm"].tolist(),
-    name="Profit",
-    mode="lines+markers",
-    line=dict(color="#11A579", width=2.5),
-    marker=dict(size=6),
-    # hovertemplate="<b>%{x}</b><br>Profit (norm): %{y:.3f}<extra></extra>",
-))
-fig_norm.add_trace(go.Scatter(
-    x=_norm_periods,
-    y=norm_df["Units_norm"].tolist(),
-    name="Units",
-    mode="lines+markers",
-    line=dict(color="#E73F74", width=2.5),
-    marker=dict(size=6),
-    # hovertemplate="<b>%{x}</b><br>Units (norm): %{y:.3f}<extra></extra>",
-))
+fig_norm.add_trace(
+    go.Scatter(
+        x=_norm_periods,
+        y=norm_df["Revenue_norm"].tolist(),
+        name="Revenue",
+        mode="lines+markers",
+        line=dict(color="#3969AC", width=2.5),
+        marker=dict(size=6),
+        # hovertemplate="<b>%{x}</b><br>Revenue (norm): %{y:.3f}<extra></extra>",
+    )
+)
+fig_norm.add_trace(
+    go.Scatter(
+        x=_norm_periods,
+        y=norm_df["Profit_norm"].tolist(),
+        name="Profit",
+        mode="lines+markers",
+        line=dict(color="#11A579", width=2.5),
+        marker=dict(size=6),
+        # hovertemplate="<b>%{x}</b><br>Profit (norm): %{y:.3f}<extra></extra>",
+    )
+)
+fig_norm.add_trace(
+    go.Scatter(
+        x=_norm_periods,
+        y=norm_df["Units_norm"].tolist(),
+        name="Units",
+        mode="lines+markers",
+        line=dict(color="#E73F74", width=2.5),
+        marker=dict(size=6),
+        # hovertemplate="<b>%{x}</b><br>Units (norm): %{y:.3f}<extra></extra>",
+    )
+)
 fig_norm.update_layout(
     title=f"Revenue, Profit & Units — Normalized (0–1) by {norm_group}",
     template="plotly_white",
@@ -456,7 +679,10 @@ st.plotly_chart(fig_norm, use_container_width=True)
 # ROW 7: Animated Geo-Trace (Approach 2)
 # ══════════════════════════════════════════════
 st.markdown("---")
-st.markdown("<div class='section-header' style='border-left:4px solid #6366f1;padding-left:12px;font-size:1.3rem;font-weight:700;'>🗺️ Animated Geo-Trace</div>", unsafe_allow_html=True)
+st.markdown(
+    "<div class='section-header' style='border-left:4px solid #6366f1;padding-left:12px;font-size:1.3rem;font-weight:700;'>🗺️ Animated Geo-Trace</div>",
+    unsafe_allow_html=True,
+)
 
 tutorial_box("""
 <b>📘 Tutorial: Animated map with cumulative trail — go.Scattermapbox + frames</b><br>
@@ -480,18 +706,20 @@ _n = 40
 _t = np.linspace(0, 39, _n)
 
 # Base route: a gentle arc from Tel Aviv area heading north-west along the coast
-_lat_base = np.linspace(32.05, 33.20, _n)              # southbound → northbound
-_lon_base = np.linspace(34.75, 34.55, _n)              # slight westward drift
+_lat_base = np.linspace(32.05, 33.20, _n)  # southbound → northbound
+_lon_base = np.linspace(34.75, 34.55, _n)  # slight westward drift
 
 # Add realistic noise (GPS jitter + route curves)
 _lat = _lat_base + 0.04 * np.sin(_t * 0.7) + np.random.normal(0, 0.008, _n)
 _lon = _lon_base + 0.03 * np.cos(_t * 0.5) + np.random.normal(0, 0.006, _n)
 
-geo_df = pd.DataFrame({
-    "Time":      _t.round(1),
-    "Latitude":  _lat.round(5),
-    "Longitude": _lon.round(5),
-})
+geo_df = pd.DataFrame(
+    {
+        "Time": _t.round(1),
+        "Latitude": _lat.round(5),
+        "Longitude": _lon.round(5),
+    }
+)
 
 # ── Controls ──────────────────────────────────────────────────────────────────
 gc1, gc2 = st.columns(2)
@@ -502,18 +730,24 @@ with gc1:
 with gc2:
     map_style = st.selectbox(
         "Map style",
-        ["carto-positron", "white-bg", "open-street-map"], # the first option here is the default!
+        [
+            "carto-positron",
+            "white-bg",
+            "open-street-map",
+        ],  # the first option here is the default!
         key="geo_map_style",
     )
 
-st.caption(f"Synthetic route · {len(geo_df)} time steps · "
-           f"lat {geo_df['Latitude'].min():.3f}–{geo_df['Latitude'].max():.3f} · "
-           f"lon {geo_df['Longitude'].min():.3f}–{geo_df['Longitude'].max():.3f}")
+st.caption(
+    f"Synthetic route · {len(geo_df)} time steps · "
+    f"lat {geo_df['Latitude'].min():.3f}–{geo_df['Latitude'].max():.3f} · "
+    f"lon {geo_df['Longitude'].min():.3f}–{geo_df['Longitude'].max():.3f}"
+)
 
 # ── Build frames ──────────────────────────────────────────────────────────────
-_times  = geo_df["Time"].tolist()
-_lats   = geo_df["Latitude"].tolist()
-_lons   = geo_df["Longitude"].tolist()
+_times = geo_df["Time"].tolist()
+_lats = geo_df["Latitude"].tolist()
+_lons = geo_df["Longitude"].tolist()
 
 _center_lat = geo_df["Latitude"].mean()
 _center_lon = geo_df["Longitude"].mean()
@@ -524,40 +758,42 @@ for i, t in enumerate(_times):
     trail_lats = _lats[: i + 1]
     trail_lons = _lons[: i + 1]
 
-    frames.append(go.Frame(
-        name=str(t),
-        data=[
-            # Trace 1: growing trail line
-            go.Scattermapbox(
-                lat=trail_lats,
-                lon=trail_lons,
-                mode="lines",
-                line=dict(color="#185FA5", width=2),
-                name="Trail",
-                showlegend=False,
-            ),
-            # Trace 2: current position dot
-            go.Scattermapbox(
-                lat=[_lats[i]],
-                lon=[_lons[i]],
-                mode="markers",
-                marker=dict(size=13, color="#E73F74"),
-                name=f"t = {t} s",
-                showlegend=False,
-            ),
-            # Trace 3: start marker (fixed reference)
-            go.Scattermapbox(
-                lat=[_lats[0]],
-                lon=[_lons[0]],
-                mode="markers+text",
-                marker=dict(size=10, color="#11A579"),
-                text=["Start"],
-                textposition="top right",
-                name="Start",
-                showlegend=False,
-            ),
-        ],
-    ))
+    frames.append(
+        go.Frame(
+            name=str(t),
+            data=[
+                # Trace 1: growing trail line
+                go.Scattermapbox(
+                    lat=trail_lats,
+                    lon=trail_lons,
+                    mode="lines",
+                    line=dict(color="#185FA5", width=2),
+                    name="Trail",
+                    showlegend=False,
+                ),
+                # Trace 2: current position dot
+                go.Scattermapbox(
+                    lat=[_lats[i]],
+                    lon=[_lons[i]],
+                    mode="markers",
+                    marker=dict(size=13, color="#E73F74"),
+                    name=f"t = {t} s",
+                    showlegend=False,
+                ),
+                # Trace 3: start marker (fixed reference)
+                go.Scattermapbox(
+                    lat=[_lats[0]],
+                    lon=[_lons[0]],
+                    mode="markers+text",
+                    marker=dict(size=10, color="#11A579"),
+                    text=["Start"],
+                    textposition="top right",
+                    name="Start",
+                    showlegend=False,
+                ),
+            ],
+        )
+    )
 
 # ── Play / Pause buttons ──────────────────────────────────────────────────────
 _play_btn = dict(
@@ -591,9 +827,11 @@ _slider_steps = [
         method="animate",
         args=[
             [str(t)],
-            dict(mode="immediate",
-                 frame=dict(duration=0, redraw=True),
-                 transition=dict(duration=0)),
+            dict(
+                mode="immediate",
+                frame=dict(duration=0, redraw=True),
+                transition=dict(duration=0),
+            ),
         ],
         label=str(t),
     )
@@ -602,11 +840,11 @@ _slider_steps = [
 
 # ── Assemble figure ───────────────────────────────────────────────────────────
 fig_geo = go.Figure(
-    data=frames[0].data,   # start at frame 0
+    data=frames[0].data,  # start at frame 0
     frames=frames,
     layout=go.Layout(
         mapbox=dict(
-            style=map_style, # "carto-positron" or "white-bg" renders without external tile fetching (without the internet connectivity)
+            style=map_style,  # "carto-positron" or "white-bg" renders without external tile fetching (without the internet connectivity)
             center=dict(lat=_center_lat, lon=_center_lon),
             zoom=9,
         ),
@@ -614,27 +852,33 @@ fig_geo = go.Figure(
         margin=dict(l=0, r=0, t=30, b=0),
         paper_bgcolor="#f5f7fa",
         title=dict(text="Animated geo-trace — cumulative trail", x=0.5),
-        updatemenus=[dict(
-            type="buttons",
-            showactive=False,
-            x=0.05, y=-0.04,
-            xanchor="left",
-            yanchor="top",
-            buttons=[_play_btn, _pause_btn],
-        )],
-        sliders=[dict(
-            steps=_slider_steps,
-            transition=dict(duration=0),
-            x=0.0, y=-0.02,
-            len=1.0,
-            currentvalue=dict(
-                prefix="Time: ",
-                suffix=" s",
-                visible=True,
-                xanchor="center",
-            ),
-            pad=dict(t=40, b=10),
-        )],
+        updatemenus=[
+            dict(
+                type="buttons",
+                showactive=False,
+                x=0.05,
+                y=-0.04,
+                xanchor="left",
+                yanchor="top",
+                buttons=[_play_btn, _pause_btn],
+            )
+        ],
+        sliders=[
+            dict(
+                steps=_slider_steps,
+                transition=dict(duration=0),
+                x=0.0,
+                y=-0.02,
+                len=1.0,
+                currentvalue=dict(
+                    prefix="Time: ",
+                    suffix=" s",
+                    visible=True,
+                    xanchor="center",
+                ),
+                pad=dict(t=40, b=10),
+            )
+        ],
     ),
 )
 

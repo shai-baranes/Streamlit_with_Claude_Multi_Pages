@@ -3,6 +3,9 @@ pages/2_📈_Charts.py  — Dynamic Charts page.
 """
 
 import streamlit as st
+# Namespace widget persistence so legacy pages retain independent selections.
+from framework.state import ui
+st = ui(__file__)
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
@@ -15,6 +18,12 @@ st.set_page_config(page_title="Charts", page_icon="📈", layout="wide")
 inject_css()
 
 df_full = require_data()
+# Sales views require their original schema; generic CSVs use Engineering Explorer.
+from framework.config import ALWAYS_LOAD_COLUMNS
+_missing = set(ALWAYS_LOAD_COLUMNS) - set(df_full.columns)
+if _missing:
+    st.info("This sales view needs: " + ", ".join(sorted(_missing)) + ". Use Engineering Explorer for other schemas.")
+    st.stop()
 df      = sidebar_filters(df_full)
 
 st.title("📈 Dynamic Charts")

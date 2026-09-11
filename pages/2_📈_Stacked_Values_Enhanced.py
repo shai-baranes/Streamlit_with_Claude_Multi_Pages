@@ -1,8 +1,13 @@
 import streamlit as st
+# Namespace widget persistence so legacy pages retain independent selections.
+from framework.state import ui
+st = ui(__file__)
 import pandas as pd
 
 from utils import inject_css, require_data, sidebar_filters
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
+# Bound grid transport while retaining the selected source-row preview.
+from framework.grid import AgGrid
 
 
 st.set_page_config(page_title="Stacked Values", page_icon="📈", layout="wide")
@@ -19,6 +24,8 @@ def get_time_column(df: pd.DataFrame) -> str:
     for col in TIME_COLUMN_CANDIDATES:
         if col in df.columns:
             return col
+    st.info("Select a Date, Time, or time field on the upload page to use this table.")
+    st.stop()
     raise KeyError("Could not find a time-like column in the dataframe.")
 
 
@@ -383,6 +390,7 @@ def render_stacked_table() -> None:
 
     grid_response = AgGrid(
         view_df,
+        selected_source_row=st.session_state.get("selected_source_row"),
         gridOptions=grid_options,
         data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
         update_on=["selectionChanged"],
@@ -416,12 +424,14 @@ def render_stacked_table() -> None:
     
 
     # ── Download ──────────────────────────────────────────────────────────────────
-    st.download_button(
-        label="⬇️ Download filtered data as CSV",
-        data=visible_df.to_csv(index=False).encode("utf-8"),
-        file_name="filtered_sales_data.csv",
-        mime="text/csv",        
-    )
+    # Generate the full export only after an explicit request.
+    if st.button("Prepare CSV export"):
+        st.download_button(
+            label="⬇️ Download filtered data as CSV",
+            data=visible_df.to_csv(index=False).encode("utf-8"),
+            file_name="filtered_sales_data.csv",
+            mime="text/csv",
+        )
 
     st.markdown("---")
     st.caption(f"Showing {len(visible_df):,} of {len(df_full):,} records")

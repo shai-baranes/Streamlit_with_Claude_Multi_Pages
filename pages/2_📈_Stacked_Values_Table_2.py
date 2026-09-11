@@ -1,4 +1,7 @@
 import streamlit as st
+# Namespace widget persistence so legacy pages retain independent selections.
+from framework.state import ui
+st = ui(__file__)
 import pandas as pd
 
 from utils import inject_css, require_data, sidebar_filters
@@ -10,6 +13,8 @@ from st_aggrid import (
     DataReturnMode,
     JsCode,
 )
+# Bound grid transport while retaining the selected source-row preview.
+from framework.grid import AgGrid
 
 
 st.set_page_config(page_title="Stacked Vlues", page_icon="📈", layout="wide")
@@ -27,6 +32,8 @@ def get_time_column(df: pd.DataFrame) -> str:
     for col in TIME_COLUMN_CANDIDATES:
         if col in df.columns:
             return col
+    st.info("Select a Date, Time, or time field on the upload page to use this table.")
+    st.stop()
     raise KeyError("Could not find a 'time' column in the dataframe.")
 
 
@@ -246,6 +253,7 @@ else:
 
         grid_response = AgGrid(
             view_df,
+            selected_source_row=st.session_state.get("selected_source_row"),
             gridOptions=gb.build(),
             data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
             update_mode=GridUpdateMode.SELECTION_CHANGED,

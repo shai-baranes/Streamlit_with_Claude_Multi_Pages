@@ -3,6 +3,9 @@ pages/2_📈_Charts.py  — Dynamic Charts page.
 """
 
 import streamlit as st
+# Namespace widget persistence so legacy pages retain independent selections.
+from framework.state import ui
+st = ui(__file__)
 # import numpy as np
 # import plotly.express as px
 # import plotly.graph_objects as go
@@ -26,6 +29,8 @@ def get_time_column(df: pd.DataFrame) -> str:
     for col in TIME_COLUMN_CANDIDATES:
         if col in df.columns:
             return col
+    st.info("Select a Date, Time, or time field on the upload page to use this table.")
+    st.stop()
     raise KeyError("Could not find a 'time' column in the dataframe.")
 
 

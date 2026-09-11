@@ -8,3 +8,18 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Private runtime data, service binaries, and local verification artifacts.
+.venv/
+__pycache__/
+.pytest_cache/
+deploy/EngineeringDashboard.exe
+deploy/EngineeringDashboard.xml
+deploy/logs/
+benchmark-results/
+.DS_Store
+deploy/EngineeringDashboard.exe
+deploy/EngineeringDashboard.xml
+deploy/logs/
+
+synthetic_sales_data_copy.csv
