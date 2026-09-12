@@ -24,6 +24,10 @@ ALWAYS_LOAD_COLUMNS = [
     "Profit",
     "Margin_%",
     "Deal_Won",
+    # Keep sample trajectory coordinates available without requiring an extra selection.
+    "longitude",
+    "latitude",
+    "Altitude",
 ]
 ROOT = Path(
     os.environ.get(

@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 import pytest
 from streamlit.testing.v1 import AppTest
 from framework.data import load_projection
@@ -146,3 +147,38 @@ def test_header_only_dataset_has_explanation():
     app.run()
     assert not app.exception
     assert any('no data rows' in message.value for message in app.info)
+
+
+def test_3d_flight_page_controls_and_missing_field_guidance():
+    page = next((ROOT / 'pages').glob('*3D_Flight_Simulation.py'))
+    sample = load_projection(ROOT / 'synthetic_sales_data.csv', ALWAYS_LOAD_COLUMNS)
+    # Each AppTest owns a component registry, so reload the wrapper for this test runtime.
+    sys.modules.pop('framework.trajectory_chart', None)
+    app = AppTest.from_file(str(page))
+    app.session_state['df_full'] = sample
+    app.run(timeout=30)
+    assert not app.exception
+    # Controls, metrics, and Plotly share a component so playback cannot remount the chart.
+    simulation = app.session_state['trajectory_3d_component']['simulation']
+    assert simulation['fps'] == 5
+    assert simulation['camera']['eye']['x'] == 1.55
+
+    missing = AppTest.from_file(str(page))
+    missing.session_state['df_full'] = sample.drop(columns=['Altitude'])
+    missing.run()
+    assert not missing.exception
+    assert any('Altitude' in message.value for message in missing.warning)
+
+
+def test_3d_flight_page_resets_for_replaced_dataset():
+    page = next((ROOT / 'pages').glob('*3D_Flight_Simulation.py'))
+    sample = load_projection(ROOT / 'synthetic_sales_data.csv', ALWAYS_LOAD_COLUMNS)
+    # Re-register the inline component in this independent AppTest runtime.
+    sys.modules.pop('framework.trajectory_chart', None)
+    app = AppTest.from_file(str(page))
+    app.session_state['df_full'] = sample
+    app.run(timeout=30)
+    app.session_state['trajectory_3d_component']['simulation']['index'] = 20
+    app.session_state['df_full'] = sample.assign(Altitude=sample['Altitude'] + 10)
+    app.run(timeout=30)
+    assert app.session_state['trajectory_3d_component']['simulation']['index'] == 0

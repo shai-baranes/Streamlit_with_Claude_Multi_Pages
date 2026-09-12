@@ -2,7 +2,7 @@
 from pathlib import Path
 import sys
 
-
+# the value is probably the path input into the CLI cmd line
 def validate_csv_path(value):
     path = Path(value).expanduser().resolve()
     if path.suffix.lower() != '.csv':

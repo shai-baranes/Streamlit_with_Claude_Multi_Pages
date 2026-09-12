@@ -52,7 +52,7 @@ if num:
         st.dataframe(result.head(MAX_PREVIEW))
     x = st.selectbox('Time / X field', columns)
     xtype = st.radio('X interpretation', ['Original', 'Numeric', 'Datetime'])
-    y = st.multiselect('Trend fields', num, default=[metric])
+    y = st.multiselect('Trend / Y fields', num, default=[metric])
     kind = st.radio('Chart type', ['Line', 'Scatter'])
     chart = df[list(dict.fromkeys([x] + y))].copy()
     if xtype == 'Numeric':
