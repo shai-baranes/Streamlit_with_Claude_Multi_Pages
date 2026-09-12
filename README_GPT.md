@@ -6,7 +6,7 @@ Run one Streamlit server and open it from multiple computers over a trusted LAN 
 
 | Capability | Behavior |
 |---|---|
-| Upload | Browser CSV upload; no end-node agent installation |
+| Upload | Drag a CSV from Finder/File Explorer onto the highlighted drop zone, or use its Upload button; the selected filename is shown before column selection |
 | Fixed fields | All 19 fields from `synthetic_sales_data.csv`, when present |
 | Extra fields | Searchable multiselect, committed with **Apply columns** |
 | Data retention | Private source file and selected pandas projection per session |
@@ -65,7 +65,56 @@ python3 -m venv .venv
 
 `--debug` enables foreground development logging. `--sample` separately exposes a **Load sample data** button; it never silently replaces an upload. Both modes use the same session isolation. `--address` defaults to `0.0.0.0`; `--port` defaults to `8501`. Open `http://SERVER_LAN_IP:8501` from clients, or `http://localhost:8501` on the host. Opening a new browser tab starts an independent session, even on the same computer.
 
-Both historical entry points (`Load CSV.py` and `Load CSV_2.py`) use the new upload flow. Shared CLI-file initialization is removed from those entry points. The standalone CSV Diet and Selenium utilities remain optional: `pip install '.[legacy-tools]'` installs their extra dependencies.
+### Start with a CSV from the command line
+
+`run_server.py` accepts one optional CSV path. Omitting it preserves the normal behavior: each browser session starts empty and waits for a drag-and-drop or **Upload** action.
+
+```text
+python run_server.py [CSV_PATH] [--debug] [--sample] [--port PORT] [--address ADDRESS]
+```
+
+Mac/Linux examples:
+
+```sh
+# Start normally without preloading a file.
+.venv/bin/python run_server.py --debug
+
+# Stage a CSV in every new browser session.
+.venv/bin/python run_server.py "/absolute/path/to/my data.csv" --debug
+
+# Direct Streamlit launch: -- separates Streamlit options from the app argument.
+.venv/bin/streamlit run "Load CSV.py" -- "/absolute/path/to/my data.csv"
+```
+
+Windows PowerShell examples:
+
+```powershell
+# Start normally without preloading a file.
+.\.venv\Scripts\python.exe run_server.py
+
+# Quote Windows paths containing spaces.
+.\.venv\Scripts\python.exe run_server.py "C:\Engineering Data\my data.csv"
+```
+
+The CLI path has the following behavior:
+
+- It must point to an existing regular file on the **server machine** and have a `.csv` extension; paths are resolved to an absolute path before Streamlit starts.
+- Only one startup file is accepted. Quote paths containing spaces.
+- The file goes through the same header, structure, upload-size, projection, and memory validation used for browser uploads.
+- Each new browser session receives its own private copy. The original CSV is never changed or deleted by the dashboard.
+- The fixed fields are selected when present. The user may select additional fields and then press **Apply columns**, just as with a dragged file.
+- A later browser upload replaces the staged file only in that browser session.
+- **Clear dataset** leaves the current session empty instead of immediately staging the CLI file again. A new browser session still receives the startup file.
+- An invalid CLI path stops `run_server.py` with a command-line error. A CSV that fails content validation produces an in-app warning while leaving browser upload available.
+
+
+To preload a file when using the Windows service, add its quoted server path after `run_server.py` in `deploy/service.xml.template` before installing the service. For example:
+
+```xml
+<arguments>"@ROOT@\run_server.py" "C:\Engineering Data\startup.csv" --port @PORT@</arguments>
+```
+
+The Windows service account must have read permission for the startup CSV. Re-run the service installation after changing the template so `deploy/EngineeringDashboard.xml` is regenerated.
 
 ### Windows service
 
@@ -147,4 +196,4 @@ Source size was 4,517,013 bytes; combined peak process RSS was approximately 262
 
 For browser acceptance: upload distinct files with the same name in separate tabs; verify datasets/exports differ, select filters and table fields, switch pages and return, select an AgGrid row and expand stacked mode, add source columns, and attempt malformed replacement. New tabs must not inherit another tab's data.
 
-Local verification: 34 pytest checks passed; all Python pages compiled and `git diff --check` passed. Browser checks exercised the native file-picker upload, cross-page dataset/field retention, a separate empty browser session, and AgGrid row selection across a stacked-mode change. A literal OS drag gesture and Windows service execution were not exercised.
+Local verification: 40 pytest checks passed; all Python pages compiled and `git diff --check` passed. Browser checks exercised the highlighted native upload area, selected-filename feedback, cross-page dataset/field retention, a separate empty browser session, and AgGrid row selection across a stacked-mode change. Windows service execution was not exercised.

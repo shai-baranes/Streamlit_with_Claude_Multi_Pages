@@ -1,0 +1,63 @@
+from pathlib import Path
+import sys
+import pytest
+from streamlit.testing.v1 import AppTest
+from framework import data
+from framework.cli import validate_csv_path
+import run_server
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_launcher_preserves_default_and_forwards_path(tmp_path, monkeypatch):
+    commands = []
+    monkeypatch.setattr(run_server.subprocess, 'call', lambda command, **kwargs: commands.append(command) or 0)
+    monkeypatch.setattr(sys, 'argv', ['run_server.py'])
+    assert run_server.main() == 0
+    assert '--' not in commands[-1]
+    source = tmp_path / 'some data.CSV'
+    source.write_text('time,value\n0,1\n')
+    monkeypatch.setattr(sys, 'argv', ['run_server.py', '--debug', str(source)])
+    assert run_server.main() == 0
+    assert commands[-1][-2:] == ['--', str(source.resolve())]
+
+
+@pytest.mark.parametrize('entry', ['Load CSV.py', 'Load CSV_2.py'])
+def test_cli_stages_once_isolates_and_clears(tmp_path, monkeypatch, entry):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    source = tmp_path / 'my data.csv'
+    source.write_text('Date,extra\n01/01/2022,hello\n')
+    monkeypatch.setattr(sys, 'argv', [str(ROOT / entry), str(source)])
+    first = AppTest.from_file(str(ROOT / entry)).run()
+    assert not first.exception
+    assert any(source.name in item.value for item in first.text)
+    staged = first.session_state['pending_source']
+    assert staged != source and staged.read_bytes() == source.read_bytes()
+    first.run()
+    assert first.session_state['pending_source'] == staged
+    second = AppTest.from_file(str(ROOT / entry)).run()
+    assert second.session_state['pending_source'] != staged
+    first.button[-1].click().run()
+    assert list(first.session_state['df_full']) == ['Date']
+    first.button[0].click().run()
+    assert 'dataset' not in first.session_state
+    assert 'pending_source' not in first.session_state
+    assert source.exists()
+
+
+def test_invalid_cli_keeps_upload_available(tmp_path, monkeypatch):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    source = tmp_path / 'bad.csv'
+    source.write_text('a,a\n1,2\n')
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', str(source)])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert not app.exception
+    assert any('Duplicate' in warning.value for warning in app.warning)
+    assert 'pending_source' not in app.session_state
+
+
+def test_rejects_missing_or_unsupported_path(tmp_path):
+    with pytest.raises(ValueError, match='not found'):
+        validate_csv_path(tmp_path / 'absent.csv')
+    with pytest.raises(ValueError, match='extension'):
+        validate_csv_path(tmp_path / 'file.txt')

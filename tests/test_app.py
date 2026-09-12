@@ -10,6 +10,19 @@ def test_home():
     app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
     assert not app.exception
     assert 'Engineering Data Dashboard' in app.title[0].value
+    assert app.get('file_uploader')[0].label == (
+        'Drag and drop a CSV file here, or select it with Upload'
+    )
+
+
+def test_sample_action_is_optional(monkeypatch):
+    monkeypatch.delenv('DASHBOARD_SAMPLE', raising=False)
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert all(button.label != 'Load sample data' for button in app.button)
+
+    monkeypatch.setenv('DASHBOARD_SAMPLE', '1')
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert any(button.label == 'Load sample data' for button in app.button)
 
 def test_widget_navigation_and_isolation():
     script = '''

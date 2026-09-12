@@ -7,21 +7,83 @@ import streamlit as st
 from framework.config import ALWAYS_LOAD_COLUMNS, MAX_UPLOAD_MB
 from framework.data import cleanup, save_source, inspect_header, load_dataset, session_directory
 from framework.state import reset_controls
+from framework.cli import startup_csv_argument
 
 
 def render():
     st.set_page_config(page_title='Engineering Data Dashboard', layout='wide')
+    st.markdown(
+        '''
+        <style>
+        /* Make the entire native Streamlit uploader an obvious file drop target. */
+        [data-testid="stFileUploaderDropzone"] {
+            min-height: 9rem;
+            border: 2px dashed #3b82f6;
+            border-radius: 0.85rem;
+            background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+            padding: 1.5rem;
+            transition: border-color 120ms ease, background-color 120ms ease;
+        }
+        [data-testid="stFileUploaderDropzone"]:hover {
+            border-color: #1d4ed8;
+            background: #dbeafe;
+        }
+        [data-testid="stFileUploaderDropzone"]::before {
+            content: "⬇  DROP CSV FILE HERE";
+            color: #1d4ed8;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        [data-testid="stFileUploader"] > label p {
+            font-size: 1rem;
+            font-weight: 650;
+        }
+        </style>
+        ''',
+        unsafe_allow_html=True,
+    )
     st.title('Engineering Data Dashboard')
     cleanup()
     if 'session_id' not in st.session_state:
         st.session_state.session_id = str(uuid.uuid4())
     session_directory(st.session_state.session_id)
-    if st.button('Clear dataset'):
+    # Keep the optional sample action on the same row as the clear action.
+    clear_col, _, sample_col = st.columns([1.2, 3, 1.4])
+    clear_clicked = clear_col.button('Clear dataset', width='stretch')
+    sample_clicked = False
+    if os.environ.get('DASHBOARD_SAMPLE') == '1':
+        sample_clicked = sample_col.button('Load sample data', width='stretch')
+
+    if clear_clicked:
         shutil.rmtree(session_directory(st.session_state.session_id), ignore_errors=True)
         st.session_state.clear()
+        # Clear must leave an empty session even when the server has a startup file.
+        st.session_state['cli_initialized'] = True
         st.rerun()
-    uploaded = st.file_uploader('Drop a CSV here', type=['csv'],
-                               max_upload_size=MAX_UPLOAD_MB)
+    # Stage once, through the same validator/private storage used by browser uploads.
+    if not st.session_state.get('cli_initialized'):
+        st.session_state['cli_initialized'] = True
+        if not st.session_state.get('dataset') and not st.session_state.get('pending_source'):
+            try:
+                cli_path = startup_csv_argument()
+                if cli_path is not None:
+                    with cli_path.open('rb') as source:
+                        path = save_source(source, st.session_state.session_id)
+                    st.session_state.update(pending_source=path, pending_name=cli_path.name)
+            except Exception as error:
+                st.session_state['cli_error'] = f'Startup CSV could not be loaded: {error}'
+    if st.session_state.get('cli_error'):
+        st.warning(st.session_state['cli_error'])
+    # Streamlit's native drop zone accepts both an OS drag-and-drop and the
+    # adjacent Upload button, and feeds both paths through the same validator.
+    uploaded = st.file_uploader(
+        'Drag and drop a CSV file here, or select it with Upload',
+        type=['csv'],
+        max_upload_size=MAX_UPLOAD_MB,
+        help='Drag one .csv file from Finder or File Explorer onto this area, '
+             'or click Upload to browse for it.',
+    )
     if uploaded is not None and uploaded.file_id != st.session_state.get('upload_id'):
         try:
             path = save_source(uploaded, st.session_state.session_id)
@@ -33,10 +95,15 @@ def render():
                                     upload_id=uploaded.file_id)
         except Exception as error:
             st.error(f'Upload failed: {error}')
-    if os.environ.get('DASHBOARD_SAMPLE') == '1' and st.button('Load sample data'):
+    if sample_clicked:
         with Path('synthetic_sales_data.csv').open('rb') as source:
             st.session_state.pending_source = save_source(source, st.session_state.session_id)
         st.session_state.pending_name = 'synthetic_sales_data.csv'
+    if pending_name := st.session_state.get('pending_name'):
+        # Plain text keeps unusual filenames from being interpreted as Markdown.
+        with st.container(border=True):
+            st.markdown('**📄 Selected CSV file**')
+            st.text(pending_name)
     active = st.session_state.get('dataset')
     path = st.session_state.get('pending_source') or (active.source if active else None)
     if path and not Path(path).is_file():
