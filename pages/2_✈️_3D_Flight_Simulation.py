@@ -15,9 +15,9 @@ MAX_ANIMATION_FRAMES = 300
 
 st.set_page_config(page_title="3D flight simulation", layout="wide")
 st.title("3D flight simulation")
-st.caption(
-    "Gray = complete route · Blue = traveled route · Red aircraft = current position"
-)
+# st.caption(
+#     "Gray = complete route · Blue = traveled route · Red aircraft = current position"
+# )
 
 df_full = require_data()
 missing = missing_trajectory_columns(df_full)
@@ -40,10 +40,14 @@ if len(trajectory) < 2:
     st.info("At least two valid trajectory records are required for simulation.")
     st.stop()
 if prepared.reduced:
-    st.info(
+    st.caption(
         f"Playback uses {len(trajectory):,} evenly distributed frames from "
         f"{prepared.source_rows:,} source rows to keep browser animation responsive."
     )
+    # st.info(
+    #     f"Playback uses {len(trajectory):,} evenly distributed frames from "
+    #     f"{prepared.source_rows:,} source rows to keep browser animation responsive."
+    # )
 
 dataset = st.session_state.get("dataset")
 identity = trajectory_identity(df_full, getattr(dataset, "version", None))
