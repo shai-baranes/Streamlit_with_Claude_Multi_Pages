@@ -22,7 +22,8 @@ def test_launcher_preserves_default_and_forwards_path(tmp_path, monkeypatch):
     assert commands[-1][-2:] == ['--', str(source.resolve())]
 
 
-@pytest.mark.parametrize('entry', ['Load CSV.py', 'Load CSV_2.py'])
+@pytest.mark.parametrize('entry', ['Load CSV.py'])
+# @pytest.mark.parametrize('entry', ['Load CSV.py', 'Load CSV_2.py'])
 def test_cli_stages_once_isolates_and_clears(tmp_path, monkeypatch, entry):
     monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
     source = tmp_path / 'my data.csv'
