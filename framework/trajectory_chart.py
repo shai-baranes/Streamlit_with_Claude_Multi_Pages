@@ -1,10 +1,8 @@
 """A browser-side Plotly flight player with session-persisted controls and camera."""
 
-from importlib.resources import files
 import json
 
 import pandas as pd
-import plotly
 import streamlit as st
 
 
@@ -12,9 +10,8 @@ DEFAULT_CAMERA = {"eye": {"x": 1.55, "y": -1.65, "z": 1.1}}
 DEFAULT_FPS = 5
 TRAJECTORY_COMPONENT_KEY = "trajectory_3d_component"
 
-_PLOTLY_SOURCE = (
-    files(plotly).joinpath("package_data", "plotly.min.js").read_text(encoding="utf-8")
-)
+# Share the installed bundle with the other app-owned v2 chart.
+from framework.plotly_assets import PLOTLY_SOURCE as _PLOTLY_SOURCE
 
 _COMPONENT_JS = (
     _PLOTLY_SOURCE
@@ -119,7 +116,7 @@ export default async function(component) {
       },
     ]
     const layout = {
-      height: 650, margin: {l: 58, r: 0, t: 20, b: 0},
+      height: 650, margin: {l: 96, r: 0, t: 20, b: 0},
       legend: {orientation: "h", y: 1.02, x: 0},
       // Reserve the plot's left margin for one vertical manipulation toolbar.
       modebar: {orientation: "v"},
@@ -143,8 +140,9 @@ export default async function(component) {
     if (modebar) {
       // Plotly injects toolbar styles after component CSS, so enforce the left strip here.
       Object.assign(modebar.style, {
-        position: "absolute", display: "flex", flexFlow: "column nowrap", left: "4px", right: "auto",
-        top: "auto", bottom: "8px", transform: "none", width: "auto",
+        position: "absolute", display: "flex", flexFlow: "column nowrap",
+        left: "calc(4px + 1.5rem)", right: "auto", top: "auto", bottom: "9.1rem",
+        transform: "none", width: "auto",
       })
       modebar.querySelectorAll(".modebar-group").forEach(group => {
         Object.assign(group.style, {
@@ -242,50 +240,63 @@ export default async function(component) {
 
 _TRAJECTORY_COMPONENT = st.components.v2.component(
     "trajectory_flight_player",
+    # Plotly's document stylesheet and pointer handling require light DOM.
+    # Prefix local classes so player styling cannot affect surrounding pages.
+    isolate_styles=False,
     html="""
-<div class="controls">
-  <button id="trajectory-play" type="button">▶ Play</button>
-  <button id="trajectory-pause" type="button">⏸ Pause</button>
-  <button id="trajectory-reset" type="button">↻ Reset</button>
-</div>
-<div class="metrics">
+<div class="trajectory-metrics">
   <div><span>Status</span><strong id="trajectory-status"></strong></div>
   <div><span>Elapsed</span><strong id="trajectory-elapsed"></strong></div>
   <div><span>Altitude</span><strong id="trajectory-altitude"></strong></div>
   <div><span>Position</span><strong id="trajectory-position"></strong></div>
   <div><span>Frame</span><strong id="trajectory-frame"></strong></div>
 </div>
-<div id="trajectory-plot"></div>
-<div class="slider-control">
+<div class="trajectory-graph-stage">
+  <div id="trajectory-plot"></div>
+  <div class="trajectory-controls">
+    <button id="trajectory-play" type="button">▶ Play</button>
+    <button id="trajectory-pause" type="button">⏸ Pause</button>
+    <button id="trajectory-reset" type="button">↻ Reset</button>
+  </div>
+</div>
+<div class="trajectory-slider-control">
   <label id="trajectory-progress-text" for="trajectory-progress"></label>
   <input id="trajectory-progress" type="range" min="0" max="0" step="1" value="0" />
 </div>
-<div class="slider-control">
-  <label class="fps-label" for="trajectory-fps">Playback rate (frames per second): <strong id="trajectory-fps-value">5</strong></label>
+<div class="trajectory-slider-control">
+  <label class="trajectory-fps-label" for="trajectory-fps">Playback rate (frames per second): <strong id="trajectory-fps-value">5</strong></label>
   <input id="trajectory-fps" type="range" min="1" max="10" step="1" value="5" />
 </div>
 """,
     css="""
-.controls { position: sticky; top: 0; z-index: 100; display: flex; gap: .5rem; flex-wrap: nowrap; margin-bottom: .75rem; padding: .2rem 0; width: min(100%, 30rem); background: var(--st-background-color, #fff); }
-.controls button { flex: 1 1 0; border: 1px solid var(--st-border-color); border-radius: .5rem; padding: .38rem .7rem; min-height: 2.25rem; background: var(--st-secondary-background-color); color: var(--st-text-color); cursor: pointer; font: inherit; font-size: .9rem; white-space: nowrap; transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, color .15s ease; }
+.trajectory-graph-stage { position: relative; min-width: 0; }
+.trajectory-controls { position: absolute; left: 4px; bottom: 8px; z-index: 100; display: flex; flex-direction: column; gap: .45rem; margin: 0; width: 5.4rem; }
+.trajectory-controls button { width: 5.4rem; min-width: 5.4rem; max-width: 5.4rem; height: 2.4rem; min-height: 2.4rem; padding: .25rem .2rem; border: 1px solid var(--st-border-color); border-radius: .5rem; background: var(--st-secondary-background-color); color: var(--st-text-color); cursor: pointer; font: inherit; font-size: .78rem; line-height: 1.1; white-space: nowrap; transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, color .15s ease; }
 #trajectory-play.is-active { border-color: #15803d; background: #16a34a; color: white; box-shadow: 0 0 0 3px rgba(22, 163, 74, .24); }
 #trajectory-pause.is-active { border-color: #b45309; background: #f59e0b; color: #111827; box-shadow: 0 0 0 3px rgba(245, 158, 11, .28); }
 #trajectory-reset.reset-feedback { border-color: #6b7280; background: #6b7280; color: white; box-shadow: 0 0 0 3px rgba(107, 114, 128, .22); }
-.fps-label { display: block; color: var(--st-text-color); }
+.trajectory-fps-label { display: block; color: var(--st-text-color); }
 #trajectory-fps, #trajectory-progress { width: 100%; accent-color: var(--st-primary-color); }
-.metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0 0; color: var(--st-text-color); }
-.metrics div { display: flex; flex-direction: column; gap: .25rem; min-width: 0; }
-.metrics span { font-size: .78rem; }
-.metrics strong { font-size: 1.12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.trajectory-metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0 0; color: var(--st-text-color); }
+.trajectory-metrics div { display: flex; flex-direction: column; gap: .25rem; min-width: 0; }
+.trajectory-metrics span { font-size: .78rem; }
+.trajectory-metrics strong { font-size: 1.12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #trajectory-progress-text { display: block; color: var(--st-text-color); }
-#trajectory-plot { width: 100%; height: 650px; }
-.slider-control { position: relative; z-index: 20; display: grid; gap: .35rem; margin-top: 1rem; padding: .2rem 0; background: var(--st-background-color, #fff); pointer-events: auto; }
-.slider-control input[type="range"] { position: relative; z-index: 21; cursor: pointer; pointer-events: auto; touch-action: none; }
-#trajectory-plot .modebar { position: absolute !important; display: flex !important; flex-flow: column nowrap !important; gap: .2rem; left: 4px !important; right: auto !important; top: auto !important; bottom: 8px !important; width: auto !important; transform: none !important; }
+#trajectory-plot { min-width: 0; width: 100%; height: 650px; }
+.trajectory-slider-control { position: relative; z-index: 20; display: grid; gap: .35rem; margin-top: 1rem; padding: .2rem 0; background: var(--st-background-color, #fff); pointer-events: auto; }
+.trajectory-slider-control input[type="range"] { position: relative; z-index: 21; cursor: pointer; pointer-events: auto; touch-action: none; }
+/* Plotly anchors this container at the right edge unless both levels are moved. */
+#trajectory-plot .modebar-container { left: 0 !important; right: auto !important; width: 100% !important; pointer-events: none; }
+#trajectory-plot .modebar { position: absolute !important; display: flex !important; flex-flow: column nowrap !important; gap: .2rem; left: calc(4px + 1.5rem) !important; right: auto !important; top: auto !important; bottom: 9.1rem !important; width: auto !important; transform: none !important; pointer-events: auto; }
 #trajectory-plot .modebar-group { display: flex !important; flex-flow: column nowrap !important; gap: .2rem; float: none !important; width: auto !important; padding: 0 !important; }
 #trajectory-plot .modebar-btn { display: flex !important; align-items: center; justify-content: center; float: none !important; width: 2.4rem !important; height: 2.4rem !important; padding: .45rem !important; border: 1px solid var(--st-border-color) !important; border-radius: .45rem !important; background: var(--st-secondary-background-color) !important; opacity: .82 !important; box-sizing: border-box !important; }
 #trajectory-plot .modebar-btn:hover { border-color: var(--st-primary-color) !important; opacity: 1 !important; }
-@media (max-width: 800px) { .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 800px) {
+  .trajectory-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .trajectory-controls, .trajectory-controls button { width: 4.9rem; min-width: 4.9rem; max-width: 4.9rem; }
+  .trajectory-controls button { font-size: .72rem; }
+  #trajectory-plot .modebar { left: calc(4px + 1.25rem) !important; }
+}
 """,
     js=_COMPONENT_JS,
 )

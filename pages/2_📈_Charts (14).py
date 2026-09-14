@@ -11,8 +11,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
-from utils import inject_css, require_data, sidebar_filters, tutorial_box, my_func3
-# import streamlit.components.v1 as _cv1
+from framework.measurement_chart import render_measurement_chart
+from utils import inject_css, require_data, sidebar_filters, tutorial_box
 
 st.set_page_config(page_title="Charts", page_icon="📈", layout="wide")
 inject_css()
@@ -91,7 +91,7 @@ with c1:
         title=f"{bar_metric} by {bar_group}", template="plotly_white",
         showlegend=False, plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa",
     )
-    st.plotly_chart(fig_bar, use_container_width=True)
+    st.plotly_chart(fig_bar, width="stretch")
 
 with c2:
     st.subheader("Time-Series Line Chart")
@@ -126,7 +126,7 @@ with c2:
         yaxis=dict(type="linear", tickformat=",.0f"),
         legend=dict(orientation="h", y=-0.25), hovermode="x unified",
     )
-    st.plotly_chart(fig_line, use_container_width=True)
+    st.plotly_chart(fig_line, width="stretch")
 
 # ══════════════════════════════════════════════
 # ROW 2: Scatter + Treemap
@@ -145,7 +145,7 @@ with c3:
         title=f"Revenue vs Profit (colored by {scatter_color})", opacity=0.75,
     )
     fig_scatter.update_layout(plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa")
-    st.plotly_chart(fig_scatter, use_container_width=True)
+    st.plotly_chart(fig_scatter, width="stretch")
 
 with c4:
     st.subheader("Treemap — Hierarchical Revenue")
@@ -156,7 +156,7 @@ with c4:
         title=f"Treemap: {tree_metric} by Region → Category → Segment",
     )
     fig_tree.update_layout(paper_bgcolor="#f5f7fa")
-    st.plotly_chart(fig_tree, use_container_width=True)
+    st.plotly_chart(fig_tree, width="stretch")
 
 # ══════════════════════════════════════════════
 # ROW 3: Box plot
@@ -169,7 +169,7 @@ fig_box = px.box(
     title=f"Margin % Distribution by {box_x}",
 )
 fig_box.update_layout(plot_bgcolor="#ffffff", paper_bgcolor="#f5f7fa", showlegend=False)
-st.plotly_chart(fig_box, use_container_width=True)
+st.plotly_chart(fig_box, width="stretch")
 
 # ══════════════════════════════════════════════
 # ROW 4: Profit over Time
@@ -237,7 +237,7 @@ else:
         hovermode="x unified", legend=dict(orientation="h", y=1.08),
     )
 
-st.plotly_chart(fig_profit, use_container_width=True)
+st.plotly_chart(fig_profit, width="stretch")
 
 
 # ══════════════════════════════════════════════
@@ -375,8 +375,9 @@ for r in [1, 2, 3]:
 for r in [1, 2, 3]:
     fig_sub.update_xaxes(type="category", tickangle=-35, row=r, col=1)
 
-st.plotly_chart(fig_sub, use_container_width=True)
-my_func3("koko")
+# The component owns its plot instead of searching other charts by title.
+render_measurement_chart(fig_sub, key="charts14:subplots",
+                         dataset_identity=getattr(st.session_state.get('dataset'), 'version', 'legacy'))
 
 # ══════════════════════════════════════════════
 # ROW 6: Shared-X Multi-metric — Option 3 (Normalized / same scale)
@@ -484,7 +485,7 @@ with st.form(key="ruler_form"):
             format="%d",
         )
     with _ruler_cols[2]:
-        st.form_submit_button("📏 Apply", use_container_width=True)
+        st.form_submit_button("📏 Apply", width="stretch")
 
 # Ensure A is always left of B
 _left  = min(_cur_a, _cur_b)
@@ -570,16 +571,16 @@ fig_norm.update_layout(
 # Simplest possible approach: pure JS handles everything in the browser.
 # No st.text_input, no Streamlit rerun, no slowness.
 # JS listens for plotly_click, reads x/y, and writes them into a <div>
-# that lives inside the st.components.v1.html iframe — instant display.
+# inside the same v2 component as its chart — instant display.
 _dot_mode = st.checkbox(
     "🖊 Dot-adding mode (click chart to see coordinates)",
     value=False,
     key="norm_dot_mode",
 )
 
-st.plotly_chart(fig_norm, use_container_width=True)
-
-my_func3("Normalized")
+render_measurement_chart(fig_norm, key="charts14:normalized",
+                         dataset_identity=getattr(st.session_state.get('dataset'), 'version', 'legacy'),
+                         measurement_enabled=_dot_mode)
 
 # ══════════════════════════════════════════════
 # ROW 7: Animated Geo-Trace (Streamlit 1.12 compatible)
@@ -751,153 +752,6 @@ st.session_state["geo_viewport"] = {
 
 
 
-# JS bridge: listens for Mapbox "moveend" (fired after pan or zoom ends),
-# reads center lat/lon and zoom, then updates the hidden number inputs and
-# triggers a Streamlit rerun by dispatching an input event.
-import streamlit.components.v1 as _cv1
-
-_cv1.html(f"""
-<div id="coord-box" style="
-    font-family: monospace;
-    font-size: 13px;
-    padding: 8px 14px;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    border-left: 4px solid #3b82f6;
-    border-radius: 6px;
-    min-height: 48px;
-    color: #1e293b;
-    {'display:none' if not _dot_mode else ''}
-">
-    {'🖊 Click points on the chart to see x/y and deltas.' if _dot_mode else ''}
-</div>
-<script>
-(function() {{
-    if (!{'true' if _dot_mode else 'false'}) return;
-
-    var coordBox = document.getElementById("coord-box");
-    var pt1 = null;
-    var pt2 = null;
-
-    function findPlotDiv() {{
-        var candidates = [];
-        try {{
-            window.parent.document.querySelectorAll(".js-plotly-plot")
-                .forEach(function(d) {{ candidates.push(d); }});
-        }} catch(e) {{}}
-        try {{
-            window.parent.document.querySelectorAll("iframe")
-                .forEach(function(fr) {{
-                    try {{
-                        fr.contentDocument.querySelectorAll(".js-plotly-plot")
-                            .forEach(function(d) {{ candidates.push(d); }});
-                    }} catch(e) {{}}
-                }});
-        }} catch(e) {{}}
-        for (var i = candidates.length - 1; i >= 0; i--) {{
-            var t = candidates[i].querySelector(".gtitle");
-            if (t && t.textContent.indexOf("Normalized") !== -1)
-                return candidates[i];
-        }}
-        return candidates[candidates.length - 1] || null;
-    }}
-
-    function fmt(v, digits) {{
-        if (v === null || v === undefined) return "--";
-        if (typeof v === "number") return v.toFixed(digits || 4);
-        return String(v);
-    }}
-
-    function toNum(v) {{
-        if (typeof v === "number") return v;
-
-        var d = new Date(v);
-        if (!isNaN(d.getTime())) return d.getTime();
-
-        var n = Number(v);
-        if (!isNaN(n)) return n;
-
-        return null;
-    }}
-
-    function renderBox() {{
-        if (!pt1) {{
-            coordBox.innerHTML = "🖊 Click a first point.";
-            return;
-        }}
-
-        if (!pt2) {{
-            coordBox.innerHTML =
-                "x1 = " + fmt(pt1.x, 4) + " | y1 = " + fmt(pt1.y, 4) +
-                " | dx1 = -- | dy1 = --" +
-                "<br>" +
-                "x2 = -- | y2 = -- | dx2 = -- | dy2 = --";
-            return;
-        }}
-
-        var x1n = toNum(pt1.x);
-        var x2n = toNum(pt2.x);
-        var y1n = toNum(pt1.y);
-        var y2n = toNum(pt2.y);
-
-        var dx = (x1n !== null && x2n !== null) ? (x2n - x1n) : null;
-        var dy = (y1n !== null && y2n !== null) ? (y2n - y1n) : null;
-
-        coordBox.innerHTML =
-            "x1 = " + fmt(pt1.x, 4) +
-            " | y1 = " + fmt(pt1.y, 4) +
-            " | dx1 = " + (dx === null ? "--" : fmt(dx, 4)) +
-            " | dy1 = " + (dy === null ? "--" : fmt(dy, 4)) +
-            "<br>" +
-            "x2 = " + fmt(pt2.x, 4) +
-            " | y2 = " + fmt(pt2.y, 4) +
-            " | dx2 = " + (dx === null ? "--" : fmt(dx, 4)) +
-            " | dy2 = " + (dy === null ? "--" : fmt(dy, 4));
-    }}
-
-    function attach() {{
-        var plotDiv = findPlotDiv();
-        if (!plotDiv) {{ setTimeout(attach, 600); return; }}
-        if (plotDiv._coordListenerAttached) return;
-        plotDiv._coordListenerAttached = true;
-
-        plotDiv.on("plotly_click", function(data) {{
-            if (!data || !data.points || !data.points.length) return;
-
-            var pt = data.points[0];
-            var newPt = {{
-                x: pt.x,
-                y: pt.y,
-                pointNumber: pt.pointNumber
-            }};
-
-            if (pt1 === null) {{
-                pt1 = newPt;
-            }} else if (pt2 === null) {{
-                pt2 = newPt;
-            }} else {{
-                pt1 = pt2;
-                pt2 = newPt;
-            }}
-
-            renderBox();
-        }});
-
-        plotDiv.on("plotly_doubleclick", function() {{
-            pt1 = null;
-            pt2 = null;
-            coordBox.innerHTML = "🖊 Click points on the chart to see x/y and deltas.";
-        }});
-    }}
-
-    if (document.readyState === "complete") {{ attach(); }}
-    else {{ window.addEventListener("load", attach); }}
-    setTimeout(attach, 1000);
-    setTimeout(attach, 2500);
-}})();
-</script>
-""", height=80)
-
 # ── Placeholder — reused on every frame ──────────────────────────────────────
 geo_placeholder = st.empty()
 
@@ -1026,7 +880,7 @@ def _build_geo_fig(i, map_style, show_trail):
 # ── Render current frame (always, so map is never blank) ─────────────────────
 geo_placeholder.plotly_chart(
     _build_geo_fig(st.session_state["geo_frame"], map_style, show_trail),
-    use_container_width=True,
+    width="stretch",
 )
 
 # ── One-frame-per-rerun animation ─────────────────────────────────────────────
@@ -1253,7 +1107,7 @@ fig_bits.update_layout(
     hovermode="x unified",
 )
 
-st.plotly_chart(fig_bits, use_container_width=True)
+st.plotly_chart(fig_bits, width="stretch")
 
 # ── Summary statistics table ──────────────────────────────────────────────────
 st.subheader("Channel statistics")

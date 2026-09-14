@@ -6,6 +6,7 @@ import streamlit as st
 # Namespace widget persistence so legacy pages retain independent selections.
 from framework.state import ui
 st = ui(__file__)
+from framework.exports import render_csv_export, shared_filter_context
 from utils import inject_css, require_data, sidebar_filters, tutorial_box
 
 st.set_page_config(page_title="Data Explorer", page_icon="🗂️", layout="wide")
@@ -74,13 +75,7 @@ if display_cols:
 
 # ── Download ──────────────────────────────────────────────────────────────────
 # Generate the full export only after an explicit request.
-if st.button("Prepare CSV export"):
-    st.download_button(
-        label="⬇️ Download filtered data as CSV",
-        data=df_table.to_csv(index=False).encode("utf-8"),
-        file_name="filtered_sales_data.csv",
-        mime="text/csv",
-    )
+render_csv_export(df_table, page=__file__, context=(shared_filter_context(), tbl_start, tbl_end))
 
 st.markdown("---")
 st.caption(f"Showing {len(df):,} of {len(df_full):,} records (date range further narrows to {len(df_table):,})")

@@ -7,7 +7,7 @@ Run one Streamlit server and open it from multiple computers over a trusted LAN 
 | Capability | Behavior |
 |---|---|
 | Upload | Drag a CSV from Finder/File Explorer onto the highlighted drop zone, or use its Upload button; the selected filename is shown before column selection |
-| Fixed fields | All 19 fields from `synthetic_sales_data.csv`, when present |
+| Fixed fields | All 22 configured sample fields, when present; configuration order followed by selected extras |
 | Extra fields | Searchable multiselect, committed with **Apply columns** |
 | Data retention | Private source file and selected pandas projection per session |
 | Navigation | Data, shared sales filters, and page-specific selections survive page switches |
@@ -158,7 +158,7 @@ Edit `ALWAYS_LOAD_COLUMNS` in `framework/config.py` to change the fixed list. Ex
 
 The legacy sales date transformation is applied when Date, Revenue, Region, and Category are loaded: day-first dates, missing calendar columns derived, then Date ordering. Other engineering files retain source row order. Engineering Explorer offers explicit Original/Numeric/Datetime X interpretation, excludes invalid converted X values with a notice, and supports an X-range filter.
 
-The source is retained privately to permit later additional-field loading. Dataset replacement is atomic after successful parsing. Failed uploads/imports leave the active frame unchanged. Applying a new projection resets dependent controls; navigating pages does not. **Clear dataset** clears the session and deletes its private files. Abandoned files expire on subsequent home-page visits; directory leases refresh on page activity. Browser refresh or server restart may lose the session; disk files are not a restore/archive feature.
+The source is retained privately to permit later additional-field loading. Dataset replacement is atomic after successful parsing. Uploads, samples, and CLI staging share one lifecycle. A new pending file discards the previous uncommitted private file; successful replacement removes the superseded private source and its Parquet caches. Original CLI files are never deleted. Storage operations and expiry cleanup share a lock, and the home page refreshes its lease before cleanup. Failed uploads/imports leave the active frame unchanged. Applying a new projection resets dependent controls; navigating pages does not. **Clear dataset** clears the session and deletes its private files. Abandoned files expire on subsequent home-page visits; directory leases refresh on page activity. Browser refresh or server restart may lose the session; disk files are not a restore/archive feature.
 
 Legacy widget and callback keys are namespaced per page. Shared sales filter keys use the shared utils scope. Whole-frame global legacy caches are bypassed to avoid retaining private frames across sessions; the selected frame itself is reused in session state.
 
@@ -167,6 +167,8 @@ Legacy widget and callback keys are namespaced per page. Shared sales filter key
 Selected-column parsing avoids materializing thousands of unused columns, but CSV still requires scanning source bytes. Parsing is serialized across sessions to reduce concurrent temporary allocations. Chunks are sized by column count, and both frame size and current process RSS are checked. These are admission safeguards, not an OS hard memory limit: browser uploads, chart operations, and exports can allocate outside ingestion.
 
 The [native Streamlit uploader buffers files in RAM](https://docs.streamlit.io/knowledge-base/using-streamlit/where-file-uploader-store-when-deleted). Thus a 500,000 × 2,000 CSV may exceed the default 1 GB upload allowance. Raise limits only after measuring real CSV size, upload concurrency, selected-frame size, and available disk/RAM. The 32 GB / five-user target is not a guarantee for arbitrary field types or selecting every field. Large exports still require temporary serialization memory.
+
+CSV and Parquet reads enforce the same frame and process-memory checks. Cache-limit failures are reported rather than silently retried through CSV. These checks still run after allocations and are not a hard memory cap.
 
 Parquet caches selected projections only. Adding columns reads the retained CSV and produces a different projection. Cache read/write failures fall back to CSV. Automatic conversion stays disabled: enable it only after representative conversion plus three reads beats four CSV reads **and** peak memory does not increase. [Arrow supports projected Parquet reads](https://arrow.apache.org/docs/python/parquet.html); current caches already contain the selected projection.
 
@@ -196,4 +198,17 @@ Source size was 4,517,013 bytes; combined peak process RSS was approximately 262
 
 For browser acceptance: upload distinct files with the same name in separate tabs; verify datasets/exports differ, select filters and table fields, switch pages and return, select an AgGrid row and expand stacked mode, add source columns, and attempt malformed replacement. New tabs must not inherit another tab's data.
 
-Local verification: 40 pytest checks passed; all Python pages compiled and `git diff --check` passed. Browser checks exercised the highlighted native upload area, selected-filename feedback, cross-page dataset/field retention, a separate empty browser session, and AgGrid row selection across a stacked-mode change. Windows service execution was not exercised.
+Local verification: 61 pytest checks passed; all Python pages compiled and `git diff --check` passed. Browser checks exercised the highlighted native upload area, selected-filename feedback, cross-page dataset/field retention, a separate empty browser session, and AgGrid row selection across a stacked-mode change. Windows service execution was not exercised.
+
+
+## Requirement-gap update
+
+- Projection order follows the requested fields, with fixed fields first in configuration order and extras in selection order. Source names, engineering row order, and sales normalization remain unchanged.
+- All stacked variants retain the first row, suppress consecutive nulls, and retain transitions into or out of null. Existing time-field precedence, delta units, and selected-row restoration remain intact.
+- The three explicit export flows retain a prepared download through unrelated reruns. Changed export inputs invalidate it; Prepare serializes the replacement. Engineering exports contain all filtered rows of selected display fields; Data Explorer exports its full date-filtered data; Enhanced exports its grid result. Each page retains one private prepared byte payload; large exports still consume memory.
+- Charts (14) renders its two measurement-enabled charts using one app-owned Components v2 renderer and the installed Plotly bundle. Each chart owns its readout and listeners. Clicks retain the last two points; double-click clears them. Categorical labels are not converted to numeric differences, date differences are labelled in elapsed seconds, and measurements across different subplot axes show no delta. The normalized-chart checkbox controls its own readout. Third-party AgGrid remains supported as-is.
+- Flight trajectory validation rejects non-finite values in all four required fields, including Seconds and Altitude. Existing camera, playback, slider, and toolbar behavior is preserved.
+
+The latest 5,000-row × 200-column, five-user smoke run (including synthetic upload buffers) completed in about 5.0–5.4 seconds for CSV and 1.35–1.52 seconds for Parquet, with peak process RSS near 297 MiB. This remains a local smoke result; the full 500,000-row × 2,000-column workload and Windows service lifecycle are unverified.
+
+The deployment commands and configured limits remain unchanged. Restart Streamlit after editing imported custom-component definitions.

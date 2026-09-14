@@ -1,4 +1,4 @@
-> For the server, session isolation, large CSV workflow, and tests, see [README_GPT.md](README_GPT.md).
+> Current runtime: Python 3.11+, Streamlit 1.60+, pandas 3, and Plotly 6. For launch commands, supported behavior, session isolation, CSV limits, and validation, use [README_GPT.md](README_GPT.md). The tutorial and version-management notes below are historical.
 
 # 📊 Streamlit + Pandas Tutorial — Global Sales Dashboard
 
@@ -147,11 +147,11 @@ st.download_button(
 - [x] Apply the simulated map for longitude / latitude
 - [x] Utilize the Normalized chart where applicable (e.g. for the bar chart)
 - [x] Apply the new color (to be taken from 'config.toml') simulated map for longitude / latitude
-- [ ] Apply the time delta between 2 rows for the 'Stacked Values Table' page.
-- [ ] 'pip install streamlit-aggrid' - for AgGrid version (so the selected row stays visibly highlighted inside the grid itself when switching OFF stacked-mode)
-- [ ] from some reason, after aggrid we're asked to re-install pandas... (need to kill all python|streamlit instances and retry!)
-- [ ] note that it is recommeded to backup the current .env (along with Stacjed_Values_Table #1) before trying version *_2* to which we need to install above!!!
-- [ ] loading the CSV with several gaps (nulls) I get an error from the load_csv file...
+- [x] Time deltas are available in Stacked Values Enhanced (days) and Stacked Values Table 6 (seconds).
+- [x] AgGrid is included in the declared dependencies; stacked/full selection restoration is supported.
+- [x] Null-bearing CSV projections and null-aware stacked transitions have regression coverage.
+
+Use the declared requirements rather than the historical environment-reinstallation workarounds below.
 
 
 ### Aditional Notes on Python & Streamlit Versions Management (taken from MISC README)

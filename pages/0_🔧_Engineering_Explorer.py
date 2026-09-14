@@ -6,6 +6,7 @@ from framework.state import ui
 from framework.analysis import filter_values, filter_range, aggregate, reduce_points, transitions
 from framework.config import MAX_PREVIEW, MAX_POINTS
 from utils import require_data
+from framework.exports import render_csv_export
 
 st.set_page_config(page_title='Engineering Explorer', layout='wide')
 st = ui(__file__)
@@ -13,12 +14,14 @@ st.title('Engineering Explorer')
 df = require_data()
 columns = list(df.columns)
 filter_cols = st.multiselect('Filter fields', columns)
+filter_context = [tuple(filter_cols)]
 for column in filter_cols:
     values = df[column]
     if pd.api.types.is_numeric_dtype(values) and values.notna().any():
         low, high = float(values.min()), float(values.max())
         if low < high:
             bounds = st.slider(f'{column} range', low, high, (low, high))
+            filter_context.append((column, bounds))
             df = filter_range(df, column, *bounds)
     else:
         # Search before enumerating categories to keep very high cardinalities usable.
@@ -28,6 +31,7 @@ for column in filter_cols:
             candidates = candidates[candidates.str.contains(search, regex=False)]
         choices = candidates.drop_duplicates().head(1000).tolist()
         selected = st.multiselect(f'{column} values (first 1,000 matches)', choices)
+        filter_context.append((column, tuple(selected)))
         if selected:
             df = df[df[column].astype(str).isin(selected)]
 st.caption(f'{len(df):,} matching rows')
@@ -38,8 +42,9 @@ if display and mode != 'Full':
     view = transitions(view, display[:1] if mode == 'Stacked by Left' else display)
 rows = st.number_input('Preview rows', min_value=1, max_value=MAX_PREVIEW, value=min(200, MAX_PREVIEW))
 st.dataframe(view.head(rows))
-if st.button('Prepare filtered CSV'):
-    st.download_button('Download filtered CSV', df[display].to_csv(index=False).encode(), 'filtered.csv')
+render_csv_export(df[display], page=__file__, prepare_label='Prepare filtered CSV',
+                  download_label='Download filtered CSV', filename='filtered.csv',
+                  context=filter_context)
 num = df.select_dtypes(include='number').columns.tolist()
 if num:
     group = st.multiselect('Group by', columns)

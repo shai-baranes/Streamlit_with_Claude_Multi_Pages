@@ -3,7 +3,9 @@ import streamlit as st
 from framework.state import ui
 st = ui(__file__)
 import pandas as pd
+from framework.analysis import transition_mask
 
+from framework.exports import render_csv_export, shared_filter_context
 from utils import inject_css, require_data, sidebar_filters
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
 # Bound grid transport while retaining the selected source-row preview.
@@ -135,14 +137,14 @@ def build_view_cached(
         out = df.loc[:, result_cols].copy()
 
     elif view_mode == "Stacked by Left":
-        mask = df[anchor_col].ne(df[anchor_col].shift())
+        mask = transition_mask(df, [anchor_col])
         out = df.loc[mask, result_cols].copy()
 
     elif view_mode == "Stacked by All":
         if not data_cols:
             out = df.loc[:, result_cols].copy()
         else:
-            changed_mask = df[compare_cols].ne(df[compare_cols].shift()).any(axis=1)
+            changed_mask = transition_mask(df, compare_cols)
             out = df.loc[changed_mask, result_cols].copy()
 
     else:
@@ -420,18 +422,12 @@ def render_stacked_table() -> None:
 
     if selected_full_row is not None:
         st.markdown("**Selected source row**")
-        st.dataframe(selected_full_row, use_container_width=True)
+        st.dataframe(selected_full_row, width="stretch")
     
 
     # ── Download ──────────────────────────────────────────────────────────────────
     # Generate the full export only after an explicit request.
-    if st.button("Prepare CSV export"):
-        st.download_button(
-            label="⬇️ Download filtered data as CSV",
-            data=visible_df.to_csv(index=False).encode("utf-8"),
-            file_name="filtered_sales_data.csv",
-            mime="text/csv",
-        )
+    render_csv_export(visible_df, page=__file__, context=(shared_filter_context(), view_mode, exclusion_cols), include_values=True)
 
     st.markdown("---")
     st.caption(f"Showing {len(visible_df):,} of {len(df_full):,} records")

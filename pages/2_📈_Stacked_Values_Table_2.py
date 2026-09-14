@@ -3,6 +3,7 @@ import streamlit as st
 from framework.state import ui
 st = ui(__file__)
 import pandas as pd
+from framework.analysis import transition_mask
 
 from utils import inject_css, require_data, sidebar_filters
 
@@ -85,7 +86,7 @@ def build_view(df: pd.DataFrame, selected_columns: list, stacked_mode: bool) -> 
     result_cols = [time_col, anchor_col] + [c for c in extra_cols if c != anchor_col]
 
     if stacked_mode:
-        mask = df[anchor_col].ne(df[anchor_col].shift())
+        mask = transition_mask(df, [anchor_col])
         out = df.loc[mask, result_cols].copy()
     else:
         out = df.loc[:, result_cols].copy()
@@ -274,6 +275,6 @@ else:
             selected_full_row = df_full.loc[[int(st.session_state["selected_source_row"])]].copy() # TBD add here your recommended columns to be dispalyed (along with the anchor I guess)
 
             st.markdown("**Selected source row**")
-            st.dataframe(selected_full_row, use_container_width=True)
+            st.dataframe(selected_full_row, width="stretch")
 
     st.session_state["prev_stacked_mode"] = st.session_state["stacked_mode"]

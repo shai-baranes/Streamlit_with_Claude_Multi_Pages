@@ -21,6 +21,9 @@ when user-visible behavior, launch commands, limits, or service setup changes.
 - `pages/2_✈️_3D_Flight_Simulation.py`: dataset-backed 3D trajectory page.
 - `framework/data.py`: validated CSV retention, projection, resource limits,
   cleanup, and optional Parquet caching.
+- `framework/session.py`: atomic staging, replacement, and owned-source cleanup.
+- `framework/exports.py`: explicit preparation and session-private download retention.
+- `framework/measurement_chart.py`: v2 Plotly chart and point measurements.
 - `framework/state.py`: widget namespacing and cross-page persistence wrappers.
 - `framework/config.py`: fixed columns and environment-configurable limits.
 - `framework/trajectory.py`: pure trajectory validation and frame reduction.
@@ -69,10 +72,18 @@ benchmarks satisfy the time and peak-memory policy documented in `README_GPT.md`
 - Use the `ui(__file__)` wrapper from `framework/state.py` on pages that need
   persistent widgets. Keep common filters shared and page-specific widgets scoped.
 - Keep saved values separate from ephemeral Streamlit widget keys.
+- Stage and commit datasets through `framework/session.py`; never delete an original
+  CLI source. Refresh leases before expiry cleanup and hold the storage lock through
+  staging and ingestion.
+- Prepared exports live under `export:<page>` and are invalidated on changed export
+  inputs or dataset replacement. Never serialize CSV on unrelated reruns.
 - Use `require_data()` for pages that need the active `df_full` compatibility view.
 - Do not add process-wide caches containing private session DataFrames.
 - Use Streamlit Components v2 APIs for custom components. Do not introduce
   `st.components.v1`, global `Streamlit.*` JavaScript calls, or iframe messaging.
+  Existing third-party AgGrid internals are a compatibility exception; do not fork them.
+  The measurement renderer uses light DOM for Plotly CSS and pointer compatibility;
+  all chart selectors and event listeners must remain scoped to its own root.
 - The 3D flight player advances frames and handles camera and slider interaction
   in the browser to avoid a Streamlit rerun for every frame.
 - Changes to `framework/trajectory_chart.py` may require restarting the Streamlit
@@ -81,7 +92,7 @@ benchmarks satisfy the time and peak-memory policy documented in `README_GPT.md`
 ## 3D trajectory behavior
 
 The flight page requires numeric `Seconds`, `longitude`, `latitude`, and
-`Altitude`. It drops invalid coordinate rows with a visible notice, sorts stably
+`Altitude`. All four values must be finite. It drops invalid coordinate rows with a visible notice, sorts stably
 by seconds, and reduces playback deterministically to at most 300 frames while
 retaining endpoints.
 
@@ -97,7 +108,8 @@ enough for narrow screens, and retain framed Plotly toolbar buttons.
 
 ## Editing rules
 
-- Work in an isolated Git worktree on a `codex/` branch for new feature work.
+- Default to an isolated Git worktree on a `codex/` branch for new feature work.
+  An explicit chat instruction to use the current worktree overrides this default.
 - Treat every pre-existing dirty-tree change as user-owned. Never discard,
   overwrite, reset, or reformat unrelated changes.
 - Make minimal changes to legacy pages. Prefer shared helpers and wrappers for

@@ -16,9 +16,14 @@ def reduce_points(frame, limit):
         return frame
     return frame.iloc[np.linspace(0, len(frame) - 1, limit, dtype=int)]
 
-def transitions(frame, columns):
+def transition_mask(frame, columns):
+    """Null-to-null is unchanged; nullable comparisons must not swallow transitions."""
     previous = frame[columns].shift()
-    changed = ~(frame[columns].eq(previous) | (frame[columns].isna() & previous.isna())).all(axis=1)
+    changed = ~(frame[columns].eq(previous).fillna(False) | (frame[columns].isna() & previous.isna())).all(axis=1)
     if len(changed):
         changed.iloc[0] = True
-    return frame.loc[changed]
+    return changed
+
+
+def transitions(frame, columns):
+    return frame.loc[transition_mask(frame, columns)]

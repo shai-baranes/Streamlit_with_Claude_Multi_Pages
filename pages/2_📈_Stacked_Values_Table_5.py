@@ -3,6 +3,7 @@ import streamlit as st
 from framework.state import ui
 st = ui(__file__)
 import pandas as pd
+from framework.analysis import transition_mask
 
 from utils import inject_css, require_data, sidebar_filters
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
@@ -86,14 +87,14 @@ def build_view_cached(
         out = df.loc[:, result_cols].copy()
 
     elif view_mode == "Stacked by Left":
-        mask = df[anchor_col].ne(df[anchor_col].shift())
+        mask = transition_mask(df, [anchor_col])
         out = df.loc[mask, result_cols].copy()
 
     elif view_mode == "Stacked by Any":
         if not data_cols:
             out = df.loc[:, result_cols].copy()
         else:
-            changed_mask = df[data_cols].ne(df[data_cols].shift()).any(axis=1)
+            changed_mask = transition_mask(df, data_cols)
             out = df.loc[changed_mask, result_cols].copy()
 
     else:
@@ -342,7 +343,7 @@ def render_stacked_table() -> None:
 
     if selected_full_row is not None:
         st.markdown("**Selected source row**")
-        st.dataframe(selected_full_row, use_container_width=True)
+        st.dataframe(selected_full_row, width="stretch")
 
 
 render_stacked_table()

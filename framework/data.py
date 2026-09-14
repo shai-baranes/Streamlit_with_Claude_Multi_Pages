@@ -8,11 +8,21 @@ import shutil
 import threading
 import time
 import uuid
+from functools import wraps
 import pandas as pd
 import psutil
 from framework.config import ROOT, MAX_UPLOAD_MB, MAX_FRAME_MB, TTL_SECONDS, MAX_PROCESS_MB
 
-INGEST_LOCK = threading.Lock()
+INGEST_LOCK = threading.RLock()
+
+
+def storage_operation(function):
+    """Prevent expiry cleanup from removing a source during staging or parsing."""
+    @wraps(function)
+    def locked(*args, **kwargs):
+        with INGEST_LOCK:
+            return function(*args, **kwargs)
+    return locked
 
 @dataclass
 class Dataset:
@@ -24,6 +34,7 @@ class Dataset:
     version: str
 
 
+@storage_operation
 def session_directory(session_id):
     # Only server-generated UUIDs may become directory components.
     uuid.UUID(session_id)
@@ -33,14 +44,21 @@ def session_directory(session_id):
     return directory
 
 
+@storage_operation
 def cleanup(now=None):
     now = time.time() if now is None else now
     if ROOT.exists():
         for directory in ROOT.iterdir():
-            if directory.is_dir() and now - directory.stat().st_mtime > TTL_SECONDS:
+            # Only our UUID directories are eligible, never symlinks or unrelated files.
+            try:
+                uuid.UUID(directory.name)
+            except ValueError:
+                continue
+            if not directory.is_symlink() and directory.is_dir() and now - directory.stat().st_mtime > TTL_SECONDS:
                 shutil.rmtree(directory, ignore_errors=True)
 
 
+@storage_operation
 def save_source(stream, session_id):
     directory = session_directory(session_id)
     path = directory / f'{uuid.uuid4().hex}.csv'
@@ -61,6 +79,7 @@ def save_source(stream, session_id):
             for row in reader:
                 if row and len(row) != width:
                     raise ValueError(f'CSV row ending at line {reader.line_num} has {len(row)} fields; expected {width}.')
+        directory.touch()
         return path
     except Exception:
         path.unlink(missing_ok=True)
@@ -91,9 +110,18 @@ def normalize(frame):
     return frame
 
 
+def check_memory(memory):
+    """Use identical working-set checks for CSV chunks and restored projections."""
+    if memory > MAX_FRAME_MB * 1024**2:
+        raise ValueError(f'Selected data exceeds {MAX_FRAME_MB} MB. Select fewer columns.')
+    if psutil.Process().memory_info().rss + 2 * memory > MAX_PROCESS_MB * 1024**2:
+        raise ValueError('Server memory budget reached. Select fewer columns or retry later.')
+
+
+@storage_operation
 def load_projection(path, selected, parquet=False):
     available = inspect_header(path)
-    selected = [name for name in available if name in selected]
+    selected = list(dict.fromkeys(name for name in selected if name in available))
     if not selected:
         raise ValueError('Select at least one available column.')
     key = hashlib.sha256(json.dumps(selected).encode()).hexdigest()[:24]
@@ -104,22 +132,23 @@ def load_projection(path, selected, parquet=False):
             raise ValueError('Server memory budget is busy. Clear unused datasets or retry later.')
         if parquet and cache.exists():
             try:
-                return pd.read_parquet(cache)
+                frame = pd.read_parquet(cache)
             except Exception:
                 cache.unlink(missing_ok=True)
+            else:
+                # A policy rejection is not a corrupt cache: do not bypass it via CSV.
+                check_memory(int(frame.memory_usage(deep=True).sum()))
+                return frame
         chunks, memory = [], 0
         # Keep each parser chunk near 100,000 cells even for very wide selections.
         for chunk in pd.read_csv(path, usecols=selected,
                                  chunksize=max(1, min(10000, 100000 // len(selected)))):
             memory += int(chunk.memory_usage(deep=True).sum())
-            if psutil.Process().memory_info().rss + 2 * memory > MAX_PROCESS_MB * 1024**2:
-                raise ValueError('Server memory budget reached. Select fewer columns or retry later.')
-            if memory > MAX_FRAME_MB * 1024**2:
-                raise ValueError(f'Selected data exceeds {MAX_FRAME_MB} MB. Select fewer columns.')
-            chunks.append(chunk)
+            check_memory(memory)
+            # pandas usecols follows source order, so reorder each bounded chunk.
+            chunks.append(chunk.loc[:, selected])
         frame = normalize(pd.concat(chunks, ignore_index=True) if chunks else pd.DataFrame(columns=selected))
-        if int(frame.memory_usage(deep=True).sum()) > MAX_FRAME_MB * 1024**2:
-            raise ValueError('Normalized data exceeds the working-set limit. Select fewer columns.')
+        check_memory(int(frame.memory_usage(deep=True).sum()))
         if parquet:
             try:
                 frame.to_parquet(cache, index=False)
@@ -130,4 +159,5 @@ def load_projection(path, selected, parquet=False):
 
 def load_dataset(path, name, selected, parquet=False):
     frame = load_projection(path, selected, parquet)
-    return Dataset(Path(path), name, inspect_header(path), list(selected), frame, uuid.uuid4().hex)
+    available = inspect_header(path)
+    return Dataset(Path(path), name, available, [c for c in frame if c in available], frame, uuid.uuid4().hex)

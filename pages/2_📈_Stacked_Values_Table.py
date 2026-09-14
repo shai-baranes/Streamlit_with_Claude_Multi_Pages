@@ -11,8 +11,8 @@ st = ui(__file__)
 # import plotly.graph_objects as go
 # from plotly.subplots import make_subplots
 import pandas as pd
+from framework.analysis import transition_mask
 from utils import inject_css, require_data, sidebar_filters
-# import streamlit.components.v1 as _cv1
 
 st.set_page_config(page_title="Stacked Vlues", page_icon="📈", layout="wide")
 inject_css()
@@ -63,7 +63,7 @@ def build_stacked_view(df: pd.DataFrame, selected_columns: list[str]) -> pd.Data
 
     # rows are filtered by the 'mask'
     # shift() and ne() are often used together to compare each row with the row before it. shift() moves values up or down by a number of rows, while ne() means “not equal” and returns True wherever two values differ.
-    mask = df[anchor_col].ne(df[anchor_col].shift()) # .shift() default is "1"
+    mask = transition_mask(df, [anchor_col])
 
     result_cols = [time_col, anchor_col] + [c for c in extra_cols if c != anchor_col]
     result_df = df.loc[mask, result_cols].copy()
@@ -117,6 +117,6 @@ else:
             f"Visible rows: {len(stacked_df)} / {len(df_full)}"
         )
 
-        st.dataframe(stacked_df, use_container_width=True)
+        st.dataframe(stacked_df, width="stretch")
 
 

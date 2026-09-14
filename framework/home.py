@@ -5,8 +5,8 @@ import shutil
 import uuid
 import streamlit as st
 from framework.config import ALWAYS_LOAD_COLUMNS, MAX_UPLOAD_MB
-from framework.data import cleanup, save_source, inspect_header, load_dataset, session_directory
-from framework.state import reset_controls
+from framework.data import cleanup, inspect_header, session_directory, INGEST_LOCK
+from framework.session import stage_source, commit_projection
 from framework.cli import startup_csv_argument
 
 
@@ -44,10 +44,12 @@ def render():
         unsafe_allow_html=True,
     )
     st.title('Engineering Data Dashboard')
-    cleanup()
     if 'session_id' not in st.session_state:
         st.session_state.session_id = str(uuid.uuid4())
-    session_directory(st.session_state.session_id)
+    # Refresh this session before considering any expired directories.
+    with INGEST_LOCK:
+        session_directory(st.session_state.session_id)
+        cleanup()
     # Keep the optional sample action on the same row as the clear action.
     clear_col, _, sample_col = st.columns([1.2, 3, 1.4])
     clear_clicked = clear_col.button('Clear dataset', width='stretch')
@@ -56,7 +58,8 @@ def render():
         sample_clicked = sample_col.button('Load sample data', width='stretch')
 
     if clear_clicked:
-        shutil.rmtree(session_directory(st.session_state.session_id), ignore_errors=True)
+        with INGEST_LOCK:
+            shutil.rmtree(session_directory(st.session_state.session_id), ignore_errors=True)
         st.session_state.clear()
         # Clear must leave an empty session even when the server has a startup file.
         st.session_state['cli_initialized'] = True
@@ -69,8 +72,7 @@ def render():
                 cli_path = startup_csv_argument()
                 if cli_path is not None:
                     with cli_path.open('rb') as source:
-                        path = save_source(source, st.session_state.session_id)
-                    st.session_state.update(pending_source=path, pending_name=cli_path.name)
+                        stage_source(st.session_state, source, cli_path.name)
             except Exception as error:
                 st.session_state['cli_error'] = f'Startup CSV could not be loaded: {error}'
     if st.session_state.get('cli_error'):
@@ -86,20 +88,18 @@ def render():
     )
     if uploaded is not None and uploaded.file_id != st.session_state.get('upload_id'):
         try:
-            path = save_source(uploaded, st.session_state.session_id)
-            old_pending = st.session_state.get('pending_source')
-            active = st.session_state.get('dataset')
-            if old_pending and (active is None or old_pending != active.source):
-                Path(old_pending).unlink(missing_ok=True)
-            st.session_state.update(pending_source=path, pending_name=uploaded.name,
-                                    upload_id=uploaded.file_id)
+            stage_source(st.session_state, uploaded, uploaded.name)
+            st.session_state.upload_id = uploaded.file_id
         except Exception as error:
             st.error(f'Upload failed: {error}')
     if sample_clicked:
-        with Path('synthetic_sales_data.csv').open('rb') as source:
-            st.session_state.pending_source = save_source(source, st.session_state.session_id)
-        st.session_state.pending_name = 'synthetic_sales_data.csv'
-    if pending_name := st.session_state.get('pending_name'):
+        try:
+            with Path('synthetic_sales_data.csv').open('rb') as source:
+                stage_source(st.session_state, source, 'synthetic_sales_data.csv')
+        except Exception as error:
+            st.error(f'Sample could not be loaded: {error}')
+    active = st.session_state.get('dataset')
+    if pending_name := st.session_state.get('pending_name') or (active.name if active else None):
         # Plain text keeps unusual filenames from being interpreted as Markdown.
         with st.container(border=True):
             st.markdown('**📄 Selected CSV file**')
@@ -126,11 +126,7 @@ def render():
             apply = st.form_submit_button('Apply columns')
         if apply:
             try:
-                candidate = load_dataset(path, st.session_state.get('pending_name', active.name if active else 'CSV'), fixed + extra, parquet)
-                # Commit only after parsing succeeds; a failed import leaves the old view usable.
-                reset_controls()
-                st.session_state.update(dataset=candidate, df_full=candidate.frame)
-                active = candidate
+                active = commit_projection(st.session_state, fixed + extra, parquet)
             except Exception as error:
                 st.error(f'Import failed: {error}')
     if active:

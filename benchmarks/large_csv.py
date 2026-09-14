@@ -45,7 +45,7 @@ def main():
                 pd.DataFrame(block).to_csv(source, mode='a', header=start == 0, index=False)
             results['file_bytes'] = source.stat().st_size
             for extras in (20,100):
-                selected = ALWAYS_LOAD_COLUMNS + [f'field_{i}' for i in range(min(extras, max(0,args.columns-19)))]
+                selected = ALWAYS_LOAD_COLUMNS + [f'field_{i}' for i in range(min(extras, max(0,args.columns-len(ALWAYS_LOAD_COLUMNS))))]
                 for parquet in (False, True):
                     peak[0] = process.memory_info().rss
                     def workload(user):

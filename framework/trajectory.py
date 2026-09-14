@@ -40,7 +40,8 @@ def prepare_trajectory(frame: pd.DataFrame, max_frames: int = 300) -> PreparedTr
     for column in TRAJECTORY_COLUMNS:
         prepared[column] = pd.to_numeric(prepared[column], errors="coerce")
 
-    valid = prepared.notna().all(axis=1)
+    # Infinite time/altitude cannot be serialized or played as valid coordinates.
+    valid = np.isfinite(prepared).all(axis=1)
     valid &= prepared["longitude"].between(-180, 180)
     valid &= prepared["latitude"].between(-90, 90)
     prepared = prepared.loc[valid]
