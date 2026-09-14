@@ -1,5 +1,196 @@
 > For the server, session isolation, large CSV workflow, and tests, see [README_GPT.md](README_GPT.md).
 
+## Session administration (offline networks supported)
+
+Administration is optional. Normal dashboard users still connect to port 8501 without signing in.
+Enable the separate **server-only** console explicitly:
+
+```sh
+# macOS, from the project directory
+.venv/bin/python run_server.py --debug --sample --admin
+```
+
+```powershell
+# Windows, from the project directory
+.\.venv\Scripts\python.exe run_server.py --admin
+```
+
+Open **http://127.0.0.1:8502** on the server machine. `--admin-port 8502` selects the admin port;
+it must differ from `--port`. The admin listener always binds to IPv4 loopback, regardless of
+the dashboard address. No external identity provider or internet connection is required.
+
+| Function | Server UI | Local CLI | SSH from another computer |
+|---|---|---|---|
+| List connected and retained disconnected sessions | Table, refreshed every 5 seconds | `sessions list` | Same CLI command on server |
+| Inspect client, page, dataset, rows and columns | Table | `sessions inspect ID` | Same CLI command on server |
+| Compare estimated frame/upload/export RAM and private disk bytes | Table, MiB | `sessions list --json` or `inspect` | Same CLI command on server |
+| View process RAM/CPU and available host RAM | Summary | `sessions list --json` | Same CLI command on server |
+| Terminate one session | Confirm **Terminate** | `sessions terminate ID` | Same CLI command on server |
+
+### Open the server UI
+
+1. Run `python admin.py credential-path` using the server's virtual environment. It prints the
+   path of the credential file, not the token. Read that protected file locally and paste its
+   `token` into the console, then click **Connect**. The token stays only in page memory.
+2. Review the session ID and dataset before selecting **Terminate** and confirming. The selected
+   session loses its data and settings. Other sessions remain available.
+3. **Terminating** means native work is still finishing or file cleanup needs a retry. Completed
+   sessions disappear from the table. Refreshing a terminated browser starts a fresh session;
+   normal CLI startup-file staging still applies to that new session.
+4. Click **Disconnect** to clear the console's credential and table.
+
+Credentials rotate each server launch. Default locations are
+`~/.engineering-dashboard-admin/8502/credential.json` on macOS and
+`%LOCALAPPDATA%\.engineering-dashboard-admin\8502\credential.json` on Windows.
+The port directory has owner-only permissions on macOS; Windows ACLs grant the launching
+account and SYSTEM access. `admin.log` in the same directory rotates at 1 MiB with three backups.
+Do not copy tokens into Git, SSH command lines, or screenshots.
+
+### Local CLI examples
+
+Run from the project directory with its Python environment (replace `python` with
+`.venv/bin/python` on macOS or `.\.venv\Scripts\python.exe` on Windows):
+
+```sh
+python admin.py sessions list
+python admin.py sessions list --json
+python admin.py sessions inspect SESSION_ID
+python admin.py sessions terminate SESSION_ID
+# For scripts: skip the interactive confirmation.
+python admin.py sessions terminate SESSION_ID --yes
+# Nondefault port and a service-account credential location:
+python admin.py --port 8503 --credential-file "/protected/path/credential.json" sessions list
+```
+
+`inspect` and `--json` report bytes, Unix timestamps, and nullable metadata. Creation time is
+first observed by the monitor (within approximately five seconds); last activity records server
+page execution, not mouse movement or browser-only animation. Client addresses are observed TCP
+peers: reverse proxies can obscure the original computer, and multiple tabs have separate IDs.
+Loopback peers are labeled local; unresolvable addresses are unknown. No reverse-DNS lookup is performed.
+
+Exit codes: **0** success, **1** confirmation declined, **2** unavailable server/configuration or
+request failure, **3** rejected credential/origin, **4** unknown session, **5** termination pending.
+After code 5, poll the list: disappearance confirms cleanup completed. Repeating termination while
+pending is safe; targeting an already removed ID returns code 4.
+
+### Remote CLI through SSH
+
+Enable Windows **OpenSSH Server** or macOS **System Settings → General → Sharing → Remote Login**
+on the server. Use an authorized OS account and SSH keys. Permit SSH only from the intended LAN/VPN;
+the dashboard does not install SSH, change firewall rules, or grant account access automatically.
+SSH itself and these commands work without external network access after installation.
+
+From a terminal connecting to a Mac server (replace host, account, project path and session ID):
+
+```sh
+ssh admin@mac-server '"/Users/admin/Dashboard/.venv/bin/python" "/Users/admin/Dashboard/admin.py" sessions list'
+ssh admin@mac-server '"/Users/admin/Dashboard/.venv/bin/python" "/Users/admin/Dashboard/admin.py" sessions inspect SESSION_ID'
+ssh admin@mac-server '"/Users/admin/Dashboard/.venv/bin/python" "/Users/admin/Dashboard/admin.py" sessions terminate SESSION_ID --yes'
+```
+
+For a Windows server, an interactive SSH shell avoids nested PowerShell/SSH quoting problems:
+
+```text
+ssh admin@windows-server
+powershell -NoProfile
+```
+
+Then run these commands **inside the server's PowerShell shell**, including the call operator `&`:
+
+```powershell
+& 'C:\Engineering Dashboard\.venv\Scripts\python.exe' 'C:\Engineering Dashboard\admin.py' sessions list
+& 'C:\Engineering Dashboard\.venv\Scripts\python.exe' 'C:\Engineering Dashboard\admin.py' sessions inspect SESSION_ID
+& 'C:\Engineering Dashboard\.venv\Scripts\python.exe' 'C:\Engineering Dashboard\admin.py' sessions terminate SESSION_ID --yes
+```
+
+SSH commands execute on the server and contact its loopback listener. They do not expose port 8502
+to the LAN. Use the launching/service account, or have the OS administrator explicitly grant the
+designated admin account read access to the credential and directory, then pass `--credential-file`.
+An account's normal login alone does not grant another service account's credential access.
+
+
+## Additional self notes (for controlling the server cmds from remote machine):
+Assuming Windows OpenSSH Server is enabled on the server and the remote Windows machine has the built-in SSH client:
+From PowerShell on the remote Windows machine, create an SSH tunnel:
+
+```
+</> powershell
+ssh -N -L 8502:127.0.0.1:8502 SERVER_USER@SERVER_IP
+
+e.g.
+ssh -N -L 8502:127.0.0.1:8502 dashboardadmin@192.168.1.50
+```
+
+Keep that PowerShell window open. Then open this address on the remote machine:
+
+http://127.0.0.1:8502
+
+To retrieve the token remotely, open another PowerShell window:
+
+```
+</> powershell
+ssh SERVER_USER@SERVER_IP
+```
+
+After connecting to the Windows server:
+```
+
+</> poweshell
+.\.venv\Scripts\python.exe admin.py credential-path
+Get-Content "$env:LOCALAPPDATA\.engineering-dashboard-admin\8502\credential.json"
+```
+If Streamlit runs as a Windows service, the credential may belong to its service account instead of your SSH account. Use the exact path printed by a command executed under that service account, or configure:
+
+```
+</> poweshell
+.\.venv\Scripts\python.exe admin.py `
+  --credential-file "C:\Protected\Admin\credential.json" `
+  sessions list
+```
+
+For CLI administration without the browser tunnel:
+```
+</> poweshell
+ssh SERVER_USER@SERVER_IP
+cd "C:\Engineering Dashboard" # example for install/cloned path @ server side
+
+.\.venv\Scripts\python.exe admin.py sessions list
+.\.venv\Scripts\python.exe admin.py sessions inspect SESSION_ID
+.\.venv\Scripts\python.exe admin.py sessions terminate SESSION_ID
+```
+
+For non-interactive termination:
+```
+</> poweshell
+.\.venv\Scripts\python.exe admin.py sessions terminate SESSION_ID --yes
+```
+
+Port 22 must be allowed from the remote machine to the server. Port 8502 should remain closed to the LAN because SSH carries the admin connection securely.
+
+
+
+
+
+### Windows service and troubleshooting
+
+To enable administration in WinSW, add `--admin` (and optionally `--admin-port`) to the launcher
+arguments in `deploy/service.xml.template`, then stop/reinstall/start the service as described in
+[README_GPT.md](README_GPT.md#windows-service). Credentials live in the service account's profile,
+not necessarily the interactive user's profile. The service account needs a writable local profile.
+
+- **Connection refused:** check `--admin`, port, running service, and that the CLI executes on the server.
+- **Credential rejected:** reconnect with the newly generated token after a restart; verify the port/account.
+- **Permission denied:** use the service account or request narrowly scoped OS read access; do not make credentials world-readable.
+- **Runtime unavailable:** read `admin.log`. The adapter uses Streamlit internals; validate compatibility before upgrading Streamlit.
+- **RAM does not fall immediately:** retained object sizes are estimates, not process ownership accounting.
+  DataFrame aliases are counted once, but shared underlying arrays, native buffers, serialization,
+  temporary calculations and allocator overhead prevent exact accounting. Upload and export categories
+  represent known retained buffers; browser RAM is excluded. Python may reuse freed memory without
+  returning it to the OS. Native calculations cannot safely be force-killed inside the shared process.
+
+Administration does not impose automatic idle timeouts, block users, or kill the shared server.
+Windows service/SSH setup must be validated on the target Windows machine.
+
 # 📊 Streamlit + Pandas Tutorial — Global Sales Dashboard
 
 A professional, fully-commented Streamlit app covering the most important
@@ -212,7 +403,6 @@ this additional functionality is to allow to user to assess prior and post value
 - Launch streamlit session: % streamlit run 'Load CSV.py'
 > Once streamlit is running you can now launch the selenium app to capture the screens printout:
 -                           % python3 my_selenium.py
-
 
 
 

@@ -94,6 +94,9 @@ class PersistentUI:
 
 
 def ui(file):
+    # Metadata only: administration does not cache private page data.
+    from framework.admin_runtime import activity
+    activity(file)
     return PersistentUI(st, Path(file).stem)
 
 

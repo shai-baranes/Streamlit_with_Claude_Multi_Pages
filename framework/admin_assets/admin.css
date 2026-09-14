@@ -1,0 +1,5 @@
+body {font: 15px system-ui; color: #172436; background: #f7f9fc; margin: 2rem}
+main {max-width: 1600px; margin: auto} input,button {padding: .6rem; margin: .2rem}
+.table {overflow-x:auto} table {border-collapse:collapse; background:white; width:100%}
+td,th {padding:.7rem; border-bottom:1px solid #ddd; text-align:left; overflow-wrap:anywhere}
+#message {color:#a43122} button {cursor:pointer} th {white-space:nowrap}

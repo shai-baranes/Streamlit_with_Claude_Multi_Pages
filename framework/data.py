@@ -49,6 +49,9 @@ def save_source(stream, session_id):
         stream.seek(0)
         with path.open('wb') as output:
             while block := stream.read(1024 * 1024):
+                # Cooperatively stop ingestion when an administrator ends this session.
+                from framework.admin_runtime import check_cancelled
+                check_cancelled()
                 size += len(block)
                 if size > MAX_UPLOAD_MB * 1024**2:
                     raise ValueError(f'Upload exceeds {MAX_UPLOAD_MB} MB. Reduce the source size.')
@@ -111,6 +114,8 @@ def load_projection(path, selected, parquet=False):
         # Keep each parser chunk near 100,000 cells even for very wide selections.
         for chunk in pd.read_csv(path, usecols=selected,
                                  chunksize=max(1, min(10000, 100000 // len(selected)))):
+            from framework.admin_runtime import check_cancelled
+            check_cancelled()  # Native reads finish before cancellation can be observed.
             memory += int(chunk.memory_usage(deep=True).sum())
             if psutil.Process().memory_info().rss + 2 * memory > MAX_PROCESS_MB * 1024**2:
                 raise ValueError('Server memory budget reached. Select fewer columns or retry later.')

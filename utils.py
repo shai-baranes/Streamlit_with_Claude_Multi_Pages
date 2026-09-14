@@ -121,6 +121,10 @@ def require_data() -> pd.DataFrame:
     from session_state without re-uploading.
     ─────────────────────────────────────────────────────────────────────────
     """
+    # Cover legacy pages that bypass the persistent UI wrapper, including empty sessions.
+    from framework.admin_runtime import activity
+    import sys
+    activity(sys._getframe(1).f_code.co_filename)
     if st.session_state.get("df_full") is None:
         st.warning("⚠️ No data loaded yet. Please go to the **Home** page and upload a CSV file.")
         st.stop()

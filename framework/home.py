@@ -11,6 +11,9 @@ from framework.cli import startup_csv_argument
 
 
 def render():
+    # Register the home page as well as pages using the shared UI wrapper.
+    from framework.admin_runtime import activity, check_cancelled
+    activity('Load CSV')
     st.set_page_config(page_title='Engineering Data Dashboard', layout='wide')
     st.markdown(
         '''
@@ -127,6 +130,7 @@ def render():
         if apply:
             try:
                 candidate = load_dataset(path, st.session_state.get('pending_name', active.name if active else 'CSV'), fixed + extra, parquet)
+                check_cancelled()  # A terminated session must not publish a late parse result.
                 # Commit only after parsing succeeds; a failed import leaves the old view usable.
                 reset_controls()
                 st.session_state.update(dataset=candidate, df_full=candidate.frame)
