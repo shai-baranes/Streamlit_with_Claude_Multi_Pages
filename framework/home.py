@@ -8,7 +8,7 @@ from framework.config import ALWAYS_LOAD_COLUMNS, MAX_UPLOAD_MB
 from framework.data import (cleanup, save_source, inspect_header, inspect_numeric_range,
                             load_dataset, session_directory)
 from framework.state import reset_controls
-from framework.cli import startup_csv_argument
+from framework.cli import startup_csv_options
 
 
 def render():
@@ -70,11 +70,25 @@ def render():
         st.session_state['cli_initialized'] = True
         if not st.session_state.get('dataset') and not st.session_state.get('pending_source'):
             try:
-                cli_path = startup_csv_argument()
+                cli_options = startup_csv_options()
+                cli_path = cli_options.path
                 if cli_path is not None:
                     with cli_path.open('rb') as source:
                         path = save_source(source, st.session_state.session_id)
                     st.session_state.update(pending_source=path, pending_name=cli_path.name)
+                    if cli_options.load_all:
+                        # This application argument is reserved for an explicit local
+                        # Streamlit CLI launch and never enabled by the server wrapper.
+                        available = inspect_header(path)
+                        candidate = load_dataset(path, cli_path.name, available)
+                        check_cancelled()
+                        reset_controls()
+                        st.session_state.update(
+                            dataset=candidate,
+                            df_full=candidate.frame,
+                            pending_source=None,
+                            cli_load_all_active=True,
+                        )
             except Exception as error:
                 st.session_state['cli_error'] = f'Startup CSV could not be loaded: {error}'
     if st.session_state.get('cli_error'):
@@ -96,13 +110,14 @@ def render():
             if old_pending and (active is None or old_pending != active.source):
                 Path(old_pending).unlink(missing_ok=True)
             st.session_state.update(pending_source=path, pending_name=uploaded.name,
-                                    upload_id=uploaded.file_id)
+                                    upload_id=uploaded.file_id, cli_load_all_active=False)
         except Exception as error:
             st.error(f'Upload failed: {error}')
     if sample_clicked:
         with Path('synthetic_sales_data.csv').open('rb') as source:
             st.session_state.pending_source = save_source(source, st.session_state.session_id)
         st.session_state.pending_name = 'synthetic_sales_data.csv'
+        st.session_state.cli_load_all_active = False
     if pending_name := st.session_state.get('pending_name'):
         # Plain text keeps unusual filenames from being interpreted as Markdown.
         with st.container(border=True):
@@ -114,7 +129,12 @@ def render():
         st.warning('The retained source expired. Upload the CSV again to change columns.')
         st.session_state.pop('pending_source', None)
         path = None
-    if path:
+    # An automatically loaded CLI source needs no projection form; later uploads do.
+    show_projection = path and not (
+        st.session_state.get('cli_load_all_active')
+        and active is not None and active.source == path
+    )
+    if show_projection:
         available = inspect_header(path)
         fixed = [c for c in ALWAYS_LOAD_COLUMNS if c in available]
         st.caption('Always loaded: ' + (', '.join(fixed) or '(none present)'))

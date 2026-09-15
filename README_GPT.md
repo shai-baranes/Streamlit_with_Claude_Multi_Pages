@@ -119,6 +119,9 @@ Mac/Linux examples:
 
 # Direct Streamlit launch: -- separates Streamlit options from the app argument.
 .venv/bin/streamlit run "Load CSV.py" -- "/absolute/path/to/my data.csv"
+
+# Local CLI mode: load every row and column without the projection form.
+.venv/bin/streamlit run "Load CSV.py" -- "/absolute/path/to/my data.csv" --load-all
 ```
 
 Windows PowerShell examples:
@@ -129,6 +132,9 @@ Windows PowerShell examples:
 
 # Quote Windows paths containing spaces.
 .\.venv\Scripts\python.exe run_server.py "C:\Engineering Data\my data.csv"
+
+# Local CLI mode: application arguments follow Streamlit's -- separator.
+.\.venv\Scripts\streamlit.exe run "Load CSV.py" -- "C:\Engineering Data\my data.csv" --load-all
 ```
 
 The CLI path has the following behavior:
@@ -138,6 +144,7 @@ The CLI path has the following behavior:
 - The file goes through the same header, structure, upload-size, projection, and memory validation used for browser uploads.
 - Each new browser session receives its own private copy. The original CSV is never changed or deleted by the dashboard.
 - The fixed fields are selected when present. The user may select additional fields and then press **Apply columns**, just as with a dragged file.
+- With the direct Streamlit command and application argument `--load-all`, the local browser session immediately loads every column and every row from the supplied CSV. The `Seconds` interval and projection form are omitted for that source. The flag must appear after Streamlit's `--` separator and requires the CSV path. It is intentionally not a `run_server.py` option, does not enable Parquet, and does not change later browser uploads or explicit sample loading.
 - A later browser upload replaces the staged file only in that browser session.
 - **Clear dataset** leaves the current session empty instead of immediately staging the CLI file again. A new browser session still receives the startup file.
 - An invalid CLI path stops `run_server.py` with a command-line error. A CSV that fails content validation produces an in-app warning while leaving browser upload available.

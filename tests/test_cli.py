@@ -3,7 +3,7 @@ import sys
 import pytest
 from streamlit.testing.v1 import AppTest
 from framework import data
-from framework.cli import validate_csv_path
+from framework.cli import startup_csv_options, validate_csv_path
 import run_server
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +20,21 @@ def test_launcher_preserves_default_and_forwards_path(tmp_path, monkeypatch):
     monkeypatch.setattr(sys, 'argv', ['run_server.py', '--debug', str(source)])
     assert run_server.main() == 0
     assert commands[-1][-2:] == ['--', str(source.resolve())]
+
+
+def test_load_all_is_an_application_argument_only(tmp_path, monkeypatch):
+    source = tmp_path / 'all.csv'
+    source.write_text('a,b\n1,2\n')
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', str(source), '--load-all'])
+    options = startup_csv_options()
+    assert options.path == source.resolve() and options.load_all
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', '--load-all'])
+    with pytest.raises(ValueError, match='requires a CSV path'):
+        startup_csv_options()
+    # The server wrapper must not interpret or expose this local application flag.
+    monkeypatch.setattr(sys, 'argv', ['run_server.py', '--load-all'])
+    with pytest.raises(SystemExit):
+        run_server.main()
 
 
 @pytest.mark.parametrize('entry', ['Load CSV.py'])
@@ -69,6 +84,19 @@ def test_sample_seconds_interval_is_applied_with_columns(tmp_path, monkeypatch):
     app.button[-1].click().run()
     assert app.session_state['df_full'].Seconds.min() == 10.0
     assert app.session_state['df_full'].Seconds.max() == 20.0
+
+
+def test_cli_load_all_bypasses_seconds_interval_and_apply(tmp_path, monkeypatch):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    source = tmp_path / 'startup.csv'
+    source.write_text('Seconds,extra,value\n0,a,1\n1,b,2\n2,c,3\n')
+    monkeypatch.setattr(sys, 'argv', [str(ROOT / 'Load CSV.py'), str(source), '--load-all'])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert not app.exception
+    assert list(app.session_state['df_full']) == ['Seconds', 'extra', 'value']
+    assert app.session_state['df_full'].Seconds.tolist() == [0, 1, 2]
+    assert not app.slider
+    assert all(button.label != 'Apply columns' for button in app.button)
 
 
 def test_rejects_missing_or_unsupported_path(tmp_path):
