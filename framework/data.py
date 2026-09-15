@@ -22,6 +22,16 @@ class Dataset:
     selected: list[str]
     frame: pd.DataFrame
     version: str
+    seconds_range: tuple[float, float] | None = None
+
+
+@dataclass(frozen=True)
+class NumericRange:
+    minimum: float
+    maximum: float
+    step: float
+    valid_rows: int
+    invalid_rows: int
 
 
 def session_directory(session_id):
@@ -80,6 +90,35 @@ def inspect_header(path):
     return header
 
 
+def inspect_numeric_range(path, column='Seconds'):
+    """Scan one field only so the upload form can offer a bounded range slider."""
+    minimum = maximum = previous = min_step = None
+    valid_rows = invalid_rows = 0
+    for chunk in pd.read_csv(path, usecols=[column], chunksize=100000):
+        values = pd.to_numeric(chunk[column], errors='coerce')
+        valid = values.dropna()
+        valid_rows += len(valid)
+        invalid_rows += int(values.isna().sum())
+        if valid.empty:
+            continue
+        minimum = float(valid.min()) if minimum is None else min(minimum, float(valid.min()))
+        maximum = float(valid.max()) if maximum is None else max(maximum, float(valid.max()))
+        # Derive a useful step from observed values without retaining the full column.
+        unique = valid.drop_duplicates().sort_values()
+        differences = unique.diff().dropna()
+        if previous is not None:
+            differences = pd.concat([differences, pd.Series([abs(float(unique.iloc[0]) - previous)])])
+        positive = differences[differences > 0]
+        if not positive.empty:
+            candidate = float(positive.min())
+            min_step = candidate if min_step is None else min(min_step, candidate)
+        previous = float(unique.iloc[-1])
+    if minimum is None:
+        raise ValueError(f'{column} has no numeric values available for interval selection.')
+    span = maximum - minimum
+    return NumericRange(minimum, maximum, min_step or max(span / 100, 0.01), valid_rows, invalid_rows)
+
+
 def normalize(frame):
     # Preserve the legacy sales transformation only for the sales schema.
     if {'Date', 'Revenue', 'Region', 'Category'}.issubset(frame.columns):
@@ -94,12 +133,13 @@ def normalize(frame):
     return frame
 
 
-def load_projection(path, selected, parquet=False):
+def load_projection(path, selected, parquet=False, seconds_range=None):
     available = inspect_header(path)
     selected = [name for name in available if name in selected]
     if not selected:
         raise ValueError('Select at least one available column.')
-    key = hashlib.sha256(json.dumps(selected).encode()).hexdigest()[:24]
+    # Include the requested interval so Parquet projections never cross time selections.
+    key = hashlib.sha256(json.dumps([selected, seconds_range]).encode()).hexdigest()[:24]
     cache = Path(path).with_suffix(f'.{key}.parquet')
     with INGEST_LOCK:
         # Admission includes native upload buffers and other sessions already in this process.
@@ -112,10 +152,14 @@ def load_projection(path, selected, parquet=False):
                 cache.unlink(missing_ok=True)
         chunks, memory = [], 0
         # Keep each parser chunk near 100,000 cells even for very wide selections.
-        for chunk in pd.read_csv(path, usecols=selected,
-                                 chunksize=max(1, min(10000, 100000 // len(selected)))):
+        read_columns = selected if seconds_range is None or 'Seconds' in selected else selected + ['Seconds']
+        for chunk in pd.read_csv(path, usecols=read_columns,
+                                 chunksize=max(1, min(10000, 100000 // len(read_columns)))):
             from framework.admin_runtime import check_cancelled
             check_cancelled()  # Native reads finish before cancellation can be observed.
+            if seconds_range is not None:
+                seconds = pd.to_numeric(chunk['Seconds'], errors='coerce')
+                chunk = chunk.loc[seconds.between(*seconds_range, inclusive='both'), selected]
             memory += int(chunk.memory_usage(deep=True).sum())
             if psutil.Process().memory_info().rss + 2 * memory > MAX_PROCESS_MB * 1024**2:
                 raise ValueError('Server memory budget reached. Select fewer columns or retry later.')
@@ -133,6 +177,7 @@ def load_projection(path, selected, parquet=False):
         return frame
 
 
-def load_dataset(path, name, selected, parquet=False):
-    frame = load_projection(path, selected, parquet)
-    return Dataset(Path(path), name, inspect_header(path), list(selected), frame, uuid.uuid4().hex)
+def load_dataset(path, name, selected, parquet=False, seconds_range=None):
+    frame = load_projection(path, selected, parquet, seconds_range)
+    return Dataset(Path(path), name, inspect_header(path), list(selected), frame,
+                   uuid.uuid4().hex, seconds_range)

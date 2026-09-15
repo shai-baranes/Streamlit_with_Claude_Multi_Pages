@@ -26,6 +26,27 @@ def test_projection_and_add_columns():
     assert list(data.load_projection(path, ['time', 'speed']).columns) == ['time', 'speed']
     assert data.load_projection(path, ['speed']).speed.tolist() == [3, 4]
 
+def test_seconds_profile_and_inclusive_projection():
+    path = source('Seconds,value\n0,a\n0.5,b\nbad,c\n1.5,d\n2,e\n')
+    profile = data.inspect_numeric_range(path)
+    assert (profile.minimum, profile.maximum, profile.step) == (0, 2, 0.5)
+    assert (profile.valid_rows, profile.invalid_rows) == (4, 1)
+    frame = data.load_projection(path, ['Seconds', 'value'], seconds_range=(0.5, 1.5))
+    # Filtering coerces a temporary comparison series while preserving source dtype.
+    assert frame.Seconds.tolist() == ['0.5', '1.5']
+    assert frame.value.tolist() == ['b', 'd']
+
+def test_seconds_filter_works_when_seconds_is_not_selected():
+    path = source('Seconds,value\n0,a\n1,b\n2,c\n')
+    frame = data.load_projection(path, ['value'], seconds_range=(1, 2))
+    assert list(frame) == ['value']
+    assert frame.value.tolist() == ['b', 'c']
+
+def test_seconds_profile_requires_a_numeric_value():
+    path = source('Seconds,value\ninvalid,a\n,b\n')
+    with pytest.raises(ValueError, match='no numeric values'):
+        data.inspect_numeric_range(path)
+
 def test_isolation_and_cleanup():
     a = source('time,x\n0,1\n')
     b = source('time,x\n0,2\n')

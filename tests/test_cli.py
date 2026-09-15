@@ -57,6 +57,20 @@ def test_invalid_cli_keeps_upload_available(tmp_path, monkeypatch):
     assert 'pending_source' not in app.session_state
 
 
+def test_sample_seconds_interval_is_applied_with_columns(tmp_path, monkeypatch):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    monkeypatch.setenv('DASHBOARD_SAMPLE', '1')
+    monkeypatch.setattr(sys, 'argv', [str(ROOT / 'Load CSV.py')])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    app.button[1].click().run()
+    assert app.slider[0].label == 'Seconds interval'
+    assert app.slider[0].value == (0.0, 749.5)
+    app.slider[0].set_range(10.0, 20.0)
+    app.button[-1].click().run()
+    assert app.session_state['df_full'].Seconds.min() == 10.0
+    assert app.session_state['df_full'].Seconds.max() == 20.0
+
+
 def test_rejects_missing_or_unsupported_path(tmp_path):
     with pytest.raises(ValueError, match='not found'):
         validate_csv_path(tmp_path / 'absent.csv')

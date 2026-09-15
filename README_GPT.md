@@ -7,7 +7,8 @@ Run one Streamlit server and open it from multiple computers over a trusted LAN 
 | Capability | Behavior |
 |---|---|
 | Upload | Drag a CSV from Finder/File Explorer onto the highlighted drop zone, or use its Upload button; the selected filename is shown before column selection |
-| Fixed fields | All 19 fields from `synthetic_sales_data.csv`, when present |
+| Fixed fields | All fixed fields from `synthetic_sales_data.csv`, when present |
+| Time projection | Inclusive `Seconds` interval selected before **Apply columns**, when numeric Seconds data is available |
 | Extra fields | Searchable multiselect, committed with **Apply columns** |
 | Data retention | Private source file and selected pandas projection per session |
 | Navigation | Data, shared sales filters, and page-specific selections survive page switches |

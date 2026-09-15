@@ -5,7 +5,8 @@ import shutil
 import uuid
 import streamlit as st
 from framework.config import ALWAYS_LOAD_COLUMNS, MAX_UPLOAD_MB
-from framework.data import cleanup, save_source, inspect_header, load_dataset, session_directory
+from framework.data import (cleanup, save_source, inspect_header, inspect_numeric_range,
+                            load_dataset, session_directory)
 from framework.state import reset_controls
 from framework.cli import startup_csv_argument
 
@@ -122,14 +123,48 @@ def render():
             st.caption('Fixed fields absent from this file: ' + ', '.join(missing))
         options = [c for c in available if c not in fixed]
         defaults = [c for c in (active.selected if active and active.source == path else []) if c in options]
+        seconds_profile = None
+        seconds_error = None
+        if 'Seconds' in available:
+            profile_key = f'home:seconds-profile:{path.stem}'
+            if profile_key not in st.session_state:
+                try:
+                    st.session_state[profile_key] = inspect_numeric_range(path)
+                except Exception as error:
+                    st.session_state[profile_key] = error
+            profile_result = st.session_state[profile_key]
+            if isinstance(profile_result, Exception):
+                seconds_error = str(profile_result)
+            else:
+                seconds_profile = profile_result
         with st.form(f'columns:{path.stem}'):
+            seconds_range = None
+            if seconds_profile and seconds_profile.minimum < seconds_profile.maximum:
+                applied_range = (active.seconds_range if active and active.source == path
+                                 and active.seconds_range else
+                                 (seconds_profile.minimum, seconds_profile.maximum))
+                # Form batching applies the interval and column projection in one parse.
+                seconds_range = st.slider(
+                    'Seconds interval', min_value=seconds_profile.minimum,
+                    max_value=seconds_profile.maximum, value=applied_range,
+                    step=seconds_profile.step, key=f'home:seconds:{path.stem}',
+                    help='Only rows whose numeric Seconds value is inside this inclusive interval are loaded.',
+                )
+                if seconds_profile.invalid_rows:
+                    st.caption(f'{seconds_profile.invalid_rows:,} rows with nonnumeric or missing Seconds values will be excluded.')
+            elif seconds_profile:
+                seconds_range = (seconds_profile.minimum, seconds_profile.maximum)
+                st.caption(f'Only one numeric Seconds value is available: {seconds_profile.minimum:g}.')
+            elif seconds_error:
+                st.warning(seconds_error)
             extra = st.multiselect('Additional columns', options, default=defaults, key=f'home:extra:{path.stem}')
             parquet = st.checkbox('Use experimental Parquet cache', value=False,
                                   help='Off by default until benchmarks demonstrate a benefit.')
             apply = st.form_submit_button('Apply columns')
         if apply:
             try:
-                candidate = load_dataset(path, st.session_state.get('pending_name', active.name if active else 'CSV'), fixed + extra, parquet)
+                candidate = load_dataset(path, st.session_state.get('pending_name', active.name if active else 'CSV'),
+                                         fixed + extra, parquet, seconds_range)
                 check_cancelled()  # A terminated session must not publish a late parse result.
                 # Commit only after parsing succeeds; a failed import leaves the old view usable.
                 reset_controls()
