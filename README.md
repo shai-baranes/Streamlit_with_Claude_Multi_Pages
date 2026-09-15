@@ -109,7 +109,22 @@ designated admin account read access to the credential and directory, then pass 
 An account's normal login alone does not grant another service account's credential access.
 
 
-## Additional self notes (for controlling the server cmds from remote machine):
+### Additional self notes (for controlling the server cmds from remote machine):
+_to access admin dashboard locally & remotely (from another machine) via SSH tunnel for the token retrieval:_
+
+first , run the server with the `--admin` option (and optionally `--admin-port` if you want to change the default port 8502):
+
+```
+</> powershell
+.\.venv\Scripts\python.exe run_server.py --admin --admin-port 8502
+``` 
+
+
+and you can invoke the admin UI in your browser on the server machine by:  
+http://127.0.0.1:8502   (and not http://localhost:8502 for this case, maybe to prevent easy control from remote machine)
+_follow on-screen instructions to connect to the admin dashboard using the token retrieved from the server machine itself_
+
+
 Assuming Windows OpenSSH Server is enabled on the server and the remote Windows machine has the built-in SSH client:
 From PowerShell on the remote Windows machine, create an SSH tunnel:
 
@@ -120,6 +135,8 @@ ssh -N -L 8502:127.0.0.1:8502 SERVER_USER@SERVER_IP
 e.g.
 ssh -N -L 8502:127.0.0.1:8502 dashboardadmin@192.168.1.50
 ```
+you might be prompted to accept the server's fingerprint and enter the password (you password to unlock the account) for the server user account. After successful authentication, the SSH tunnel will be established, forwarding local port 8502 to the server's port 8502.
+
 
 Keep that PowerShell window open. Then open this address on the remote machine:
 
@@ -130,6 +147,9 @@ To retrieve the token remotely, open another PowerShell window:
 ```
 </> powershell
 ssh SERVER_USER@SERVER_IP
+
+(again provide user password if prompted)
+
 ```
 
 After connecting to the Windows server:
@@ -137,8 +157,14 @@ After connecting to the Windows server:
 
 </> poweshell
 .\.venv\Scripts\python.exe admin.py credential-path
-Get-Content "$env:LOCALAPPDATA\.engineering-dashboard-admin\8502\credential.json"
+_(Get-Content "$env:LOCALAPPDATA\.engineering-dashboard-admin\8502\credential.json")_
 ```
+
+Alternatively you might fund it under this path by:
+```
+cat ~/.engineering-dashboard-admin/8502/credential.json
+```
+
 If Streamlit runs as a Windows service, the credential may belong to its service account instead of your SSH account. Use the exact path printed by a command executed under that service account, or configure:
 
 ```
@@ -152,7 +178,7 @@ For CLI administration without the browser tunnel:
 ```
 </> poweshell
 ssh SERVER_USER@SERVER_IP
-cd "C:\Engineering Dashboard" # example for install/cloned path @ server side
+cd "C:\[project path]"
 
 .\.venv\Scripts\python.exe admin.py sessions list
 .\.venv\Scripts\python.exe admin.py sessions inspect SESSION_ID
@@ -318,7 +344,7 @@ pivot = pd.pivot_table(
 ```python
 @st.cache_data
 def load_data():
-    return pd.read_csv("data.csv")   # only runs once
+    return pd.read_csv("data.csv")  # only runs once
 ```
 
 ### Download Button
