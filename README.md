@@ -29,22 +29,20 @@ the dashboard address. No external identity provider or internet connection is r
 
 ### Open the server UI
 
-1. Run `python admin.py credential-path` using the server's virtual environment. It prints the
-   path of the credential file, not the token. Read that protected file locally and paste its
-   `token` into the console, then click **Connect**. The token stays only in page memory.
+1. Open `http://127.0.0.1:8502` locally on the server, or open the same address after creating
+   the SSH tunnel described below. Click **Connect**; no application token or password is required.
+   SSH and the server operating-system account provide authentication for remote access.
 2. Review the session ID and dataset before selecting **Terminate** and confirming. The selected
    session loses its data and settings. Other sessions remain available.
 3. **Terminating** means native work is still finishing or file cleanup needs a retry. Completed
    sessions disappear from the table. Refreshing a terminated browser starts a fresh session;
    normal CLI startup-file staging still applies to that new session.
-4. Click **Disconnect** to clear the console's credential and table.
+4. Click **Disconnect** to clear the table and stop browser refreshes. A prominent green or red
+   panel shows whether this browser console is connected or disconnected and displays its URL.
 
-Credentials rotate each server launch. Default locations are
-`~/.engineering-dashboard-admin/8502/credential.json` on macOS and
-`%LOCALAPPDATA%\.engineering-dashboard-admin\8502\credential.json` on Windows.
-The port directory has owner-only permissions on macOS; Windows ACLs grant the launching
-account and SYSTEM access. `admin.log` in the same directory rotates at 1 MiB with three backups.
-Do not copy tokens into Git, SSH command lines, or screenshots.
+`admin.log` remains under `~/.engineering-dashboard-admin/8502/` on macOS or
+`%LOCALAPPDATA%\.engineering-dashboard-admin\8502\` on Windows and rotates at 1 MiB with three
+backups. Port 8502 remains loopback-only and should not be exposed through a firewall or port forward.
 
 ### Local CLI examples
 
@@ -58,8 +56,8 @@ python admin.py sessions inspect SESSION_ID
 python admin.py sessions terminate SESSION_ID
 # For scripts: skip the interactive confirmation.
 python admin.py sessions terminate SESSION_ID --yes
-# Nondefault port and a service-account credential location:
-python admin.py --port 8503 --credential-file "/protected/path/credential.json" sessions list
+# Nondefault administration port:
+python admin.py --port 8503 sessions list
 ```
 
 `inspect` and `--json` report bytes, Unix timestamps, and nullable metadata. Creation time is
@@ -69,7 +67,7 @@ peers: reverse proxies can obscure the original computer, and multiple tabs have
 Loopback peers are labeled local; unresolvable addresses are unknown. No reverse-DNS lookup is performed.
 
 Exit codes: **0** success, **1** confirmation declined, **2** unavailable server/configuration or
-request failure, **3** rejected credential/origin, **4** unknown session, **5** termination pending.
+request failure, **3** rejected loopback host/origin, **4** unknown session, **5** termination pending.
 After code 5, poll the list: disappearance confirms cleanup completed. Repeating termination while
 pending is safe; targeting an already removed ID returns code 4.
 
@@ -104,13 +102,11 @@ Then run these commands **inside the server's PowerShell shell**, including the 
 ```
 
 SSH commands execute on the server and contact its loopback listener. They do not expose port 8502
-to the LAN. Use the launching/service account, or have the OS administrator explicitly grant the
-designated admin account read access to the credential and directory, then pass `--credential-file`.
-An account's normal login alone does not grant another service account's credential access.
+to the LAN. Any OS account permitted to log into the server and execute the project CLI can use it.
 
 
 ### Additional self notes (for controlling the server cmds from remote machine):
-_to access admin dashboard locally & remotely (from another machine) via SSH tunnel for the token retrieval:_
+_To access the admin dashboard locally or remotely through an SSH tunnel:_
 
 first , run the server with the `--admin` option (and optionally `--admin-port` if you want to change the default port 8502):
 
@@ -122,7 +118,7 @@ first , run the server with the `--admin` option (and optionally `--admin-port` 
 
 and you can invoke the admin UI in your browser on the server machine by:  
 http://127.0.0.1:8502   (and not http://localhost:8502 for this case, maybe to prevent easy control from remote machine)
-_follow on-screen instructions to connect to the admin dashboard using the token retrieved from the server machine itself_
+Select **Connect**. No separate administration token is required.
 
 
 Assuming Windows OpenSSH Server is enabled on the server and the remote Windows machine has the built-in SSH client:
@@ -142,7 +138,7 @@ Keep that PowerShell window open. Then open this address on the remote machine:
 
 http://127.0.0.1:8502
 
-To retrieve the token remotely, open another PowerShell window:
+To use the CLI remotely, open another PowerShell window:
 
 ```
 </> powershell
@@ -152,27 +148,8 @@ ssh SERVER_USER@SERVER_IP
 
 ```
 
-After connecting to the Windows server:
-```
-
-</> poweshell
-.\.venv\Scripts\python.exe admin.py credential-path
-_(Get-Content "$env:LOCALAPPDATA\.engineering-dashboard-admin\8502\credential.json")_
-```
-
-Alternatively you might fund it under this path by:
-```
-cat ~/.engineering-dashboard-admin/8502/credential.json
-```
-
-If Streamlit runs as a Windows service, the credential may belong to its service account instead of your SSH account. Use the exact path printed by a command executed under that service account, or configure:
-
-```
-</> poweshell
-.\.venv\Scripts\python.exe admin.py `
-  --credential-file "C:\Protected\Admin\credential.json" `
-  sessions list
-```
+After connecting to the Windows server, change to the project directory and run the `admin.py`
+commands below. The CLI contacts `127.0.0.1:8502` directly and does not need a credential file.
 
 For CLI administration without the browser tunnel:
 ```
@@ -205,8 +182,7 @@ arguments in `deploy/service.xml.template`, then stop/reinstall/start the servic
 not necessarily the interactive user's profile. The service account needs a writable local profile.
 
 - **Connection refused:** check `--admin`, port, running service, and that the CLI executes on the server.
-- **Credential rejected:** reconnect with the newly generated token after a restart; verify the port/account.
-- **Permission denied:** use the service account or request narrowly scoped OS read access; do not make credentials world-readable.
+- **Connect fails:** verify the SSH tunnel is still open, the URL is exactly `http://127.0.0.1:8502`, and the server was launched with `--admin`.
 - **Runtime unavailable:** read `admin.log`. The adapter uses Streamlit internals; validate compatibility before upgrading Streamlit.
 - **RAM does not fall immediately:** retained object sizes are estimates, not process ownership accounting.
   DataFrame aliases are counted once, but shared underlying arrays, native buffers, serialization,
@@ -429,7 +405,6 @@ this additional functionality is to allow to user to assess prior and post value
 - Launch streamlit session: % streamlit run 'Load CSV.py'
 > Once streamlit is running you can now launch the selenium app to capture the screens printout:
 -                           % python3 my_selenium.py
-
 
 
 

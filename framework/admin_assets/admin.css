@@ -1,5 +1,13 @@
 body {font: 15px system-ui; color: #172436; background: #f7f9fc; margin: 2rem}
-main {max-width: 1600px; margin: auto} input,button {padding: .6rem; margin: .2rem}
+main {max-width: 1600px; margin: auto} button {padding: .6rem 1rem; margin: .2rem}
+.connection {display:flex; gap:.75rem; align-items:center; border:2px solid; border-radius:.6rem; padding:1rem; margin:1rem 0; font-size:1.05rem}
+.connection strong {font-size:1.35rem}.connection span {flex:1}
+.connection.connected {color:#14532d; background:#dcfce7; border-color:#22c55e}
+.connection.disconnected {color:#7f1d1d; background:#fee2e2; border-color:#ef4444}
+.connection-actions {margin-bottom:1rem}.connection-actions button:disabled {cursor:not-allowed; opacity:.5}
 .table {overflow-x:auto} table {border-collapse:collapse; background:white; width:100%}
 td,th {padding:.7rem; border-bottom:1px solid #ddd; text-align:left; overflow-wrap:anywhere}
+.session-connected td:nth-child(3) {color:#166534; font-weight:700}
+.session-disconnected td:nth-child(3) {color:#991b1b; font-weight:700}
+.session-terminating td:nth-child(3) {color:#92400e; font-weight:700}
 #message {color:#a43122} button {cursor:pointer} th {white-space:nowrap}

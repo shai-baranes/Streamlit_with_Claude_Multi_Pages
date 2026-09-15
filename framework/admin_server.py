@@ -1,18 +1,17 @@
-"""Loopback-only administration transport, authenticated by an OS-protected token."""
+"""Loopback-only administration transport reached locally or through an SSH tunnel."""
 import json
 import logging
 from logging.handlers import RotatingFileHandler
 import os
 from pathlib import Path
-import secrets
 import subprocess
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 
-def credential_path(port):
+def admin_state_directory(port):
     base = Path(os.environ.get('LOCALAPPDATA', str(Path.home())))
-    return base / '.engineering-dashboard-admin' / str(port) / 'credential.json'
+    return base / '.engineering-dashboard-admin' / str(port)
 
 
 def protect(path, directory=False):
@@ -27,12 +26,11 @@ def protect(path, directory=False):
 
 class AdminServer:
     def __init__(self, port):
-        self.token = secrets.token_urlsafe(32)
         self.adapter = None
         self.error = 'Streamlit runtime is starting.'
-        self.path = credential_path(port)
-        self.path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-        protect(self.path.parent, True)
+        self.directory = admin_state_directory(port)
+        self.directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+        protect(self.directory, True)
         owner = self
         class Handler(BaseHTTPRequestHandler):
             def setup(self):
@@ -40,7 +38,7 @@ class AdminServer:
                 self.connection.settimeout(20)
 
             def log_message(self, *_):
-                pass  # Never log bearer tokens or request bodies.
+                pass  # Keep session IDs and request bodies out of the HTTP access log.
 
             def send(self, code, data, content_type='application/json'):
                 payload = data.encode() if isinstance(data, str) else json.dumps(data).encode()
@@ -54,6 +52,7 @@ class AdminServer:
                 self.wfile.write(payload)
 
             def authorized(self):
+                # SSH or local OS access is the administration boundary; HTTP remains loopback-only.
                 expected = f'127.0.0.1:{owner.http.server_port}'
                 if self.headers.get('Host') != expected:
                     self.send(403, {'error': 'Use the loopback address 127.0.0.1.'})
@@ -61,9 +60,6 @@ class AdminServer:
                 origin = self.headers.get('Origin')
                 if origin and origin != f'http://{expected}':
                     self.send(403, {'error': 'Invalid origin.'})
-                    return False
-                if not secrets.compare_digest(self.headers.get('Authorization', ''), 'Bearer ' + owner.token):
-                    self.send(401, {'error': 'Administration credential required.'})
                     return False
                 if owner.adapter is None:
                     self.send(503, {'error': owner.error})
@@ -110,10 +106,8 @@ class AdminServer:
                     self.send(503, {'error': 'Termination unavailable; inspect status before retrying.'})
         self.http = ThreadingHTTPServer(('127.0.0.1', port), Handler)
         self.http.daemon_threads = True
-        self.path.write_text(json.dumps({'url': f'http://127.0.0.1:{self.http.server_port}', 'token': self.token}))
-        protect(self.path)
         self.audit = logging.getLogger(f'dashboard.admin.{port}')
-        handler = RotatingFileHandler(self.path.parent / 'admin.log', maxBytes=1024*1024, backupCount=3)
+        handler = RotatingFileHandler(self.directory / 'admin.log', maxBytes=1024*1024, backupCount=3)
         handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
         self.audit.addHandler(handler)
         self.audit.setLevel(logging.INFO)
@@ -123,7 +117,6 @@ class AdminServer:
     def close(self):
         self.http.shutdown()
         self.http.server_close()
-        self.path.unlink(missing_ok=True)
         for handler in list(self.audit.handlers):
             handler.close()
             self.audit.removeHandler(handler)

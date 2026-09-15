@@ -1,19 +1,15 @@
 """Local CLI; use SSH to execute this on the dashboard server."""
 import argparse
 import json
-from pathlib import Path
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, build_opener, ProxyHandler
-from framework.admin_server import credential_path
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8502)
-    parser.add_argument('--credential-file', type=Path)
     commands = parser.add_subparsers(dest='command', required=True)
-    commands.add_parser('credential-path')
     sessions = commands.add_parser('sessions').add_subparsers(dest='action', required=True)
     listing = sessions.add_parser('list')
     listing.add_argument('--json', action='store_true')
@@ -22,13 +18,8 @@ def main(argv=None):
     terminate.add_argument('id')
     terminate.add_argument('--yes', action='store_true')
     args = parser.parse_args(argv)
-    path = args.credential_file or credential_path(args.port)
-    if args.command == 'credential-path':
-        print(path)
-        return 0
     try:
-        credential = json.loads(path.read_text())
-        # Credentials cannot redirect the CLI to transmit a token off-machine.
+        # The CLI deliberately contacts loopback directly and bypasses environment proxies.
         url = f'http://127.0.0.1:{args.port}'
         if args.action == 'terminate':
             if not args.yes and input(f'Terminate {args.id} and discard its data? [y/N] ').lower() != 'y':
@@ -37,8 +28,7 @@ def main(argv=None):
             endpoint = '/terminate'
         else:
             body, endpoint = None, '/sessions'
-        request = Request(url + endpoint, data=body, headers={'Authorization': 'Bearer ' + credential['token'], 'Content-Type':'application/json'})
-        # Administration credentials must never travel through an environment HTTP proxy.
+        request = Request(url + endpoint, data=body, headers={'Content-Type':'application/json'})
         with build_opener(ProxyHandler({})).open(request, timeout=20) as response:
             data = json.load(response)
         if args.action == 'inspect':
@@ -54,7 +44,7 @@ def main(argv=None):
         return 5 if data.get('state') == 'terminating' else 0
     except HTTPError as error:
         print(f'Administration request failed: HTTP {error.code}', file=sys.stderr)
-        return {401:3, 403:3, 404:4}.get(error.code, 2)
+        return {403:3, 404:4}.get(error.code, 2)
     except (OSError, ValueError, KeyError, URLError) as error:
         print(f'Administration unavailable: {error}', file=sys.stderr)
         return 2

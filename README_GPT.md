@@ -23,12 +23,13 @@ Run one Streamlit server and open it from multiple computers over a trusted LAN 
 ## Session administration
 
 See [README.md: Session administration](README.md#session-administration-offline-networks-supported)
-for UI instructions, local CLI and SSH examples, credential locations, exit codes and troubleshooting.
+for UI instructions, local CLI and SSH examples, exit codes and troubleshooting.
 
 Launch with `python run_server.py --admin`; optional `--admin-port` defaults to 8502 and must
 differ from the dashboard port. The administration listener runs in the same process and binds
-only to `127.0.0.1`. It requires a per-launch credential protected by local OS permissions.
-Without `--admin`, there is no administration listener or monitoring loop. Normal user access is unchanged.
+only to `127.0.0.1`. The console needs no application token: local OS access or an authenticated
+SSH tunnel is the access boundary. Without `--admin`, there is no administration listener or
+monitoring loop. Normal user access is unchanged.
 
 Monitoring samples every five seconds, listing connected and retained disconnected sessions,
 observed client addresses, page/dataset metadata, estimated frame/upload/export sizes, private disk
@@ -44,12 +45,12 @@ Other sessions remain independent. Expired runtime sessions also have their trac
 
 The adapter deliberately contains Streamlit internal API dependencies. Test administration after
 dependency upgrades. The bounded audit log records session IDs and termination outcomes, not data
-contents or credentials. Add `--admin` to the WinSW launcher arguments to opt in for service hosting.
+contents. Add `--admin` to the WinSW launcher arguments to opt in for service hosting.
 
 Administration validation on macOS (2026-09-14, Streamlit 1.63.0): the 54-test suite passed.
 Live browser sessions loaded separate sample datasets; terminating one through the CLI removed
 its resources while the other retained 1,500 rows and 22 columns. Refresh created an empty session.
-The authenticated console displayed session/resource metadata, and the listener was verified on
+The loopback console displayed session/resource metadata, and the listener was verified on
 IPv4 loopback. Windows service, Windows ACL execution and remote SSH execution still require
 validation on the target host.
 

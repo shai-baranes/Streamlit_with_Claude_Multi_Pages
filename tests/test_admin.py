@@ -2,6 +2,7 @@
 import asyncio
 import json
 import logging
+from pathlib import Path
 import threading
 import uuid
 from types import SimpleNamespace as NS
@@ -111,29 +112,37 @@ def test_cancelled_ingestion_stops(monkeypatch):
         ar.check_cancelled()
 
 
-def test_transport_auth_origin_and_cli(tmp_path, monkeypatch, capsys):
-    monkeypatch.setattr(transport, 'credential_path', lambda _: tmp_path / 'private' / 'credential.json')
+def test_transport_loopback_origin_and_cli(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(transport, 'admin_state_directory', lambda _: tmp_path / 'private')
     server = transport.AdminServer(0)
     port = server.http.server_port
     server.adapter = NS(call=lambda method, *args: {'sessions':[]} if method == 'snapshot' else {'state':'terminating'})
     url = f'http://127.0.0.1:{port}'
     try:
         assert server.http.server_address[0] == '127.0.0.1'
-        for headers, status in [({},401), ({'Authorization':'Bearer '+server.token, 'Origin':'http://evil.test'},403)]:
+        with urlopen(Request(url+'/sessions')) as response:
+            assert json.load(response) == {'sessions': []}
+        for headers, status in [({'Origin':'http://evil.test'},403), ({'Host':'localhost'},403)]:
             with pytest.raises(HTTPError) as error:
                 urlopen(Request(url+'/sessions', headers=headers))
             assert error.value.code == status
-        args = ['--port',str(port),'--credential-file',str(server.path)]
+        args = ['--port',str(port)]
         assert admin.main(args+['sessions','list','--json']) == 0
         assert 'sessions' in capsys.readouterr().out
         assert admin.main(args+['sessions','inspect','missing']) == 4
         assert admin.main(args+['sessions','terminate','test','--yes']) == 5
-        credential = json.loads(server.path.read_text())
-        credential['token'] = 'invalid'
-        server.path.write_text(json.dumps(credential))
-        assert admin.main(args+['sessions','list']) == 3
     finally:
         server.close()
+
+
+def test_admin_console_has_tokenless_prominent_connection_states():
+    assets = Path(transport.__file__).parent / 'admin_assets'
+    html = (assets / 'admin.html').read_text()
+    script = (assets / 'admin.js').read_text()
+    styles = (assets / 'admin.css').read_text()
+    assert 'Administration token' not in html and 'id="connection-state"' in html
+    assert 'Authorization' not in script and 'window.location.origin' in script
+    assert '.connection.connected' in styles and '.connection.disconnected' in styles
 
 
 def test_launcher_admin_opt_in(monkeypatch):

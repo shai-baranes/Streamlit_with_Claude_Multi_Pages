@@ -2,9 +2,11 @@
 <html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>Session administration</title><link rel="stylesheet" href="/admin.css">
 <main><h1>Session administration</h1>
-<p>Server-only console. Paste the token from the protected credential file shown by <code>python admin.py credential-path</code>.</p>
-<label>Administration token <input id="token" type="password" autocomplete="off"></label>
-<button id="connect">Connect</button><button id="logout">Disconnect</button>
+<div id="connection-panel" class="connection disconnected" role="status" aria-live="polite">
+<strong id="connection-state">Disconnected</strong>
+<span id="connection-detail">Select Connect to open the administration session through this server-local or SSH-tunneled address.</span>
+</div>
+<div class="connection-actions"><button id="connect">Connect</button><button id="logout" disabled>Disconnect</button></div>
 <p id="message" role="status"></p><p id="server"></p>
 <section id="confirmation" hidden aria-label="Confirm termination"><p id="confirmation-text"></p><button id="confirm">Confirm termination</button><button id="cancel">Cancel</button></section>
 <p>Memory values are estimates of known retained data, not total per-session RAM. Shared overhead, temporary calculations and browser memory are excluded. Refreshes every five seconds. Times use this browser’s timezone.</p>
