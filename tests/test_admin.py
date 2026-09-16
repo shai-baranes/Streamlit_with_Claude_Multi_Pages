@@ -37,12 +37,19 @@ def adapter(tmp_path, monkeypatch):
     runtime = NS(_session_mgr=manager, _get_async_objs=lambda: NS(eventloop=asyncio.new_event_loop()),
                  close_session=close, uploaded_file_mgr=NS(_lock=threading.Lock(), file_storage={}))
     result = ar.RuntimeAdapter(runtime, logging.getLogger('test'))
-    def add(connected=True):
+    def add(connected=True, initialized=True):
         sid, private = str(uuid.uuid4()), str(uuid.uuid4())
         directory = tmp_path / private
         directory.mkdir()
         (directory / 'source.csv').write_text('a\n1\n')
-        state = State(session_id=private, df_full=pd.DataFrame({'a':[1,2]}))
+        state = State()
+        if initialized:
+            state.update(
+                session_id=private,
+                df_full=pd.DataFrame({'a':[1,2]}),
+                _admin_page='Load CSV',
+                _admin_activity=1.0,
+            )
         session = NS(id=sid, session_state=state, _scriptrunner=None)
         sessions[sid] = NS(session=session, client=NS(client_context=NS(remote_ip='127.0.0.1'), close=lambda **kw: None))
         if connected:
@@ -100,6 +107,14 @@ def test_expired_session_files_removed(adapter):
     runtime.runtime.close_session(sid)
     assert runtime.snapshot()['sessions'] == []
     assert not directory.exists()
+
+
+def test_uninitialized_phantom_session_is_hidden_and_not_terminable(adapter):
+    runtime, add = adapter
+    sid, _, _ = add(initialized=False)
+    assert runtime.snapshot()['sessions'] == []
+    with pytest.raises(KeyError):
+        runtime.terminate(sid)
 
 
 def test_cancelled_ingestion_stops(monkeypatch):

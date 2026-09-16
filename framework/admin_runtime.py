@@ -72,10 +72,16 @@ class RuntimeAdapter:
         for info in self.manager.list_sessions():
             session = info.session
             sid = session.id
-            present.add(sid)
-            record = self.records.setdefault(sid, dict(id=sid, created_at=now, last_activity=None))
             # Never retain the state or frames in the monitoring registry.
             values = session.session_state.filtered_state
+            if not values.get('_admin_page') and not values.get('_admin_activity'):
+                # Streamlit can retain an internal/initializing connection with no app execution.
+                # It owns no dashboard state and otherwise reappears as a phantom “— / —” row.
+                self.records.pop(sid, None)
+                self.fingerprints.pop(sid, None)
+                continue
+            present.add(sid)
+            record = self.records.setdefault(sid, dict(id=sid, created_at=now, last_activity=None))
             dataset = values.get('dataset')
             # Deep string-column accounting can be expensive: reuse it while retained
             # objects and page activity are unchanged, without keeping object references.
@@ -140,6 +146,9 @@ class RuntimeAdapter:
         if client is not None and not (hasattr(client, 'close') or hasattr(client, '_websocket')):
             raise RuntimeError('Unsupported Streamlit client transport; termination unavailable.')
         self.snapshot()
+        if sid not in self.records:
+            # Uninitialized internal connections are deliberately outside admin control.
+            raise KeyError(sid)
         session = info.session
         # The flag prevents an ingestion result from being committed after cancellation.
         session.session_state['_admin_terminating'] = True

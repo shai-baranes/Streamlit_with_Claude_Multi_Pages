@@ -7,13 +7,14 @@ Run one Streamlit server and open it from multiple computers over a trusted LAN 
 | Capability | Behavior |
 |---|---|
 | Upload | Drag a CSV from Finder/File Explorer onto the highlighted drop zone, or use its Upload button; the selected filename is shown before column selection |
-| Fixed fields | All fixed fields from `synthetic_sales_data.csv`, when present |
+| Fixed fields | All 25 fixed fields from `synthetic_sales_data.csv`, when present |
 | Time projection | Inclusive `Seconds` interval selected before **Apply columns**, when numeric Seconds data is available |
 | Extra fields | Searchable multiselect, committed with **Apply columns** |
 | Data retention | Private source file and selected pandas projection per session |
 | Navigation | Data, shared sales filters, and page-specific selections survive page switches |
 | Engineering views | Categorical/numeric filters, grouping, aggregation, full/stacked tables, numeric/datetime trends |
 | Sales pages | Existing calculations; missing-schema guidance instead of missing-column errors |
+| 3D flight simulation | Two adjacent, differently colored aircraft routes share the sample `Seconds` timeline; an adjustable distance limit adds a pink warning sleeve between separated aircraft; generic files may provide only the primary route |
 | Rendering | Generic table defaults to 200 rows; previews capped at 1,000; engineering charts capped at 10,000 points per trace |
 | Export | Explicit preparation; engineering export includes all filtered rows of the selected display fields |
 | Parquet | Experimental session-private cache; opt-in, automatic conversion disabled |
@@ -36,6 +37,8 @@ observed client addresses, page/dataset metadata, estimated frame/upload/export 
 size, process RSS/CPU, and available host RAM. First-observed timestamps approximate creation;
 last activity means page execution, not browser-only animation. Estimates are not hard per-session
 RAM or CPU accounting. The metadata registry retains no extra DataFrames.
+Uninitialized Streamlit connections with no application page activity are omitted from monitoring;
+they own no dashboard dataset and would otherwise appear as recurring phantom `— / —` rows.
 
 Termination requests cancellation on the runtime event loop, closes the selected session and
 transport, prevents late ingestion commits, and releases session state and private files after its

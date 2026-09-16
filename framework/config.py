@@ -28,6 +28,10 @@ ALWAYS_LOAD_COLUMNS = [
     "longitude",
     "latitude",
     "Altitude",
+    # Load the optional second aircraft with the primary trajectory projection.
+    "longitude_2",
+    "latitude_2",
+    "altitude_2",
 ]
 ROOT = Path(
     os.environ.get(

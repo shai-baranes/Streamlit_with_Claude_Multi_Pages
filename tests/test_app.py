@@ -161,6 +161,8 @@ def test_3d_flight_page_controls_and_missing_field_guidance():
     # Controls, metrics, and Plotly share a component so playback cannot remount the chart.
     simulation = app.session_state['trajectory_3d_component']['simulation']
     assert simulation['fps'] == 5
+    assert simulation['maxDistance'] == 2000
+    assert simulation['showRoute1'] and simulation['showRoute2']
     assert simulation['camera']['eye']['x'] == 1.55
 
     missing = AppTest.from_file(str(page))

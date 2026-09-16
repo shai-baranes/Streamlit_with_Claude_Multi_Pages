@@ -2,6 +2,7 @@
 
 from framework.state import ui
 from framework.trajectory import (
+    SECONDARY_TRAJECTORY_COLUMNS,
     missing_trajectory_columns,
     prepare_trajectory,
     trajectory_identity,
@@ -32,6 +33,16 @@ if missing:
 
 prepared = prepare_trajectory(df_full, MAX_ANIMATION_FRAMES)
 trajectory = prepared.frame
+secondary_present = [
+    column for column in SECONDARY_TRAJECTORY_COLUMNS if column in df_full.columns
+]
+if secondary_present and len(secondary_present) != len(SECONDARY_TRAJECTORY_COLUMNS):
+    # Partial optional coordinates cannot describe a second 3D aircraft safely.
+    st.info(
+        "The secondary route needs all three optional fields: "
+        + ", ".join(SECONDARY_TRAJECTORY_COLUMNS)
+        + ". Showing the primary route only."
+    )
 if prepared.invalid_rows:
     st.warning(
         f"Ignored {prepared.invalid_rows:,} rows with missing, nonnumeric, or out-of-range coordinates."
