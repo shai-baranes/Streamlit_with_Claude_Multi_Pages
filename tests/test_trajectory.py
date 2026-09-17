@@ -14,6 +14,7 @@ from framework.trajectory import (
     trajectory_separation_meters,
     trajectory_identity,
 )
+import framework.terrain as terrain_module
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -123,7 +124,29 @@ def test_warning_sleeve_uses_mesh_geometry():
     assert '<select id="trajectory-fps">' in chart
     assert "current.Seconds.toFixed(1)} Seconds" in chart
     assert 'id="trajectory-route-1"' in chart and 'id="trajectory-route-2"' in chart
+    assert 'id="trajectory-terrain"' in chart
     assert 'id="trajectory-play"' in chart and 'id="trajectory-pause"' in chart
     assert 'value="10">10 fps</option>' in chart
-    assert "!route1Toggle.checked && !route2Toggle.checked" in chart
+    assert "data.terrain && terrainToggle.checked" in chart
+    assert "player.state.showTerrain" in chart
+    assert 'data-attr="dragmode"' in chart
+    assert ".modebar-btn.active" in chart
+    assert '"scene.dragmode": false' in chart
     assert "scheduleStateSave" in chart
+    assert 'name: "Demonstration terrain"' in chart
+
+
+def test_demonstration_terrain_is_bounded_and_has_elevation_changes(monkeypatch):
+    frame = load_projection(ROOT / "synthetic_sales_data.csv", ALWAYS_LOAD_COLUMNS)
+    # Exercise terrain geometry independently from the operator-controlled feature flag.
+    monkeypatch.setattr(terrain_module, "ENABLE_DEMO_TERRAIN", True)
+    terrain = terrain_module.demonstration_terrain(frame, grid_size=12)
+    assert terrain is not None
+    longitude = np.asarray(terrain["longitude"])
+    latitude = np.asarray(terrain["latitude"])
+    altitude = np.asarray(terrain["altitude_km"])
+    assert longitude.shape == latitude.shape == altitude.shape == (12, 12)
+    assert longitude.min() < frame["longitude"].min()
+    assert longitude.max() > frame["longitude_2"].max()
+    assert altitude.min() >= 0
+    assert altitude.max() - altitude.min() > 0.25

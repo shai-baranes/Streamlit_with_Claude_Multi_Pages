@@ -34,6 +34,9 @@ def main():
                '--logger.level=' + ('debug' if args.debug else 'info')]
     if args.admin:
         command[2] = 'framework.admin_bootstrap'
+        # The administration listener is loopback-only, so print the exact local or
+        # SSH-tunnel destination instead of presenting it as a remote network URL.
+        print(f'Server URL: http://127.0.0.1:{args.admin_port}', flush=True)
     # Resolve before changing cwd and forward after Streamlit's argument separator.
     if csv_path is not None:
         command.extend(['--', str(csv_path)])

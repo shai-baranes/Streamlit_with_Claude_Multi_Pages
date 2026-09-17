@@ -14,7 +14,7 @@ Run one Streamlit server and open it from multiple computers over a trusted LAN 
 | Navigation | Data, shared sales filters, and page-specific selections survive page switches |
 | Engineering views | Categorical/numeric filters, grouping, aggregation, full/stacked tables, numeric/datetime trends |
 | Sales pages | Existing calculations; missing-schema guidance instead of missing-column errors |
-| 3D flight simulation | Two adjacent, differently colored aircraft routes share the sample `Seconds` timeline; an adjustable distance limit adds a pink warning sleeve between separated aircraft; generic files may provide only the primary route |
+| 3D flight simulation | Two adjacent, differently colored aircraft routes share the sample `Seconds` timeline; an adjustable distance limit adds a pink warning sleeve; an optional deterministic terrain surface demonstrates elevation changes |
 | Rendering | Generic table defaults to 200 rows; previews capped at 1,000; engineering charts capped at 10,000 points per trace |
 | Export | Explicit preparation; engineering export includes all filtered rows of the selected display fields |
 | Parquet | Experimental session-private cache; opt-in, automatic conversion disabled |
@@ -30,7 +30,8 @@ Launch with `python run_server.py --admin`; optional `--admin-port` defaults to 
 differ from the dashboard port. The administration listener runs in the same process and binds
 only to `127.0.0.1`. The console needs no application token: local OS access or an authenticated
 SSH tunnel is the access boundary. Without `--admin`, there is no administration listener or
-monitoring loop. Normal user access is unchanged.
+monitoring loop. Normal user access is unchanged. Admin-enabled launches print the loopback
+**Server URL** in the terminal using the configured administration port.
 
 Monitoring samples every five seconds, listing connected and retained disconnected sessions,
 observed client addresses, page/dataset metadata, estimated frame/upload/export sizes, private disk

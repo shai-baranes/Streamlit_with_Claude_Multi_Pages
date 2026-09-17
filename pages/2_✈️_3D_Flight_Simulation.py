@@ -1,6 +1,7 @@
 """Interactive 3D playback for the active session's trajectory fields."""
 
 from framework.state import ui
+from framework.terrain import demonstration_terrain
 from framework.trajectory import (
     SECONDARY_TRAJECTORY_COLUMNS,
     missing_trajectory_columns,
@@ -69,4 +70,6 @@ if st.session_state.get("trajectory_identity") != identity:
 
 # Playback and Plotly interaction share one browser component, so frame updates cannot
 # remount the chart or replace a camera chosen with any of Plotly's manipulation modes.
-render_trajectory_player(trajectory)
+# Terrain generation and its on/off switch live in framework/terrain.py so this page
+# and the player stay unchanged when the demonstration layer is disabled.
+render_trajectory_player(trajectory, terrain=demonstration_terrain(trajectory))

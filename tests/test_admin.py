@@ -160,7 +160,7 @@ def test_admin_console_has_tokenless_prominent_connection_states():
     assert '.connection.connected' in styles and '.connection.disconnected' in styles
 
 
-def test_launcher_admin_opt_in(monkeypatch):
+def test_launcher_admin_opt_in(monkeypatch, capsys):
     import run_server
     import sys
     calls = []
@@ -169,3 +169,4 @@ def test_launcher_admin_opt_in(monkeypatch):
     run_server.main()
     assert calls[0][0][2] == 'framework.admin_bootstrap'
     assert calls[0][1]['env']['DASHBOARD_ADMIN'] == '1'
+    assert 'Server URL: http://127.0.0.1:8532' in capsys.readouterr().out

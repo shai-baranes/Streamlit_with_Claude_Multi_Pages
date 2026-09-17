@@ -48,6 +48,9 @@ export default async function(component) {
   player.state.maxDistance = Math.max(Number(player.state.maxDistance) || 2000, 100)
   player.state.showRoute1 = player.state.showRoute1 !== false
   player.state.showRoute2 = player.state.showRoute2 !== false
+  // Terrain participates in the same visibility guard only when the backend supplied it.
+  player.state.showTerrain = data.terrain ? player.state.showTerrain !== false : false
+  player.state.dragMode = player.state.dragMode === false ? false : (player.state.dragMode || "orbit")
   player.state.camera = player.state.camera || data.defaultCamera
 
   const status = parentElement.querySelector("#trajectory-status")
@@ -65,6 +68,8 @@ export default async function(component) {
   const route1Toggle = parentElement.querySelector("#trajectory-route-1")
   const route2Toggle = parentElement.querySelector("#trajectory-route-2")
   const route2Label = parentElement.querySelector("#trajectory-route-2-label")
+  const terrainToggle = parentElement.querySelector("#trajectory-terrain")
+  const terrainLabel = parentElement.querySelector("#trajectory-terrain-label")
   const playButton = parentElement.querySelector("#trajectory-play")
   const pauseButton = parentElement.querySelector("#trajectory-pause")
   const resetButton = parentElement.querySelector("#trajectory-reset")
@@ -111,6 +116,8 @@ export default async function(component) {
     route1Toggle.checked = player.state.showRoute1
     route2Toggle.checked = player.state.showRoute2
     route2Label.hidden = !hasSecondary
+    terrainToggle.checked = player.state.showTerrain
+    terrainLabel.hidden = !data.terrain
     // Separate controls keep both actions immediately available during Plotly updates.
     playButton.classList.toggle("is-active", playing)
     pauseButton.classList.toggle("is-active", paused)
@@ -122,6 +129,17 @@ export default async function(component) {
     const achieved = rows.slice(0, player.state.index + 1)
     const current = rows[player.state.index]
     const traces = []
+    if (data.terrain && player.state.showTerrain) {
+      // The optional surface is generated in framework/terrain.py and remains static during playback.
+      traces.push({
+        type: "surface", name: "Demonstration terrain", showlegend: true,
+        x: data.terrain.longitude, y: data.terrain.latitude, z: data.terrain.altitude_km,
+        surfacecolor: data.terrain.altitude_km,
+        colorscale: [[0, "#315f3b"], [0.35, "#6f8f4d"], [0.68, "#a58b5b"], [1, "#d6c6a2"]],
+        opacity: 0.78, showscale: false,
+        hovertemplate: "Longitude=%{x:.5f}<br>Latitude=%{y:.5f}<br>Terrain elevation=%{z:.3f} km<extra></extra>",
+      })
+    }
     if (player.state.showRoute1) {
       traces.push({
         type: "scatter3d", mode: "lines", name: "Complete route 1",
@@ -244,6 +262,7 @@ export default async function(component) {
         zaxis: {title: {text: "Altitude (km)"}},
         aspectmode: "manual", aspectratio: {x: 1.25, y: 1.5, z: 0.9},
         camera: player.state.camera,
+        dragmode: player.state.dragMode,
       },
     }
     player.rendering = true
@@ -265,6 +284,24 @@ export default async function(component) {
       modebar.querySelectorAll(".modebar-group").forEach(group => {
         Object.assign(group.style, {
           display: "flex", flexFlow: "column nowrap", float: "none", width: "auto",
+        })
+      })
+      modebar.querySelectorAll('.modebar-btn[data-attr="dragmode"]').forEach(button => {
+        if (button.dataset.trajectoryToggleReady) return
+        button.dataset.trajectoryToggleReady = "true"
+        // Remember the pre-click state because Plotly handles the click before this listener.
+        button.addEventListener("pointerdown", () => {
+          button.dataset.trajectoryWasActive = String(button.classList.contains("active"))
+        }, {capture: true})
+        button.addEventListener("click", () => {
+          if (button.dataset.trajectoryWasActive !== "true") return
+          player.state.dragMode = false
+          window.Plotly.relayout(plot, {"scene.dragmode": false})
+          modebar.querySelectorAll('.modebar-btn[data-attr="dragmode"]').forEach(modeButton => {
+            modeButton.classList.remove("active")
+            modeButton.setAttribute("aria-pressed", "false")
+          })
+          scheduleStateSave()
         })
       })
     }
@@ -306,7 +343,7 @@ export default async function(component) {
     resetButton.classList.remove("reset-feedback")
     void resetButton.offsetWidth
     resetButton.classList.add("reset-feedback")
-    player.state = {index: 0, status: "stopped", fps: 5, maxDistance: 2000, showRoute1: true, showRoute2: true, camera: data.defaultCamera}
+    player.state = {index: 0, status: "stopped", fps: 5, maxDistance: 2000, showRoute1: true, showRoute2: true, showTerrain: Boolean(data.terrain), dragMode: "orbit", camera: data.defaultCamera}
     stopTimer(); renderMetrics(); await renderPlot()
     clearTimeout(player.resetTimer)
     // Delay the rerun-producing state save until the temporary gray feedback is visible.
@@ -331,7 +368,7 @@ export default async function(component) {
     saveState()
   }
   route1Toggle.onchange = async () => {
-    if (!route1Toggle.checked && !route2Toggle.checked) {
+    if (!route1Toggle.checked && !(hasSecondary && route2Toggle.checked) && !(data.terrain && terrainToggle.checked)) {
       route1Toggle.checked = true
       return
     }
@@ -339,11 +376,19 @@ export default async function(component) {
     renderMetrics(); await renderPlot(); saveState()
   }
   route2Toggle.onchange = async () => {
-    if (!route2Toggle.checked && !route1Toggle.checked) {
+    if (!route2Toggle.checked && !route1Toggle.checked && !(data.terrain && terrainToggle.checked)) {
       route2Toggle.checked = true
       return
     }
     player.state.showRoute2 = route2Toggle.checked
+    renderMetrics(); await renderPlot(); saveState()
+  }
+  terrainToggle.onchange = async () => {
+    if (!terrainToggle.checked && !route1Toggle.checked && !(hasSecondary && route2Toggle.checked)) {
+      terrainToggle.checked = true
+      return
+    }
+    player.state.showTerrain = terrainToggle.checked
     renderMetrics(); await renderPlot(); saveState()
   }
   progress.onpointerdown = () => {
@@ -366,8 +411,12 @@ export default async function(component) {
   if (!player.listening) {
     player.listening = true
     plot.on("plotly_relayout", event => {
-      if (player.rendering || !event?.["scene.camera"]) return
-      player.state.camera = event["scene.camera"]
+      if (player.rendering) return
+      if (Object.prototype.hasOwnProperty.call(event || {}, "scene.dragmode")) {
+        player.state.dragMode = event["scene.dragmode"]
+      }
+      if (!event?.["scene.camera"] && !Object.prototype.hasOwnProperty.call(event || {}, "scene.dragmode")) return
+      if (event?.["scene.camera"]) player.state.camera = event["scene.camera"]
       clearTimeout(player.cameraTimer)
       // Persist the final camera from every Plotly rotation mode after dragging ends.
       player.cameraTimer = setTimeout(saveState, 100)
@@ -396,6 +445,7 @@ _TRAJECTORY_COMPONENT = st.components.v2.component(
   <div class="trajectory-route-toggles" aria-label="Displayed flight curves">
     <label><input id="trajectory-route-1" type="checkbox" checked /><span class="route-color route-one"></span>Flight object 1 curve</label>
     <label id="trajectory-route-2-label"><input id="trajectory-route-2" type="checkbox" checked /><span class="route-color route-two"></span>Flight object 2 curve</label>
+    <label id="trajectory-terrain-label" hidden><input id="trajectory-terrain" type="checkbox" checked /><span class="route-color terrain-object"></span>Terrain object</label>
   </div>
   <div class="trajectory-fps-control">
     <label for="trajectory-fps">Playback rate (frames per second)</label>
@@ -429,7 +479,7 @@ _TRAJECTORY_COMPONENT = st.components.v2.component(
 .trajectory-route-toggles { position: absolute; top: 3.4rem; right: .5rem; z-index: 101; display: grid; gap: .35rem; padding: .5rem .65rem; border: 1px solid var(--st-border-color); border-radius: .5rem; background: var(--st-background-color, #fff); color: var(--st-text-color); font-size: .74rem; }
 .trajectory-route-toggles label { display: flex; align-items: center; gap: .35rem; cursor: pointer; }
 .trajectory-route-toggles input { margin: 0; accent-color: var(--st-primary-color); }
-.route-color { width: .65rem; height: .65rem; border-radius: 50%; }.route-one { background: #2563eb; }.route-two { background: #7c3aed; }
+.route-color { width: .65rem; height: .65rem; border-radius: 50%; }.route-one { background: #2563eb; }.route-two { background: #7c3aed; }.terrain-object { border-radius: .15rem; background: #6f8f4d; }
 .trajectory-fps-control select { width: 100%; padding: .3rem; border: 1px solid var(--st-border-color); border-radius: .35rem; background: var(--st-secondary-background-color); color: var(--st-text-color); cursor: pointer; }
 .trajectory-controls button { width: 5.4rem; min-width: 5.4rem; max-width: 5.4rem; height: 2.4rem; min-height: 2.4rem; padding: .25rem .2rem; border: 1px solid var(--st-border-color); border-radius: .5rem; background: var(--st-secondary-background-color); color: var(--st-text-color); cursor: pointer; font: inherit; font-size: .78rem; line-height: 1.1; white-space: nowrap; transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, color .15s ease; }
 #trajectory-play.is-active { border-color: #15803d; background: #16a34a; color: white; box-shadow: 0 0 0 3px rgba(22, 163, 74, .24); }
@@ -451,6 +501,9 @@ _TRAJECTORY_COMPONENT = st.components.v2.component(
 #trajectory-plot .modebar-group { display: flex !important; flex-flow: column nowrap !important; gap: .2rem; float: none !important; width: auto !important; padding: 0 !important; }
 #trajectory-plot .modebar-btn { display: flex !important; align-items: center; justify-content: center; float: none !important; width: 2.4rem !important; height: 2.4rem !important; padding: .45rem !important; border: 1px solid var(--st-border-color) !important; border-radius: .45rem !important; background: var(--st-secondary-background-color) !important; opacity: .82 !important; box-sizing: border-box !important; }
 #trajectory-plot .modebar-btn:hover { border-color: var(--st-primary-color) !important; opacity: 1 !important; }
+/* Plotly marks persistent manipulation modes active; preserve that state over local button styling. */
+#trajectory-plot .modebar-btn.active { border-color: var(--st-primary-color) !important; background: var(--st-primary-color) !important; color: white !important; opacity: 1 !important; box-shadow: 0 0 0 3px color-mix(in srgb, var(--st-primary-color) 28%, transparent) !important; }
+#trajectory-plot .modebar-btn.active svg path { fill: currentColor !important; }
 @media (max-width: 800px) {
   .trajectory-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .trajectory-controls, .trajectory-controls button { width: 4.9rem; min-width: 4.9rem; max-width: 4.9rem; }
@@ -474,6 +527,8 @@ def reset_trajectory_player(key: str = TRAJECTORY_COMPONENT_KEY) -> None:
             "maxDistance": DEFAULT_MAX_DISTANCE_METERS,
             "showRoute1": True,
             "showRoute2": True,
+            "showTerrain": True,
+            "dragMode": "orbit",
             "camera": DEFAULT_CAMERA,
         }
     }
@@ -482,6 +537,7 @@ def reset_trajectory_player(key: str = TRAJECTORY_COMPONENT_KEY) -> None:
 def render_trajectory_player(
     route: pd.DataFrame,
     *,
+    terrain: dict | None = None,
     key: str = TRAJECTORY_COMPONENT_KEY,
 ) -> None:
     """Mount one persistent browser player for the validated trajectory."""
@@ -498,6 +554,7 @@ def render_trajectory_player(
             "maxDistance": DEFAULT_MAX_DISTANCE_METERS,
             "showRoute1": True,
             "showRoute2": True,
+            "dragMode": "orbit",
             "camera": DEFAULT_CAMERA,
         }
     # JSON normalization converts pandas and NumPy scalar values for the frontend.
@@ -515,6 +572,7 @@ def render_trajectory_player(
         data={
             "rows": rows,
             "hasSecondary": has_secondary,
+            "terrain": terrain,
             "initialState": simulation,
             "defaultCamera": DEFAULT_CAMERA,
         },
