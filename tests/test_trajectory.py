@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_sample_trajectory_profile():
     frame = pd.read_csv(ROOT / "synthetic_sales_data.csv")
     assert len(frame) == 1_500
-    assert len(frame.columns) == 25
+    assert len(frame.columns) == 29
     assert frame.columns.is_unique
     trajectory_columns = (
         "longitude", "latitude", "Altitude", *SECONDARY_TRAJECTORY_COLUMNS
@@ -52,6 +52,17 @@ def test_sample_trajectory_profile():
     separation_km = np.hypot(north_km, east_km)
     assert separation_km.between(1.0, 2.5).all()
     assert separation_km.max() - separation_km.min() > 0.8
+
+
+def test_sample_power_states_follow_seconds_thresholds():
+    frame = pd.read_csv(ROOT / "synthetic_sales_data.csv")
+    thresholds = {"Power_1": 60, "Power_2": 70, "Power_3": 80, "Power_4": 90}
+    assert set(thresholds).issubset(ALWAYS_LOAD_COLUMNS)
+    for column, threshold in thresholds.items():
+        # Each device transitions exactly once and remains powered thereafter.
+        expected = np.where(frame["Seconds"] >= threshold, "ON", "OFF")
+        assert frame[column].isin({"ON", "OFF"}).all()
+        assert frame[column].tolist() == expected.tolist()
 
 
 def test_preparation_coerces_sorts_filters_and_reduces():

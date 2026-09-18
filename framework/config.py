@@ -32,6 +32,11 @@ ALWAYS_LOAD_COLUMNS = [
     "longitude_2",
     "latitude_2",
     "altitude_2",
+    # Keep deterministic device states available for timeline demonstrations.
+    "Power_1",
+    "Power_2",
+    "Power_3",
+    "Power_4",
 ]
 ROOT = Path(
     os.environ.get(
