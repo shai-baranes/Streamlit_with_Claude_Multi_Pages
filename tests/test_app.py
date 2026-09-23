@@ -61,6 +61,75 @@ def test_engineering_and_sales_gate():
         app.run()
         assert not app.exception
 
+
+def test_engineering_explorer_starts_with_horizontal_aggregation_controls():
+    page = ROOT / "pages" / "0_🔧_Engineering_Explorer.py"
+    app = AppTest.from_file(str(page))
+    app.session_state["df_full"] = load_projection(
+        ROOT / "synthetic_sales_data.csv", ALWAYS_LOAD_COLUMNS
+    )
+    app.run(timeout=30)
+
+    assert [widget.label for widget in app.multiselect] == [
+        "Group by",
+        "Trend / Y fields",
+    ]
+    assert [widget.label for widget in app.selectbox[:2]] == [
+        "Value field",
+        "Aggregation",
+    ]
+    assert len(app.columns) == 3
+    assert all(widget.label != "Filter fields" for widget in app.multiselect)
+    assert any("background-color: #f5f7fa" in block.value for block in app.markdown)
+    assert not app.exception
+
+
+def test_engineering_chart_range_survives_numeric_to_datetime_switch():
+    page = ROOT / "pages" / "0_🔧_Engineering_Explorer.py"
+    app = AppTest.from_file(str(page))
+    app.session_state["df_full"] = load_projection(
+        ROOT / "synthetic_sales_data.csv", ALWAYS_LOAD_COLUMNS
+    )
+    app.run(timeout=30)
+
+    next(w for w in app.selectbox if w.label == "Time / X field").set_value(
+        "Seconds"
+    ).run(timeout=30)
+    next(w for w in app.radio if w.label == "X interpretation").set_value(
+        "Numeric"
+    ).run(timeout=30)
+    assert any(slider.label == "Chart X range" for slider in app.slider)
+
+    next(w for w in app.selectbox if w.label == "Time / X field").set_value(
+        "Date"
+    ).run(timeout=30)
+    next(w for w in app.radio if w.label == "X interpretation").set_value(
+        "Datetime"
+    ).run(timeout=30)
+
+    assert any(slider.label == "Chart X range" for slider in app.slider)
+    assert not app.exception
+
+
+def test_engineering_chart_treats_numeric_years_as_calendar_dates():
+    page = ROOT / "pages" / "0_🔧_Engineering_Explorer.py"
+    app = AppTest.from_file(str(page))
+    app.session_state["df_full"] = load_projection(
+        ROOT / "synthetic_sales_data.csv", ALWAYS_LOAD_COLUMNS
+    )
+    app.run(timeout=30)
+
+    next(w for w in app.selectbox if w.label == "Time / X field").set_value(
+        "Year"
+    ).run(timeout=30)
+    next(w for w in app.radio if w.label == "X interpretation").set_value(
+        "Datetime"
+    ).run(timeout=30)
+
+    range_slider = next(slider for slider in app.slider if slider.label == "Chart X range")
+    assert tuple(value.year for value in range_slider.value) == (2022, 2024)
+    assert not app.exception
+
 def test_atomic_replacement_and_additional_columns(tmp_path):
     first = tmp_path / 'first.csv'
     first.write_text('time,state,speed\n0,on,2\n1,off,3\n')
