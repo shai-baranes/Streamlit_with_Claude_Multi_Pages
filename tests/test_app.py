@@ -111,6 +111,45 @@ def test_stacked_selection_and_initial_mode():
     assert not app.exception
 
 
+@pytest.mark.parametrize(
+    "page_name",
+    ["2_📈_Stacked_Values_Enhanced.py", "2_📈_Stacked_Values_Enhanced Seconds.py"],
+)
+def test_stacked_exclusion_survives_full_mode_round_trip(page_name):
+    app = AppTest.from_file(str(ROOT / "pages" / page_name))
+    app.session_state["df_full"] = load_projection(
+        ROOT / "synthetic_sales_data.csv", ALWAYS_LOAD_COLUMNS
+    )
+    app.run(timeout=30)
+    next(w for w in app.multiselect if w.label == "Select columns to display").set_value(
+        ["Power_1", "Power_2", "Power_3", "Power_4", "Altitude"]
+    ).run(timeout=30)
+    next(w for w in app.selectbox if w.label == "View mode").set_value(
+        "Stacked by All"
+    ).run(timeout=30)
+    next(w for w in app.multiselect if w.label == "Exclusion rule").set_value(
+        ["Altitude"]
+    ).run(timeout=30)
+    expected_caption = next(
+        c.value for c in app.caption if "Excluded from change detection" in c.value
+    )
+
+    next(w for w in app.selectbox if w.label == "View mode").set_value("Full").run(
+        timeout=30
+    )
+    next(w for w in app.selectbox if w.label == "View mode").set_value(
+        "Stacked by All"
+    ).run(timeout=30)
+
+    exclusion = next(w for w in app.multiselect if w.label == "Exclusion rule")
+    restored_caption = next(
+        c.value for c in app.caption if "Excluded from change detection" in c.value
+    )
+    assert exclusion.value == ["Altitude"]
+    assert restored_caption == expected_caption
+    assert not app.exception
+
+
 def test_sales_filters_keep_full_range_across_reruns():
     script = '''
 import streamlit as st

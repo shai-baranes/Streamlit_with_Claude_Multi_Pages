@@ -75,9 +75,8 @@ def on_selected_columns_change(widget_key: str, state_key: str) -> None:
 
 
 def on_view_mode_change() -> None:
-    if st.session_state.get("view_mode") != "Stacked by All":
-        st.session_state["stacked_exclusion_cols"] = []
-        st.session_state["stacked_exclusion_cols_widget"] = []
+    # Keep the last valid exclusion selection while the control is hidden in
+    # other modes so returning to Stacked by All reapplies it immediately.
     mark_grid_for_remount_and_restore()
 
 
