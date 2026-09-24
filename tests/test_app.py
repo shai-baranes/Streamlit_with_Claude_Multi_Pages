@@ -72,7 +72,7 @@ def test_engineering_explorer_starts_with_horizontal_aggregation_controls():
 
     assert [widget.label for widget in app.multiselect] == [
         "Group by",
-        "Trend / Y fields",
+        "Trend - Y field/s (only numeric fields)",
     ]
     assert [widget.label for widget in app.selectbox[:2]] == [
         "Value field",
@@ -92,7 +92,7 @@ def test_engineering_chart_range_survives_numeric_to_datetime_switch():
     )
     app.run(timeout=30)
 
-    next(w for w in app.selectbox if w.label == "Time / X field").set_value(
+    next(w for w in app.selectbox if w.label == "Time - X field").set_value(
         "Seconds"
     ).run(timeout=30)
     next(w for w in app.radio if w.label == "X interpretation").set_value(
@@ -100,7 +100,7 @@ def test_engineering_chart_range_survives_numeric_to_datetime_switch():
     ).run(timeout=30)
     assert any(slider.label == "Chart X range" for slider in app.slider)
 
-    next(w for w in app.selectbox if w.label == "Time / X field").set_value(
+    next(w for w in app.selectbox if w.label == "Time - X field").set_value(
         "Date"
     ).run(timeout=30)
     next(w for w in app.radio if w.label == "X interpretation").set_value(
@@ -119,7 +119,7 @@ def test_engineering_chart_treats_numeric_years_as_calendar_dates():
     )
     app.run(timeout=30)
 
-    next(w for w in app.selectbox if w.label == "Time / X field").set_value(
+    next(w for w in app.selectbox if w.label == "Time - X field").set_value(
         "Year"
     ).run(timeout=30)
     next(w for w in app.radio if w.label == "X interpretation").set_value(

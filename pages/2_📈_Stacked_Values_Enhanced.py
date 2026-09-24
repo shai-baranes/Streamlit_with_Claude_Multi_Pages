@@ -3,6 +3,7 @@ import streamlit as st
 from framework.state import ui
 st = ui(__file__)
 import pandas as pd
+from framework.analysis import chronological_order
 
 from utils import inject_css, require_data, sidebar_filters
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
@@ -120,6 +121,13 @@ def build_view_cached(
         return pd.DataFrame()
 
     time_col = get_time_column(df)
+    # Sort before transition detection and delta calculation; Seconds recovers
+    # source chronology when the sample contains repeated Date values.
+    df = chronological_order(
+        df,
+        time_col,
+        secondary='Seconds' if time_col == 'Date' else None,
+    )
     anchor_col = selected_columns[0]
     data_cols = [c for c in selected_columns if c != time_col]
     compare_cols = [c for c in data_cols if c not in exclusion_cols]
@@ -246,7 +254,9 @@ def configure_grid(
     )
 
     gb.configure_column("_source_row", hide=True)
-    gb.configure_column(time_col, width=130, minWidth=100, maxWidth=180, pinned="left")
+    gb.configure_column(
+        time_col, width=130, minWidth=100, maxWidth=180, pinned="left", sort="asc"
+    )
 
     if DELTA_DAYS_COLUMN in view_df.columns:
         gb.configure_column(

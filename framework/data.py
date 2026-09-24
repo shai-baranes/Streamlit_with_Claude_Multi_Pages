@@ -129,7 +129,8 @@ def normalize(frame):
                              'Quarter': date.quarter.map(lambda q: f'Q{q}' if pd.notna(q) else None)}.items():
             if name not in frame:
                 frame[name] = values
-        frame = frame.sort_values('Date').reset_index(drop=True)
+        # Stable sorting preserves CSV row order for records sharing a date.
+        frame = frame.sort_values('Date', kind='stable').reset_index(drop=True)
     return frame
 
 

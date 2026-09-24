@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 from framework import data
 from framework.config import ALWAYS_LOAD_COLUMNS
-from framework.analysis import aggregate, filter_range, filter_values, transitions, reduce_points
+from framework.analysis import aggregate, chronological_order, filter_range, filter_values, transitions, reduce_points
 
 @pytest.fixture(autouse=True)
 def private_root(tmp_path, monkeypatch):
@@ -17,7 +17,7 @@ def test_sample_regression():
     frame = data.load_projection('synthetic_sales_data.csv', ALWAYS_LOAD_COLUMNS)
     expected = pd.read_csv('synthetic_sales_data.csv')
     expected['Date'] = pd.to_datetime(expected.Date, dayfirst=True)
-    expected = expected.sort_values('Date').reset_index(drop=True)
+    expected = expected.sort_values('Date', kind='stable').reset_index(drop=True)
     pd.testing.assert_frame_equal(frame, expected)
 
 def test_projection_and_add_columns():
@@ -88,6 +88,21 @@ def test_operations():
     assert reduce_points(frame, 2).time.tolist() == [0,3]
     nulls = pd.DataFrame({'a':[None,None,1,1]})
     assert transitions(nulls, ['a']).index.tolist() == [0,2]
+
+
+def test_chronological_order_is_stable_and_supports_seconds_tiebreaking():
+    frame = pd.DataFrame(
+        {
+            'Date': ['02/01/2024', '01/01/2024', '01/01/2024'],
+            'Seconds': [2.0, 1.0, 0.5],
+            'value': ['later', 'second', 'first'],
+        },
+        index=[20, 10, 5],
+    )
+    ordered = chronological_order(frame, 'Date', secondary='Seconds')
+    assert ordered.value.tolist() == ['first', 'second', 'later']
+    assert ordered.index.tolist() == [5, 10, 20]
+    assert chronological_order(frame, 'Seconds', numeric=True).Seconds.tolist() == [0.5, 1.0, 2.0]
 
 @pytest.mark.parametrize('text', ['a,b\n1,2,3\n', 'a,b\n1\n', 'a,b\n"unclosed,2\n'])
 def test_malformed_rows(text):
