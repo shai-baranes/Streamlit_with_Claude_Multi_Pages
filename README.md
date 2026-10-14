@@ -115,6 +115,13 @@ first , run the server with the `--admin` option (and optionally `--admin-port` 
 .\.venv\Scripts\python.exe run_server.py --admin --admin-port 8502
 ``` 
 
+or after triggering the virtual environment:
+```
+</> powershell
+source .venv/bin/activate
+python run_server.py --admin --admin-port 8502
+``` 
+
 
 and you can invoke the admin UI in your browser on the server machine by:  
 http://127.0.0.1:8502   (and not http://localhost:8502 for this case, maybe to prevent easy control from remote machine)
