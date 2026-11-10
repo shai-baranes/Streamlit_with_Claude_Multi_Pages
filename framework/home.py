@@ -8,7 +8,7 @@ from framework.config import ALWAYS_LOAD_COLUMNS, MAX_UPLOAD_MB
 from framework.data import (cleanup, save_source, inspect_header, inspect_numeric_range,
                             load_dataset, session_directory)
 from framework.state import reset_controls
-from framework.cli import startup_csv_options
+from framework.cli import startup_csv_options, StartupCSVOptions
 
 
 def render():
@@ -65,22 +65,33 @@ def render():
         # Clear must leave an empty session even when the server has a startup file.
         st.session_state['cli_initialized'] = True
         st.rerun()
+    if 'home:cli-options' not in st.session_state:
+        try:
+            st.session_state['home:cli-options'] = startup_csv_options()
+        except ValueError as error:
+            st.session_state['home:cli-options'] = StartupCSVOptions(None)
+            st.session_state['cli_error'] = f'Startup CSV could not be loaded: {error}'
+    # Keep using the private copy if the original startup file later disappears.
+    cli_options = st.session_state['home:cli-options']
+    # Saved preference survives widget cleanup when navigating to another page.
+    st.session_state.setdefault('home:parquet', cli_options.parquet)
     # Stage once, through the same validator/private storage used by browser uploads.
     if not st.session_state.get('cli_initialized'):
         st.session_state['cli_initialized'] = True
         if not st.session_state.get('dataset') and not st.session_state.get('pending_source'):
             try:
-                cli_options = startup_csv_options()
                 cli_path = cli_options.path
                 if cli_path is not None:
                     with cli_path.open('rb') as source:
                         path = save_source(source, st.session_state.session_id)
                     st.session_state.update(pending_source=path, pending_name=cli_path.name)
+                    if cli_options.auto_apply:
+                        st.session_state['cli_auto_apply_source'] = path
                     if cli_options.load_all:
                         # This application argument is reserved for an explicit local
                         # Streamlit CLI launch and never enabled by the server wrapper.
                         available = inspect_header(path)
-                        candidate = load_dataset(path, cli_path.name, available)
+                        candidate = load_dataset(path, cli_path.name, available, st.session_state['home:parquet'])
                         check_cancelled()
                         reset_controls()
                         st.session_state.update(
@@ -178,10 +189,17 @@ def render():
             elif seconds_error:
                 st.warning(seconds_error)
             extra = st.multiselect('Additional columns', options, default=defaults, key=f'home:extra:{path.stem}')
-            parquet = st.checkbox('Use experimental Parquet cache', value=False,
+            st.session_state.setdefault('home:parquet-widget', st.session_state['home:parquet'])
+            parquet = st.checkbox('Use experimental Parquet cache', key='home:parquet-widget',
                                   help='Off by default until benchmarks demonstrate a benefit.')
             apply = st.form_submit_button('Apply columns')
-        if apply:
+        st.session_state['home:parquet'] = parquet
+        # Consume the request before parsing so failures never retry on every rerun.
+        auto_source = st.session_state.pop('cli_auto_apply_source', None)
+        auto_apply = auto_source == path
+        if auto_apply and not fixed:
+            st.info('No fixed fields are available. Select additional columns and press Apply columns.')
+        if apply or (auto_apply and fixed):
             try:
                 candidate = load_dataset(path, st.session_state.get('pending_name', active.name if active else 'CSV'),
                                          fixed + extra, parquet, seconds_range)

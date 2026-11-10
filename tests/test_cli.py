@@ -104,3 +104,117 @@ def test_rejects_missing_or_unsupported_path(tmp_path):
         validate_csv_path(tmp_path / 'absent.csv')
     with pytest.raises(ValueError, match='extension'):
         validate_csv_path(tmp_path / 'file.txt')
+
+
+@pytest.mark.parametrize('admin', [False, True])
+@pytest.mark.parametrize('value', ['true', 'FALSE'])
+def test_named_launcher_arguments(tmp_path, monkeypatch, admin, value):
+    source = tmp_path / 'some data.csv'
+    source.write_text('Seconds\n0\n')
+    commands = []
+    monkeypatch.setattr(run_server.subprocess, 'call', lambda command, **kwargs: commands.append(command) or 0)
+    monkeypatch.setattr(sys, 'argv', ['run_server.py', '--csv_file', str(source), '--parquet', value] + (['--admin'] if admin else []))
+    assert run_server.main() == 0
+    command = commands[0]
+    forwarded = command[command.index('--') + 1:]
+    assert forwarded[:2] == ['--csv_file', str(source.resolve())]
+    assert ('--parquet' in forwarded) == (value == 'true')
+    assert command[2] == ('framework.admin_bootstrap' if admin else 'streamlit')
+
+
+@pytest.mark.parametrize('args', [ ['--parquet', 'yes'], ['--parquet'], ['a.csv', '--csv_file', 'b.csv'] ])
+def test_bad_launcher_options(monkeypatch, args):
+    monkeypatch.setattr(sys, 'argv', ['run_server.py', *args])
+    with pytest.raises(SystemExit):
+        run_server.main()
+
+
+def test_named_load_all_conflict(monkeypatch):
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', '--csv_file', 'a.csv', '--load-all'])
+    with pytest.raises(ValueError, match='cannot be combined'):
+        startup_csv_options()
+
+
+@pytest.mark.parametrize('seconds,expected', [
+    ('0\n1\n2\n', [0, 1, 2]),
+    ('1\n1\n', [1, 1]),
+    ('bad\n\"\"\n', ['bad', None]),
+    ('0\nbad\n2\n', [0, 2]),
+])
+@pytest.mark.parametrize('parquet', [True, False])
+def test_named_startup_applies_once(tmp_path, monkeypatch, seconds, expected, parquet):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    source = tmp_path / 'startup.csv'
+    source.write_text('Seconds,extra\n' + ''.join(line + ',x\n' for line in seconds.strip().splitlines()))
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', '--csv_file', str(source), '--parquet', str(parquet)])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert not app.exception
+    frame = app.session_state['df_full']
+    assert list(frame.columns) == ['Seconds']
+    assert len(frame) == len(expected)
+    if expected[0] != 'bad':
+        assert frame.Seconds.astype(float).tolist() == expected
+    if app.slider:
+        assert app.slider[0].value == (0.0, 2.0)
+    assert any(b.label == 'Apply columns' for b in app.button)
+    assert app.checkbox[0].value == parquet
+    source_path = app.session_state['dataset'].source
+    assert bool(list(source_path.parent.glob('*.parquet'))) == parquet
+    version = app.session_state['dataset'].version
+    app.run()
+    assert app.session_state['dataset'].version == version
+    other = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert other.session_state['dataset'].source != source_path
+    app.checkbox[0].set_value(not parquet)
+    app.button[-1].click().run()
+    assert app.session_state['home:parquet'] == (not parquet)
+    app.switch_page('pages/0_🔧_Engineering_Explorer.py').run()
+    app.switch_page('Load CSV.py').run()
+    assert app.checkbox[0].value == (not parquet)
+    app.button[0].click().run()
+    assert 'dataset' not in app.session_state
+    assert source.exists()
+
+
+@pytest.mark.parametrize('contents,loaded', [('Altitude,extra\n2,x\n', True), ('extra\nx\n', False), ('Seconds,Seconds\n0,1\n', False)])
+def test_named_startup_missing_seconds_and_bad_schema(tmp_path, monkeypatch, contents, loaded):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    source = tmp_path / 'source.csv'
+    source.write_text(contents)
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', '--csv_file', str(source)])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert not app.exception
+    assert ('dataset' in app.session_state) == loaded
+    if contents.startswith('extra'):
+        assert any('No fixed fields' in item.value for item in app.info)
+
+
+def test_parquet_default_without_startup(tmp_path, monkeypatch):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    monkeypatch.setenv('DASHBOARD_SAMPLE', '1')
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', '--parquet', 'TRUE'])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    app.button[1].click().run()
+    assert app.checkbox[0].value is True
+    assert 'dataset' not in app.session_state
+
+
+def test_auto_apply_failure_is_not_retried(tmp_path, monkeypatch):
+    from framework import home
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    source = tmp_path / 'source.csv'
+    source.write_text('Seconds\n0\n1\n')
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', '--csv_file', str(source)])
+    calls = []
+    original = home.load_dataset
+    def fail(*args):
+        calls.append(args)
+        raise ValueError('Memory limit reached')
+    monkeypatch.setattr(home, 'load_dataset', fail)
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert app.error and 'dataset' not in app.session_state
+    app.run()
+    assert len(calls) == 1
+    monkeypatch.setattr(home, 'load_dataset', original)
+    app.button[-1].click().run()
+    assert len(app.session_state['df_full']) == 2

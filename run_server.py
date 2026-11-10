@@ -5,12 +5,12 @@ from pathlib import Path
 import subprocess
 import sys
 from framework.config import MAX_UPLOAD_MB
-from framework.cli import validate_csv_path
+from framework.cli import validate_csv_path, add_csv_arguments
 
 def main():
     parser = argparse.ArgumentParser()
     # Optional positional path preserves the existing no-argument launch behavior.
-    parser.add_argument('csv_path', nargs='?', help='Server-local CSV to stage in each new session')
+    add_csv_arguments(parser)
     parser.add_argument('--debug', action='store_true', help='Foreground macOS/development logging')
     parser.add_argument('--sample', action='store_true', help='Offer explicit sample-data button')
     # Administration is a separate loopback listener inside the Streamlit process.
@@ -21,8 +21,11 @@ def main():
     args = parser.parse_args()
     if not 1 <= args.admin_port <= 65535 or (args.admin and args.admin_port == args.port):
         parser.error('Admin port must be 1–65535 and different from the dashboard port.')
+    if args.csv_path and args.csv_file:
+        parser.error('Supply either CSV_PATH or --csv_file, not both.')
     try:
-        csv_path = validate_csv_path(args.csv_path) if args.csv_path else None
+        source = args.csv_file or args.csv_path
+        csv_path = validate_csv_path(source) if source else None
     except ValueError as error:
         parser.error(str(error))
     env = dict(os.environ, DASHBOARD_SAMPLE='1' if args.sample else '0')
@@ -38,8 +41,13 @@ def main():
         # SSH-tunnel destination instead of presenting it as a remote network URL.
         print(f'Server URL: http://127.0.0.1:{args.admin_port}', flush=True)
     # Resolve before changing cwd and forward after Streamlit's argument separator.
+    application_args = []
     if csv_path is not None:
-        command.extend(['--', str(csv_path)])
+        application_args.extend(['--csv_file', str(csv_path)] if args.csv_file else [str(csv_path)])
+    if args.parquet:
+        application_args.extend(['--parquet', 'true'])
+    if application_args:
+        command.extend(['--', *application_args])
     return subprocess.call(command, cwd=Path(__file__).parent, env=env)
 
 if __name__ == '__main__':

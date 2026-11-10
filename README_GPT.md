@@ -106,12 +106,71 @@ python3 -m venv .venv
 
 `--debug` enables foreground development logging. `--sample` separately exposes a **Load sample data** button; it never silently replaces an upload. Both modes use the same session isolation. `--address` defaults to `0.0.0.0`; `--port` defaults to `8501`. Open `http://SERVER_LAN_IP:8501` from clients, or `http://localhost:8501` on the host. Opening a new browser tab starts an independent session, even on the same computer.
 
+### Execution arguments
+
+| Argument | Accepted value | Default | Behavior |
+|---|---|---|---|
+| `CSV_PATH` (positional) | Server-local `.csv` path | None | Privately stage the file in each new session; wait for Apply columns. |
+| `--csv_file PATH` | Server-local `.csv` path | None | Automatically apply available fixed columns and the full numeric Seconds interval once per new session; keep the form visible. Cannot be combined with positional CSV_PATH. |
+| `--parquet true\|false` | `true` or `false`, case-insensitive | `false` | Set the initial experimental Parquet checkbox value, including automatic loading. Users may change it afterward. Works without a startup CSV. |
+| `--debug` | Flag | Off | Enable foreground development/debug logging. |
+| `--sample` | Flag | Off | Offer the explicit Load sample data button. |
+| `--admin` | Flag | Off | Enable the separate loopback-only administration listener. |
+| `--admin-port PORT` | Integer 1–65535 | `8502` | Administration port; must differ from dashboard port when administration is enabled. |
+| `--port PORT` | TCP port | `8501` | Dashboard listening port. |
+| `--address ADDRESS` | Bind address | `0.0.0.0` | Dashboard listening address; does not change the administration bind address. |
+| `-h`, `--help` | Flag | — | Show launcher usage and exit. |
+
+Windows PowerShell examples:
+
+```powershell
+.\.venv\Scripts\python.exe run_server.py
+.\.venv\Scripts\python.exe run_server.py "C:\Data\file.csv"
+.\.venv\Scripts\python.exe run_server.py --csv_file "C:\Data\file.csv" --parquet true
+.\.venv\Scripts\python.exe run_server.py --csv_file "C:\Data\file.csv" --parquet false
+```
+
+macOS examples:
+
+```sh
+.venv/bin/python run_server.py --debug
+.venv/bin/python run_server.py "/absolute/path/to/file.csv" --debug
+.venv/bin/python run_server.py --csv_file "/absolute/path/to/file.csv" --parquet true --debug
+.venv/bin/python run_server.py --csv_file "/absolute/path/to/file.csv" --parquet false --debug
+```
+
+`--csv_file` uses the same validation, limits, and atomic commit as Apply columns.
+Available fixed fields load automatically; select additional fields and press Apply columns
+for later changes. The Seconds slider initially spans the numeric minimum through maximum;
+rows with invalid/missing Seconds are excluded when an interval is available. Without a usable
+numeric interval, no time filter is applied. If no fixed fields exist, select additional columns
+and apply manually. Parquet remains experimental, session-private, and falls back to CSV on
+cache failure. The checkbox preference survives navigation and later uploads/sample selection;
+those later sources still require Apply. Clear dataset empties the session without reloading the
+startup file. A new browser session receives its own private startup copy and initial preferences.
+
+### Direct Streamlit application arguments
+
+Application arguments must follow Streamlit's `--` separator:
+
+```sh
+.venv/bin/streamlit run "Load CSV.py" -- --csv_file "/absolute/path/to/file.csv" --parquet true
+.venv/bin/streamlit run "Load CSV.py" -- "/absolute/path/to/file.csv" --load-all
+```
+
+| Application argument | Default | Behavior |
+|---|---|---|
+| `CSV_PATH` | None | Stage privately and wait for Apply columns. |
+| `--csv_file PATH` | None | Auto-apply fixed columns and full Seconds interval; form stays visible. |
+| `--parquet true\|false` | `false` | Initial session checkbox/cache setting; accepted case-insensitively. |
+| `--load-all` | Off | Requires positional CSV_PATH; loads every row and column and hides the projection form for that source. Cannot be combined with --csv_file and is not a run_server.py option. |
+
 ### Start with a CSV from the command line
 
 `run_server.py` accepts one optional CSV path. Omitting it preserves the normal behavior: each browser session starts empty and waits for a drag-and-drop or **Upload** action.
 
 ```text
-python run_server.py [CSV_PATH] [--debug] [--sample] [--port PORT] [--address ADDRESS]
+python run_server.py [CSV_PATH | --csv_file PATH] [--parquet true|false] [--debug] [--sample] [--admin] [--admin-port PORT] [--port PORT] [--address ADDRESS]
 ```
 
 Mac/Linux examples:
@@ -149,8 +208,8 @@ The CLI path has the following behavior:
 - Only one startup file is accepted. Quote paths containing spaces.
 - The file goes through the same header, structure, upload-size, projection, and memory validation used for browser uploads.
 - Each new browser session receives its own private copy. The original CSV is never changed or deleted by the dashboard.
-- The fixed fields are selected when present. The user may select additional fields and then press **Apply columns**, just as with a dragged file.
-- With the direct Streamlit command and application argument `--load-all`, the local browser session immediately loads every column and every row from the supplied CSV. The `Seconds` interval and projection form are omitted for that source. The flag must appear after Streamlit's `--` separator and requires the CSV path. It is intentionally not a `run_server.py` option, does not enable Parquet, and does not change later browser uploads or explicit sample loading.
+- With a positional path, the fixed fields are selected when present. With `--csv_file`, those fields are applied automatically using the full Seconds interval. The user may select additional fields and then press **Apply columns**, just as with a dragged file.
+- With the direct Streamlit command and application argument `--load-all`, the local browser session immediately loads every column and every row from the supplied CSV. The `Seconds` interval and projection form are omitted for that source. The flag must appear after Streamlit's `--` separator and requires the CSV path. It is intentionally not a `run_server.py` option; Parquet defaults to false unless explicitly enabled with `--parquet true`, and does not change later browser uploads or explicit sample loading.
 - A later browser upload replaces the staged file only in that browser session.
 - **Clear dataset** leaves the current session empty instead of immediately staging the CLI file again. A new browser session still receives the startup file.
 - An invalid CLI path stops `run_server.py` with a command-line error. A CSV that fails content validation produces an in-app warning while leaving browser upload available.

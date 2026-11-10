@@ -1,5 +1,66 @@
 > For the server, session isolation, large CSV workflow, and tests, see [README_GPT.md](README_GPT.md).
 
+## Launching the dashboard
+
+### Execution arguments
+
+| Argument | Accepted value | Default | Behavior |
+|---|---|---|---|
+| `CSV_PATH` (positional) | Server-local `.csv` path | None | Privately stage the file in each new session; wait for Apply columns. |
+| `--csv_file PATH` | Server-local `.csv` path | None | Automatically apply available fixed columns and the full numeric Seconds interval once per new session; keep the form visible. Cannot be combined with positional CSV_PATH. |
+| `--parquet true\|false` | `true` or `false`, case-insensitive | `false` | Set the initial experimental Parquet checkbox value, including automatic loading. Users may change it afterward. Works without a startup CSV. |
+| `--debug` | Flag | Off | Enable foreground development/debug logging. |
+| `--sample` | Flag | Off | Offer the explicit Load sample data button. |
+| `--admin` | Flag | Off | Enable the separate loopback-only administration listener. |
+| `--admin-port PORT` | Integer 1–65535 | `8502` | Administration port; must differ from dashboard port when administration is enabled. |
+| `--port PORT` | TCP port | `8501` | Dashboard listening port. |
+| `--address ADDRESS` | Bind address | `0.0.0.0` | Dashboard listening address; does not change the administration bind address. |
+| `-h`, `--help` | Flag | — | Show launcher usage and exit. |
+
+Windows PowerShell examples:
+
+```powershell
+.\.venv\Scripts\python.exe run_server.py
+.\.venv\Scripts\python.exe run_server.py "C:\Data\file.csv"
+.\.venv\Scripts\python.exe run_server.py --csv_file "C:\Data\file.csv" --parquet true
+.\.venv\Scripts\python.exe run_server.py --csv_file "C:\Data\file.csv" --parquet false
+```
+
+macOS examples:
+
+```sh
+.venv/bin/python run_server.py --debug
+.venv/bin/python run_server.py "/absolute/path/to/file.csv" --debug
+.venv/bin/python run_server.py --csv_file "/absolute/path/to/file.csv" --parquet true --debug
+.venv/bin/python run_server.py --csv_file "/absolute/path/to/file.csv" --parquet false --debug
+```
+
+`--csv_file` uses the same validation, limits, and atomic commit as Apply columns.
+Available fixed fields load automatically; select additional fields and press Apply columns
+for later changes. The Seconds slider initially spans the numeric minimum through maximum;
+rows with invalid/missing Seconds are excluded when an interval is available. Without a usable
+numeric interval, no time filter is applied. If no fixed fields exist, select additional columns
+and apply manually. Parquet remains experimental, session-private, and falls back to CSV on
+cache failure. The checkbox preference survives navigation and later uploads/sample selection;
+those later sources still require Apply. Clear dataset empties the session without reloading the
+startup file. A new browser session receives its own private startup copy and initial preferences.
+
+### Direct Streamlit application arguments
+
+Application arguments must follow Streamlit's `--` separator:
+
+```sh
+.venv/bin/streamlit run "Load CSV.py" -- --csv_file "/absolute/path/to/file.csv" --parquet true
+.venv/bin/streamlit run "Load CSV.py" -- "/absolute/path/to/file.csv" --load-all
+```
+
+| Application argument | Default | Behavior |
+|---|---|---|
+| `CSV_PATH` | None | Stage privately and wait for Apply columns. |
+| `--csv_file PATH` | None | Auto-apply fixed columns and full Seconds interval; form stays visible. |
+| `--parquet true\|false` | `false` | Initial session checkbox/cache setting; accepted case-insensitively. |
+| `--load-all` | Off | Requires positional CSV_PATH; loads every row and column and hides the projection form for that source. Cannot be combined with --csv_file and is not a run_server.py option. |
+
 ## Session administration (offline networks supported)
 
 Administration is optional. Normal dashboard users still connect to port 8501 without signing in.
