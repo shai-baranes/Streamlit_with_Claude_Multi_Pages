@@ -12,7 +12,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
 from utils import inject_css, require_data, sidebar_filters, tutorial_box, my_func3
-# import streamlit.components.v1 as _cv1
 
 st.set_page_config(page_title="Charts", page_icon="📈", layout="wide")
 inject_css()
@@ -566,19 +565,9 @@ fig_norm.update_layout(
     shapes=_shapes,
     annotations=_annotations,
 )
-# ── Dot-adding mode ──────────────────────────────────────────────────────────
-# Simplest possible approach: pure JS handles everything in the browser.
-# No st.text_input, no Streamlit rerun, no slowness.
-# JS listens for plotly_click, reads x/y, and writes them into a <div>
-# that lives inside the st.components.v1.html iframe — instant display.
-_dot_mode = st.checkbox(
-    "🖊 Dot-adding mode (click chart to see coordinates)",
-    value=False,
-    key="norm_dot_mode",
-)
+st.plotly_chart(fig_norm, width="stretch")
 
-st.plotly_chart(fig_norm, use_container_width=True)
-
+# Coordinate and delta readouts are always active; no mode toggle is needed.
 my_func3("Normalized")
 
 # ══════════════════════════════════════════════
@@ -750,153 +739,6 @@ st.session_state["geo_viewport"] = {
 }
 
 
-
-# JS bridge: listens for Mapbox "moveend" (fired after pan or zoom ends),
-# reads center lat/lon and zoom, then updates the hidden number inputs and
-# triggers a Streamlit rerun by dispatching an input event.
-import streamlit.components.v1 as _cv1
-
-_cv1.html(f"""
-<div id="coord-box" style="
-    font-family: monospace;
-    font-size: 13px;
-    padding: 8px 14px;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    border-left: 4px solid #3b82f6;
-    border-radius: 6px;
-    min-height: 48px;
-    color: #1e293b;
-    {'display:none' if not _dot_mode else ''}
-">
-    {'🖊 Click points on the chart to see x/y and deltas.' if _dot_mode else ''}
-</div>
-<script>
-(function() {{
-    if (!{'true' if _dot_mode else 'false'}) return;
-
-    var coordBox = document.getElementById("coord-box");
-    var pt1 = null;
-    var pt2 = null;
-
-    function findPlotDiv() {{
-        var candidates = [];
-        try {{
-            window.parent.document.querySelectorAll(".js-plotly-plot")
-                .forEach(function(d) {{ candidates.push(d); }});
-        }} catch(e) {{}}
-        try {{
-            window.parent.document.querySelectorAll("iframe")
-                .forEach(function(fr) {{
-                    try {{
-                        fr.contentDocument.querySelectorAll(".js-plotly-plot")
-                            .forEach(function(d) {{ candidates.push(d); }});
-                    }} catch(e) {{}}
-                }});
-        }} catch(e) {{}}
-        for (var i = candidates.length - 1; i >= 0; i--) {{
-            var t = candidates[i].querySelector(".gtitle");
-            if (t && t.textContent.indexOf("Normalized") !== -1)
-                return candidates[i];
-        }}
-        return candidates[candidates.length - 1] || null;
-    }}
-
-    function fmt(v, digits) {{
-        if (v === null || v === undefined) return "--";
-        if (typeof v === "number") return v.toFixed(digits || 4);
-        return String(v);
-    }}
-
-    function toNum(v) {{
-        if (typeof v === "number") return v;
-
-        var d = new Date(v);
-        if (!isNaN(d.getTime())) return d.getTime();
-
-        var n = Number(v);
-        if (!isNaN(n)) return n;
-
-        return null;
-    }}
-
-    function renderBox() {{
-        if (!pt1) {{
-            coordBox.innerHTML = "🖊 Click a first point.";
-            return;
-        }}
-
-        if (!pt2) {{
-            coordBox.innerHTML =
-                "x1 = " + fmt(pt1.x, 4) + " | y1 = " + fmt(pt1.y, 4) +
-                " | dx1 = -- | dy1 = --" +
-                "<br>" +
-                "x2 = -- | y2 = -- | dx2 = -- | dy2 = --";
-            return;
-        }}
-
-        var x1n = toNum(pt1.x);
-        var x2n = toNum(pt2.x);
-        var y1n = toNum(pt1.y);
-        var y2n = toNum(pt2.y);
-
-        var dx = (x1n !== null && x2n !== null) ? (x2n - x1n) : null;
-        var dy = (y1n !== null && y2n !== null) ? (y2n - y1n) : null;
-
-        coordBox.innerHTML =
-            "x1 = " + fmt(pt1.x, 4) +
-            " | y1 = " + fmt(pt1.y, 4) +
-            " | dx1 = " + (dx === null ? "--" : fmt(dx, 4)) +
-            " | dy1 = " + (dy === null ? "--" : fmt(dy, 4)) +
-            "<br>" +
-            "x2 = " + fmt(pt2.x, 4) +
-            " | y2 = " + fmt(pt2.y, 4) +
-            " | dx2 = " + (dx === null ? "--" : fmt(dx, 4)) +
-            " | dy2 = " + (dy === null ? "--" : fmt(dy, 4));
-    }}
-
-    function attach() {{
-        var plotDiv = findPlotDiv();
-        if (!plotDiv) {{ setTimeout(attach, 600); return; }}
-        if (plotDiv._coordListenerAttached) return;
-        plotDiv._coordListenerAttached = true;
-
-        plotDiv.on("plotly_click", function(data) {{
-            if (!data || !data.points || !data.points.length) return;
-
-            var pt = data.points[0];
-            var newPt = {{
-                x: pt.x,
-                y: pt.y,
-                pointNumber: pt.pointNumber
-            }};
-
-            if (pt1 === null) {{
-                pt1 = newPt;
-            }} else if (pt2 === null) {{
-                pt2 = newPt;
-            }} else {{
-                pt1 = pt2;
-                pt2 = newPt;
-            }}
-
-            renderBox();
-        }});
-
-        plotDiv.on("plotly_doubleclick", function() {{
-            pt1 = null;
-            pt2 = null;
-            coordBox.innerHTML = "🖊 Click points on the chart to see x/y and deltas.";
-        }});
-    }}
-
-    if (document.readyState === "complete") {{ attach(); }}
-    else {{ window.addEventListener("load", attach); }}
-    setTimeout(attach, 1000);
-    setTimeout(attach, 2500);
-}})();
-</script>
-""", height=80)
 
 # ── Placeholder — reused on every frame ──────────────────────────────────────
 geo_placeholder = st.empty()

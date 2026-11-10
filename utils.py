@@ -302,9 +302,6 @@ def sidebar_filters_2(df_full: pd.DataFrame) -> pd.DataFrame:
         df = df[df["Deal_Won"] == True]
     return df
 
-_dot_mode = True
-
-
 def my_func(chart_name):
     _cv1.html(f"""
     <div id="coord-box" style="
@@ -319,15 +316,12 @@ def my_func(chart_name):
         min-height: 92px;
         color: #1e293b;
         white-space: pre-line;
-        {'display:none' if not _dot_mode else ''}
     ">
-        {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
+        🖊 Click points on the chart to see both points and deltas.
     </div>
 
     <script>
     (function() {{
-        if (!{'true' if _dot_mode else 'false'}) return;
-
         var coordBox = document.getElementById("coord-box");
         var pt1 = null;
         var pt2 = null;
@@ -460,15 +454,12 @@ def my_func(chart_name):
         min-height: 92px;
         color: #1e293b;
         white-space: pre-line;
-        {'display:none' if not _dot_mode else ''}
     ">
-        {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
+        🖊 Click points on the chart to see both points and deltas.
     </div>
 
     <script>
     (function() {{
-        if (!{'true' if _dot_mode else 'false'}) return;
-
         var coordBox = document.getElementById("coord-box");
         var pt1 = null;
         var pt2 = null;
@@ -640,15 +631,12 @@ def my_func__3(chart_name):
         min-height: 92px;
         color: #1e293b;
         white-space: pre-line;
-        {'display:none' if not _dot_mode else ''}
     ">
-        {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
+        🖊 Click points on the chart to see both points and deltas.
     </div>
 
     <script>
     (function() {{
-        if (!{'true' if _dot_mode else 'false'}) return;
-
         var parentWin = window.parent;
         var parentDoc = parentWin.document;
 
@@ -802,6 +790,7 @@ def my_func__3(chart_name):
 
 
 def my_func3(chart_name):
+    # Keep click measurements active independently of Streamlit widget state.
     _cv1.html(f"""
     <div id="coord-box" style="
         font-family: monospace;
@@ -815,15 +804,12 @@ def my_func3(chart_name):
         min-height: 92px;
         color: #1e293b;
         white-space: pre-line;
-        {'display:none' if not _dot_mode else ''}
     ">
-        {'🖊 Click points on the chart to see both points and deltas.' if _dot_mode else ''}
+        🖊 Click points on the chart to see both points and deltas.
     </div>
 
     <script>
     (function() {{
-        if (!{'true' if _dot_mode else 'false'}) return;
-
         var coordBox = document.getElementById("coord-box");
         var pt1 = null;
         var pt2 = null;

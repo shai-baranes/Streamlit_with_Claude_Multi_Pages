@@ -14,6 +14,7 @@ Run one Streamlit server and open it from multiple computers over a trusted LAN 
 | Navigation | Data, shared sales filters, and page-specific selections survive page switches |
 | Engineering views | Categorical/numeric filters, grouping, aggregation, full/stacked tables, numeric/datetime trends |
 | Sales pages | Existing calculations; missing-schema guidance instead of missing-column errors |
+| Chart point measurements | Shared-X and normalized chart coordinate/delta readouts are always active; click two points to compare, double-click to clear |
 | 3D flight simulation | Two adjacent, differently colored aircraft routes share the sample `Seconds` timeline; an adjustable distance limit adds a pink warning sleeve; an optional deterministic terrain surface demonstrates elevation changes |
 | Rendering | Generic table defaults to 200 rows; previews capped at 1,000; engineering charts capped at 10,000 points per trace |
 | Export | Explicit preparation; engineering export includes all filtered rows of the selected display fields |
