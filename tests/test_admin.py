@@ -120,7 +120,9 @@ def test_uninitialized_phantom_session_is_hidden_and_not_terminable(adapter):
 def test_cancelled_ingestion_stops(monkeypatch):
     import streamlit as st
     from streamlit.runtime.scriptrunner_utils.exceptions import StopException
-    monkeypatch.setenv('DASHBOARD_ADMIN','1')
+    from streamlit.runtime import scriptrunner
+    monkeypatch.delenv('DASHBOARD_ADMIN', raising=False)
+    monkeypatch.setattr(scriptrunner, 'get_script_run_ctx', lambda **kwargs: NS(session_id='test'))
     monkeypatch.setattr(st, 'session_state', {'_admin_terminating':True})
     monkeypatch.setattr(st, 'stop', lambda: (_ for _ in ()).throw(StopException()))
     with pytest.raises(StopException):
@@ -170,3 +172,15 @@ def test_launcher_admin_opt_in(monkeypatch, capsys):
     assert calls[0][0][2] == 'framework.admin_bootstrap'
     assert calls[0][1]['env']['DASHBOARD_ADMIN'] == '1'
     assert 'Server URL: http://127.0.0.1:8532' in capsys.readouterr().out
+
+
+def test_owned_disconnected_session_can_stop_without_admin_activity(adapter):
+    runtime, add = adapter
+    sid, session, directory = add(connected=False, initialized=False)
+    session.session_state['df_full'] = pd.DataFrame({'Seconds': [1, 2]})
+    other_sid, other, other_dir = add()
+
+    assert runtime.terminate(sid, directory.name)['state'] == 'terminated'
+    assert not directory.exists() and not session.session_state
+    assert runtime.manager.get_session_info(other_sid) is not None
+    assert other_dir.exists() and 'df_full' in other.session_state

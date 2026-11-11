@@ -1836,7 +1836,7 @@ requires-dist = [
     { name = "pyarrow", specifier = ">=24,<27" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8,<10" },
     { name = "selenium", marker = "extra == 'legacy-tools'", specifier = ">=4,<5" },
-    { name = "streamlit", specifier = ">=1.60,<2" },
+    { name = "streamlit", specifier = ">=1.63,<2" },
     { name = "streamlit-aggrid", specifier = ">=1.2.1.post2,<2" },
     { name = "tkinterdnd2", marker = "extra == 'legacy-tools'", specifier = ">=0.4,<1" },
     { name = "watchdog", specifier = ">=6.0.0" },

@@ -60,11 +60,40 @@ def render():
         sample_clicked = sample_col.button('Load sample data', width='stretch')
 
     if clear_clicked:
-        shutil.rmtree(session_directory(st.session_state.session_id), ignore_errors=True)
+        private_id = st.session_state.session_id
+        shutil.rmtree(session_directory(private_id), ignore_errors=True)
         st.session_state.clear()
+        # Keep the directory identity registered with client session cleanup.
+        st.session_state.session_id = private_id
         # Clear must leave an empty session even when the server has a startup file.
         st.session_state['cli_initialized'] = True
         st.rerun()
+    from framework import client_upload
+    if client_upload.TOKEN_PARAM in st.query_params:
+        tokens = st.query_params.get_all(client_upload.TOKEN_PARAM)
+        st.session_state['cli_initialized'] = True
+        try:
+            if st.session_state.get('dataset'):
+                raise ValueError('Open the launch link in a new browser tab.')
+            store = client_upload.staging
+            from streamlit.runtime.scriptrunner import get_script_run_ctx
+
+            runtime_id = get_script_run_ctx().session_id
+            claimed = store.claim(tokens[0], st.session_state.session_id, runtime_id) if store and len(tokens) == 1 else None
+            check_cancelled()
+            if claimed is None:
+                raise ValueError('This launch link is invalid, expired, or already used. Run client_load_csv again.')
+            path, name, parquet = claimed
+            st.session_state.pop('client_upload_error', None)
+            st.session_state.update(pending_source=path, pending_name=name, cli_auto_apply_source=path)
+            st.session_state['home:parquet'] = parquet
+            st.session_state['home:parquet-widget'] = parquet
+        except (ValueError, OSError) as error:
+            st.session_state['client_upload_error'] = str(error) if isinstance(error, ValueError) else 'Unable to claim the uploaded CSV. Try opening the link again.'
+        finally:
+            del st.query_params[client_upload.TOKEN_PARAM]
+    if st.session_state.get('client_upload_error'):
+        st.warning(st.session_state['client_upload_error'])
     if 'home:cli-options' not in st.session_state:
         try:
             st.session_state['home:cli-options'] = startup_csv_options()

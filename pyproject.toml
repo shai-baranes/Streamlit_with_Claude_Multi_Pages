@@ -5,7 +5,7 @@ description = "Session-isolated engineering CSV analytics"
 readme = "README_GPT.md"
 requires-python = ">=3.11"
 dependencies = [
-  "streamlit>=1.60,<2",
+  "streamlit>=1.63,<2",
   "pandas>=3.0,<4",
   "numpy>=2,<3",
   "plotly>=6,<7",

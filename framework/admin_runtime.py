@@ -1,6 +1,8 @@
 """Version-sensitive Streamlit administration, confined to its event loop."""
 import concurrent.futures
 import ipaddress
+import logging
+import threading
 import shutil
 import time
 import uuid
@@ -10,6 +12,21 @@ import pandas as pd
 import psutil
 
 from framework.config import ROOT
+
+
+_adapter_lock = threading.Lock()
+_adapter = None
+
+
+def shared_adapter(runtime, audit=None):
+    """Use one termination queue for both dashboard and loopback requests."""
+    global _adapter
+    with _adapter_lock:
+        if _adapter is None or _adapter.runtime is not runtime:
+            _adapter = RuntimeAdapter(runtime, audit or logging.getLogger(__name__))
+        elif audit is not None:
+            _adapter.audit = audit
+        return _adapter
 
 
 def estimate(values):
@@ -106,7 +123,7 @@ class RuntimeAdapter:
                 record['location'] = 'local' if local else 'remote'
             except ValueError:
                 record['location'] = 'unknown'
-            record['state'] = 'connected' if sid in active else 'disconnected'
+            record['state'] = 'terminating' if sid in self.pending else ('connected' if sid in active else 'disconnected')
             manager = self.runtime.uploaded_file_mgr
             with manager._lock:
                 record['upload_bytes'] = sum(len(f.data) for f in manager.file_storage.get(sid, {}).values())
@@ -136,7 +153,7 @@ class RuntimeAdapter:
             return False
         return True
 
-    def terminate(self, sid):
+    def terminate(self, sid, private_id=None):
         if sid in self.pending:
             return dict(id=sid, state='terminating')
         info = self.manager.get_session_info(sid)
@@ -145,10 +162,13 @@ class RuntimeAdapter:
         client = getattr(info, 'client', None)
         if client is not None and not (hasattr(client, 'close') or hasattr(client, '_websocket')):
             raise RuntimeError('Unsupported Streamlit client transport; termination unavailable.')
-        self.snapshot()
-        if sid not in self.records:
-            # Uninitialized internal connections are deliberately outside admin control.
-            raise KeyError(sid)
+        if private_id is None:
+            self.snapshot()
+            if sid not in self.records:
+                raise KeyError(sid)
+        else:
+            # A just-claimed upload may be stopped before its first projection.
+            self.records.setdefault(sid, dict(id=sid))['private_id'] = private_id
         session = info.session
         # The flag prevents an ingestion result from being committed after cancellation.
         session.session_state['_admin_terminating'] = True
@@ -159,11 +179,12 @@ class RuntimeAdapter:
         self.audit.info('terminate requested session=%s', sid)
         # Closing a session alone does not close the browser's WebSocket.
         self.runtime.close_session(sid)
+        reason = 'Session ended by client' if private_id else 'Session ended by administrator'
         if client is not None and hasattr(client, 'close'):
-            client.close(code=1000, reason='Session ended by administrator; refresh to start again')
+            client.close(code=1000, reason=reason)
         elif client is not None and hasattr(client, '_websocket'):
             # Streamlit 1.60 uses an ASGI client; its transport close is asynchronous.
-            self.loop.create_task(client._websocket.close(code=1000, reason='Session ended by administrator'))
+            self.loop.create_task(client._websocket.close(code=1000, reason=reason))
         self.reap()
         return dict(id=sid, state='terminating' if sid in self.pending else 'terminated')
 
@@ -182,18 +203,21 @@ class RuntimeAdapter:
 def activity(page):
     """Small shared-page hook; normal launches do not create administration state."""
     import os
+    check_cancelled()
     if os.environ.get('DASHBOARD_ADMIN') != '1':
         return
     import streamlit as st
-    if st.session_state.get('_admin_terminating'):
-        st.stop()
     st.session_state['_admin_activity'] = time.time()
     st.session_state['_admin_page'] = Path(page).stem
 
 
 def check_cancelled():
-    import os
-    if os.environ.get('DASHBOARD_ADMIN') == '1':
-        import streamlit as st
-        if st.session_state.get('_admin_terminating'):
-            st.stop()
+    import streamlit as st
+    from streamlit.runtime.scriptrunner import get_script_run_ctx
+
+    ctx = get_script_run_ctx(suppress_warning=True)
+    # Clear may wipe widget state while termination is queued. The runtime
+    # retains the cancellation independently until the script thread exits.
+    if ctx and ((_adapter is not None and ctx.session_id in _adapter.pending)
+                or st.session_state.get('_admin_terminating')):
+        st.stop()

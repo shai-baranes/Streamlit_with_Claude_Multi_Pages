@@ -2,7 +2,7 @@
 import os
 import threading
 from framework.admin_server import AdminServer
-from framework.admin_runtime import RuntimeAdapter
+from framework.admin_runtime import shared_adapter
 
 
 def main():
@@ -13,7 +13,7 @@ def main():
         while not stopped.wait(0.25):
             if runtime.exists() and runtime.get_instance()._async_objs is not None:
                 try:
-                    server.adapter = RuntimeAdapter(runtime.get_instance(), server.audit)
+                    server.adapter = shared_adapter(runtime.get_instance(), server.audit)
                 except Exception as error:
                     server.error = f'Unsupported Streamlit runtime: {error}'
                     return

@@ -30,7 +30,7 @@ def main():
         parser.error(str(error))
     env = dict(os.environ, DASHBOARD_SAMPLE='1' if args.sample else '0')
     env.update(DASHBOARD_ADMIN='1' if args.admin else '0', DASHBOARD_ADMIN_PORT=str(args.admin_port))
-    command = [sys.executable, '-m', 'streamlit', 'run', 'Load CSV.py',
+    command = [sys.executable, '-m', 'streamlit', 'run', 'dashboard_server.py',
                f'--server.port={args.port}', f'--server.address={args.address}',
                '--server.headless=true', f'--server.maxUploadSize={MAX_UPLOAD_MB}',
                '--server.enableXsrfProtection=true', '--server.enableCORS=true',

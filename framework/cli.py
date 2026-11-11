@@ -24,7 +24,7 @@ def validate_csv_path(value):
 
 def startup_csv_options():
     # Only inspect application arguments, never a hosting process's unrelated argv.
-    if Path(sys.argv[0]).name not in {'Load CSV.py', 'Load CSV_2.py'}:
+    if Path(sys.argv[0]).name not in {'Load CSV.py', 'Load CSV_2.py', 'dashboard_server.py'}:
         return StartupCSVOptions(None)
     parser = _ApplicationParser(add_help=False, allow_abbrev=False)
     add_csv_arguments(parser)

@@ -47,7 +47,7 @@ def cleanup(now=None):
     now = time.time() if now is None else now
     if ROOT.exists():
         for directory in ROOT.iterdir():
-            if directory.is_dir() and now - directory.stat().st_mtime > TTL_SECONDS:
+            if directory.is_dir() and directory.name != '.client-uploads' and now - directory.stat().st_mtime > TTL_SECONDS:
                 shutil.rmtree(directory, ignore_errors=True)
 
 
@@ -66,18 +66,22 @@ def save_source(stream, session_id):
                 if size > MAX_UPLOAD_MB * 1024**2:
                     raise ValueError(f'Upload exceeds {MAX_UPLOAD_MB} MB. Reduce the source size.')
                 output.write(block)
-        inspect_header(path)
-        # Validate structure once per uploaded source; usecols otherwise masks extra fields.
-        with path.open(encoding='utf-8-sig', newline='') as source:
-            reader = csv.reader(source, strict=True)
-            width = len(next(reader))
-            for row in reader:
-                if row and len(row) != width:
-                    raise ValueError(f'CSV row ending at line {reader.line_num} has {len(row)} fields; expected {width}.')
+        validate_source(path)
         return path
     except Exception:
         path.unlink(missing_ok=True)
         raise
+
+
+def validate_source(path):
+    inspect_header(path)
+    # Validate structure once per uploaded source; usecols otherwise masks extra fields.
+    with path.open(encoding='utf-8-sig', newline='') as source:
+        reader = csv.reader(source, strict=True)
+        width = len(next(reader))
+        for row in reader:
+            if row and len(row) != width:
+                raise ValueError(f'CSV row ending at line {reader.line_num} has {len(row)} fields; expected {width}.')
 
 
 def inspect_header(path):

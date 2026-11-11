@@ -61,6 +61,95 @@ Application arguments must follow Streamlit's `--` separator:
 | `--parquet true\|false` | `false` | Initial session checkbox/cache setting; accepted case-insensitively. |
 | `--load-all` | Off | Requires positional CSV_PATH; loads every row and column and hides the projection form for that source. Cannot be combined with --csv_file and is not a run_server.py option. |
 
+## Load a client-local CSV from Windows
+
+On the server, start the dashboard with `python run_server.py` or the existing Windows service.
+Client uploads use the same dashboard URL and port on the trusted LAN or VPN. The scripts
+upload a CSV from the Windows client. The server option `--csv_file` instead opens a path
+on the server for new sessions. Direct `streamlit run "Load CSV.py"` serves the dashboard UI only.
+
+Keep both client scripts together on the Windows machine. Run either command:
+
+```powershell
+.\client_load_csv.ps1 -ServerUrl "http://192.168.1.177:8501" -CsvFile "C:\Engineering Data\flight.csv" -Parquet $false
+.\client_load_csv.cmd "http://192.168.1.177:8501" "C:\Engineering Data\flight.csv" true
+```
+
+| PowerShell argument | CMD position | Default | Behavior |
+|---|---|---|---|
+| `-ServerUrl` | 1 | Required | Dashboard URL, including its port. |
+| `-CsvFile` | 2 | Required for upload | Local CSV path. Quote paths with spaces. |
+| `-Parquet` | 3 | False | Initial cache setting. Use `$true` or `$false` in PowerShell and `true` or `false` in CMD. Upload only. |
+| `-StopAll` | 2 (`--stop-all`) | Off | Stop this terminal’s sessions on the specified server. Omit the CSV path and Parquet setting. |
+
+The script opens a single-use link in the default browser after validation. Browser settings
+determine whether it opens in a tab or window. The link expires after 10 minutes and creates an
+independent session that applies the fixed fields over the full Seconds range. The projection
+form stays available for adjustments. Run the script again if the link expires or the session
+is lost after it was claimed. With `--admin` enabled, the browser session appears in the
+loopback administration console once it connects. Pending uploads have no dashboard session.
+
+Uploads are streamed to disk and use the existing CSV size and format limits. Staging accepts
+two uploads at a time, eight in-flight or unclaimed files in total, and twice the per-file limit
+in reserved bytes. The endpoint has no separate login. Keep access restricted to trusted
+clients. The client transmits the CSV and launch token over the configured connection, so use
+HTTPS when the network requires transport encryption.
+
+### Stop this terminal’s client sessions
+
+Run the stop command in the same PowerShell or Command Prompt session used to launch
+the CSVs, with the same dashboard URL:
+
+```powershell
+.\client_load_csv.ps1 -ServerUrl "http://192.168.1.177:8501" -StopAll
+.\client_load_csv.cmd "http://192.168.1.177:8501" --stop-all
+```
+
+Use updated scripts and restart the server with the updated `run_server.py` before
+launching CSVs you want to stop this way. The command works without `--admin`. It closes
+this terminal’s browser sessions on that server and cancels its active uploads and unused
+launch links. Other terminals and servers keep running. A refresh that starts a new
+browser session does not inherit ownership. The script sends an ownership credential over
+the configured connection; use HTTPS if the network requires transport encryption.
+
+Run the command before closing the terminal. Closing it does not end browser sessions,
+and another terminal cannot recover the launch group. To clean up afterward, use **Clear
+dataset** in the dashboard or terminate the session through server administration if
+enabled. The stop command reports sessions still terminating: running work can delay
+private-file cleanup and memory release. The server can reuse released memory even if
+its reported RAM usage does not immediately drop.
+
+If Stop All returns HTTP 405 while uploads still work, check which dashboard process
+is listening at the client URL. Restart it with `run_server.py` from the updated
+checkout. Restarting ends existing sessions, so relaunch any CSVs you still need.
+
+### PowerShell says the script is not digitally signed
+
+Use `client_load_csv.cmd` with the arguments shown above. Under `RemoteSigned`, it
+asks before removing the download marker from an unsigned `.ps1` file. Approve only
+after reviewing the file and confirming your organization allows it. If PowerShell
+still blocks the script, the launcher prints the execution policies for each scope.
+
+To check manually, run these commands in the folder containing `client_load_csv.ps1`.
+
+```powershell
+Get-ExecutionPolicy
+Get-ExecutionPolicy -List
+Get-Item -LiteralPath .\client_load_csv.ps1 -Stream Zone.Identifier -ErrorAction SilentlyContinue
+```
+
+- With `RemoteSigned`, if the last command reports `Zone.Identifier`, review the script
+  and verify its source. If your organization permits it, run
+  `Unblock-File -LiteralPath .\client_load_csv.ps1` and retry the same launch command.
+  This removes the download marker from that file alone.
+- With `AllSigned`, ask your administrator for a copy signed by a trusted publisher.
+  With `Restricted`, use the browser uploader or ask your administrator about approved
+  script execution.
+- The CMD wrapper invokes the same PowerShell script. For manual upload, open the
+  dashboard in the browser, choose **Upload**, select your CSV, and click **Apply columns**.
+
+See [Microsoft's PowerShell execution policy guide](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1).
+
 ## Session administration (offline networks supported)
 
 Administration is optional. Normal dashboard users still connect to port 8501 without signing in.
