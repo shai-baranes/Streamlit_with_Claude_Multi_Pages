@@ -46,7 +46,7 @@ if real.session_state.get('visible', True):
 
 @pytest.mark.parametrize('page', [p for p in (ROOT / 'pages').glob('*.py') if 'Animated_Trajectory' not in p.name])
 def test_pages_sample(page):
-    compile(page.read_text(), str(page), "exec")
+    compile(page.read_text(encoding="utf-8"), str(page), "exec")
     app = AppTest.from_file(str(page))
     app.session_state['df_full'] = load_projection(ROOT / 'synthetic_sales_data.csv', ALWAYS_LOAD_COLUMNS)
     app.run(timeout=30)

@@ -129,7 +129,7 @@ def test_sample_projection_keeps_trajectory_fields():
 
 
 def test_warning_sleeve_uses_mesh_geometry():
-    chart = (ROOT / "framework" / "trajectory_chart.py").read_text()
+    chart = (ROOT / "framework" / "trajectory_chart.py").read_text(encoding="utf-8")
     assert 'type: "mesh3d"' in chart
     assert "Two triangles per segment" in chart
     assert '<select id="trajectory-fps">' in chart

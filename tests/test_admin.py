@@ -154,9 +154,9 @@ def test_transport_loopback_origin_and_cli(tmp_path, monkeypatch, capsys):
 
 def test_admin_console_has_tokenless_prominent_connection_states():
     assets = Path(transport.__file__).parent / 'admin_assets'
-    html = (assets / 'admin.html').read_text()
-    script = (assets / 'admin.js').read_text()
-    styles = (assets / 'admin.css').read_text()
+    html = (assets / 'admin.html').read_text(encoding='utf-8')
+    script = (assets / 'admin.js').read_text(encoding='utf-8')
+    styles = (assets / 'admin.css').read_text(encoding='utf-8')
     assert 'Administration token' not in html and 'id="connection-state"' in html
     assert 'Authorization' not in script and 'window.location.origin' in script
     assert '.connection.connected' in styles and '.connection.disconnected' in styles
