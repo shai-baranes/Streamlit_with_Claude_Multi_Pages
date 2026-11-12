@@ -323,6 +323,7 @@ export default async function(component) {
         saveState()
       } else {
         player.state.index += 1
+        parentElement.ownerDocument.dispatchEvent(new Event("dashboard-playback-frame"))
       }
       renderMetrics()
       await renderPlot()

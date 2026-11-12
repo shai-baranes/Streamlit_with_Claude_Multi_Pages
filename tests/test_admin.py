@@ -30,7 +30,8 @@ def adapter(tmp_path, monkeypatch):
     active = set()
     manager = NS(list_sessions=lambda: list(sessions.values()),
                  list_active_sessions=lambda: [sessions[s] for s in active],
-                 get_session_info=lambda sid: sessions.get(sid))
+                 get_session_info=lambda sid: sessions.get(sid),
+                 get_active_session_info=lambda sid: sessions.get(sid) if sid in active else None)
     def close(sid):
         sessions.pop(sid, None)
         active.discard(sid)
@@ -184,3 +185,238 @@ def test_owned_disconnected_session_can_stop_without_admin_activity(adapter):
     assert not directory.exists() and not session.session_state
     assert runtime.manager.get_session_info(other_sid) is not None
     assert other_dir.exists() and 'df_full' in other.session_state
+
+
+@pytest.mark.parametrize('minutes', ar.IDLE_MINUTES)
+@pytest.mark.parametrize('automatic', [False, True])
+def test_idle_termination_respects_cutoff_and_busy_work(adapter, monkeypatch, minutes, automatic):
+    from streamlit.runtime.scriptrunner import ScriptRunnerEvent
+    from streamlit.runtime.state.session_state import SessionState
+
+    runtime, add = adapter
+    now = 10000
+    cutoff = now - minutes * 60
+    monkeypatch.setattr(ar.time, 'time', lambda: now)
+    old, disconnected, old_dir = add(connected=False)
+    # Streamlit's internal state supports indexed access but has no dict.get().
+    original = disconnected.session_state
+    disconnected.session_state = SessionState()
+    for key, value in original.items():
+        disconnected.session_state[key] = value
+    _, boundary, _ = add()
+    _, busy, _ = add()
+    _, unknown, _ = add()
+    recent_sid, recent, _ = add()
+    completed_sid, completed, _ = add()
+    for session in (disconnected, busy, recent, completed):
+        session.session_state['_admin_activity'] = cutoff - 1
+    boundary.session_state['_admin_activity'] = cutoff
+    unknown.session_state.pop('_admin_activity')
+    busy._scriptrunner = object()
+
+    # Browser input/playback and script completion both extend the idle window.
+    token = runtime.register_activity(recent_sid)
+    runtime.activities[recent_sid].last_activity = cutoff - 1
+    assert runtime.report_activity(token)
+    runtime.register_activity(completed_sid)
+    runtime.activities[completed_sid].last_activity = cutoff - 1
+    runtime._script_event(NS(_session_id=completed_sid), ScriptRunnerEvent.SCRIPT_STOPPED_WITH_SUCCESS)
+    runtime.loop.run_until_complete(asyncio.sleep(0))
+
+    expected = dict(terminated=1, terminating=0, skipped=5, failed=0)
+    if automatic:
+        runtime.set_idle_policy(True, minutes)
+        runtime.monitor()
+        outcome = dict(minutes=minutes, at=now, **expected)
+        assert runtime.snapshot()['last_automatic_termination'] == outcome
+        runtime.monitor()
+        assert runtime.snapshot()['last_automatic_termination'] == outcome
+    else:
+        assert runtime.terminate_idle(minutes) == expected
+    assert runtime.manager.get_session_info(old) is None and not old_dir.exists()
+    assert runtime.terminate_idle(minutes)['terminated'] == 0
+
+
+@pytest.mark.parametrize('automatic', [False, True])
+def test_idle_batch_rechecks_sessions_and_continues_after_errors(adapter, monkeypatch, automatic):
+    runtime, add = adapter
+    failed, _, _ = add()
+    first, _, _ = add()
+    active, session, _ = add()
+    last, _, _ = add()
+    monkeypatch.setattr(ar.time, 'time', lambda: 10000)
+    original = runtime.terminate
+
+    def terminate(sid, **kwargs):
+        if sid == failed:
+            raise RuntimeError('Unavailable transport')
+        if sid == first:
+            session.session_state['_admin_activity'] = 10000
+        return original(sid, **kwargs)
+
+    monkeypatch.setattr(runtime, 'terminate', terminate)
+    expected = dict(terminated=2, terminating=0, skipped=1, failed=1)
+    if automatic:
+        runtime.set_idle_policy(True, 5)
+        runtime.monitor()
+        assert runtime.last_automatic_termination == dict(minutes=5, at=10000, **expected)
+    else:
+        assert runtime.terminate_idle(5) == expected
+    assert runtime.manager.get_session_info(last) is None
+    assert runtime.manager.get_session_info(active) is not None
+
+
+def test_monitor_uses_current_policy(adapter, monkeypatch):
+    runtime, add = adapter
+    sid, _, _ = add()
+    monkeypatch.setattr(ar.time, 'time', lambda: 500)
+    assert runtime.snapshot()['idle_policy'] == {'enabled': False, 'minutes': 15}
+    runtime.set_idle_policy(False, 5)
+    runtime.monitor()
+    runtime.set_idle_policy(True, 15)
+    runtime.monitor()
+    assert runtime.manager.get_session_info(sid) is not None
+    runtime.set_idle_policy(True, 5)
+    runtime.set_idle_policy(False, 5)
+    runtime.monitor()
+    assert runtime.manager.get_session_info(sid) is not None
+    runtime.set_idle_policy(True, 5)
+    runtime.monitor()
+    assert runtime.manager.get_session_info(sid) is None
+
+
+def test_idle_policy_transport(tmp_path, monkeypatch):
+    monkeypatch.setattr(transport, 'admin_state_directory', lambda _: tmp_path / 'private')
+    server = transport.AdminServer(0)
+    calls = []
+
+    def call(method, enabled, minutes):
+        calls.append((method, enabled, minutes))
+        if not enabled:
+            raise RuntimeError('Unavailable')
+        return dict(enabled=enabled, minutes=minutes)
+
+    server.adapter = NS(call=call)
+    url = f'http://127.0.0.1:{server.http.server_port}/idle-policy'
+
+    def post(body, **headers):
+        return urlopen(Request(url, json.dumps(body).encode(), headers), timeout=5)
+
+    try:
+        valid = {'enabled': True, 'minutes': 30}
+        for body, headers, status in [
+            ({'minutes': 5}, {}, 400),
+            ({'enabled': 'true', 'minutes': 5}, {}, 400),
+            ({'enabled': True, 'minutes': 10}, {}, 400),
+            ({'enabled': True, 'minutes': True}, {}, 400),
+            (valid, {'Origin': 'http://evil.test'}, 403),
+            (valid, {'Host': 'evil.test'}, 403),
+            ({'enabled': False, 'minutes': 30}, {}, 503),
+        ]:
+            with pytest.raises(HTTPError) as error:
+                post(body, **headers)
+            assert error.value.code == status
+        with post(valid) as response:
+            assert json.load(response) == valid
+        assert calls == [('set_idle_policy', False, 30), ('set_idle_policy', True, 30)]
+    finally:
+        server.close()
+
+
+def test_activity_credentials_are_isolated_and_removed(adapter, monkeypatch):
+    runtime, add = adapter
+    first, _, _ = add()
+    second, _, _ = add()
+    monkeypatch.setattr(ar.time, 'time', lambda: 100)
+    a = runtime.register_activity(first)
+    b = runtime.register_activity(second)
+    assert a != b and runtime.register_activity(first) == a
+    monkeypatch.setattr(ar.time, 'time', lambda: 200)
+    assert not runtime.report_activity('invalid')
+    assert runtime.report_activity(a)
+    assert runtime.activities[first].last_activity == 200
+    assert runtime.activities[second].last_activity == 100
+    runtime.terminate(first)
+    assert a not in runtime.activity_tokens and not runtime.report_activity(a)
+    runtime.runtime.close_session(second)
+    runtime.snapshot()
+    assert b not in runtime.activity_tokens
+
+
+def test_idle_transport_validates_threshold_and_origin(tmp_path, monkeypatch):
+    monkeypatch.setattr(transport, 'admin_state_directory', lambda _: tmp_path / 'private')
+    server = transport.AdminServer(0)
+    calls = []
+    counts = dict(terminated=1, terminating=1, skipped=2, failed=0)
+    server.adapter = NS(call=lambda *args: calls.append(args) or counts)
+    url = f'http://127.0.0.1:{server.http.server_port}/terminate-idle'
+
+    def post(value, **headers):
+        return urlopen(Request(url, json.dumps(value).encode(), headers), timeout=5)
+
+    try:
+        for body in ({'minutes': '5'}, {'minutes': True}, {'minutes': 10}, {}, [5]):
+            with pytest.raises(HTTPError) as error:
+                post(body)
+            assert error.value.code == 400
+        with pytest.raises(HTTPError) as error:
+            post({'minutes': 5}, Origin='http://evil.test')
+        assert error.value.code == 403
+        with post({'minutes': 15}) as response:
+            assert response.status == 202 and json.load(response) == counts
+        assert calls == [('terminate_idle', 15)]
+    finally:
+        server.close()
+
+
+def test_activity_route_rejects_invalid_credentials_and_origins(adapter, monkeypatch):
+    from starlette.requests import Request
+    from framework import admin_activity
+
+    runtime, add = adapter
+    sid, _, _ = add()
+    token = runtime.register_activity(sid)
+    monkeypatch.setattr(ar, 'shared_adapter', lambda _: runtime)
+    import streamlit.runtime
+    monkeypatch.setattr(streamlit.runtime, 'get_instance', lambda: runtime.runtime)
+
+    def post(**headers):
+        request = Request({'type': 'http', 'scheme': 'http', 'path': '/api/session-activity',
+                           'server': ('localhost', 8501),
+                           'headers': [(name.encode(), value.encode()) for name, value in headers.items()]})
+        return asyncio.run(admin_activity.report(request)).status_code
+
+    monkeypatch.setenv('DASHBOARD_ADMIN', '0')
+    assert post() == 404
+    monkeypatch.setenv('DASHBOARD_ADMIN', '1')
+    assert post() == 400
+    assert post(**{'x-dashboard-activity': 'a' * 43}) == 403
+    assert post(**{'x-dashboard-activity': token, 'origin': 'http://evil.test'}) == 403
+    assert post(**{'x-dashboard-activity': token, 'origin': 'http://localhost:8501'}) == 204
+
+
+def test_activity_reporter_mounts_once_per_run_and_survives_clear(monkeypatch):
+    from streamlit.testing.v1 import AppTest
+    from framework import admin_activity
+
+    calls = []
+    monkeypatch.setenv('DASHBOARD_ADMIN', '1')
+    monkeypatch.setattr(ar, 'shared_adapter', lambda _: NS(
+        call=lambda method, sid: calls.append((method, sid)) or 'a' * 43))
+    app = AppTest.from_string("""
+import streamlit as st
+from framework.admin_runtime import activity
+activity('loader')
+activity('loader')
+if st.button('Clear'):
+    st.session_state.clear()
+    st.rerun()
+""")
+    try:
+        app.run()
+        assert not app.exception and len(app.get('bidi_component')) == 1
+        app.button[0].click().run()
+        assert not app.exception and len(app.get('bidi_component')) == 1
+        assert len(calls) == 3 and len({sid for _, sid in calls}) == 1
+    finally:
+        admin_activity._reporter.clear()

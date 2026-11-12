@@ -5,6 +5,9 @@ main {max-width: 1600px; margin: auto} button {padding: .6rem 1rem; margin: .2re
 .connection.connected {color:#14532d; background:#dcfce7; border-color:#22c55e}
 .connection.disconnected {color:#7f1d1d; background:#fee2e2; border-color:#ef4444}
 .connection-actions {margin-bottom:1rem}.connection-actions button:disabled {cursor:not-allowed; opacity:.5}
+.idle-actions {display:inline-flex; align-items:center; gap:.2rem}
+#idle-threshold {font:inherit; padding:.48rem; border-radius:.25rem}
+#idle-count {margin-left:.4rem}
 .table {overflow-x:auto} table {border-collapse:collapse; background:white; width:100%}
 td,th {padding:.7rem; border-bottom:1px solid #ddd; text-align:left; overflow-wrap:anywhere}
 .session-connected td:nth-child(3) {color:#166534; font-weight:700}

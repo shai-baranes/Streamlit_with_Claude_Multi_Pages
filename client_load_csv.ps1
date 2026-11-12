@@ -140,8 +140,16 @@ try {
         $expectedStatus = 201
         $action = 'Upload'
     }
-    $response = $client.PostAsync($endpoint, $content).GetAwaiter().GetResult()
-    $body = $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+    try {
+        $response = $client.PostAsync($endpoint, $content).GetAwaiter().GetResult()
+        $body = $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+    }
+    catch {
+        # PowerShell wraps .NET transport errors. Show the underlying cause.
+        $detail = $_.Exception.GetBaseException().Message
+        $authority = $base.GetLeftPart([UriPartial]::Authority)
+        throw "$action request to $authority failed. $detail"
+    }
     if ([int]$response.StatusCode -ne $expectedStatus) {
         $detail = $null
         try { $detail = ($body | ConvertFrom-Json).error } catch {}

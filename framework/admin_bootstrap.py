@@ -20,7 +20,7 @@ def main():
                 break
         while not stopped.wait(5):
             try:
-                server.adapter.call('snapshot')
+                server.adapter.call('monitor')
             except Exception:
                 server.audit.exception('monitor refresh failed')
     threading.Thread(target=attach, daemon=True).start()

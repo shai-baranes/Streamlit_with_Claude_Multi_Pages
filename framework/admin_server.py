@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from framework.admin_runtime import IDLE_MINUTES
 
 
 def admin_state_directory(port):
@@ -69,7 +70,7 @@ class AdminServer:
             def do_GET(self):
                 if self.path in ('/', '/admin.js', '/admin.css'):
                     name, kind = {'/': ('admin.html', 'text/html; charset=utf-8'), '/admin.js': ('admin.js', 'text/javascript'), '/admin.css': ('admin.css', 'text/css')}[self.path]
-                    self.send(200, (Path(__file__).parent / 'admin_assets' / name).read_text(), kind)
+                    self.send(200, (Path(__file__).parent / 'admin_assets' / name).read_text(encoding='utf-8'), kind)
                     return
                 if not self.authorized():
                     return
@@ -85,14 +86,30 @@ class AdminServer:
             def do_POST(self):
                 if not self.authorized():
                     return
-                if self.path != '/terminate':
+                if self.path not in ('/terminate', '/terminate-idle', '/idle-policy'):
                     self.send(404, {'error': 'Unknown endpoint.'})
                     return
                 try:
                     size = int(self.headers.get('Content-Length', '0'))
                     if not 0 < size <= 1024:
                         raise ValueError('Invalid request size')
-                    sid = json.loads(self.rfile.read(size))['id']
+                    body = json.loads(self.rfile.read(size))
+                    if not isinstance(body, dict):
+                        raise ValueError('Expected a JSON object')
+                    if self.path == '/idle-policy':
+                        enabled, minutes = body.get('enabled'), body.get('minutes')
+                        if type(enabled) is not bool or type(minutes) is not int or minutes not in IDLE_MINUTES:
+                            raise ValueError('Invalid idle policy')
+                        self.send(200, owner.adapter.call('set_idle_policy', enabled, minutes))
+                        return
+                    if self.path == '/terminate-idle':
+                        minutes = body.get('minutes')
+                        if type(minutes) is not int or minutes not in IDLE_MINUTES:
+                            raise ValueError('Invalid idle threshold')
+                        result = owner.adapter.call('terminate_idle', minutes)
+                        self.send(202 if result['terminating'] else 200, result)
+                        return
+                    sid = body.get('id')
                     if not isinstance(sid, str) or len(sid) > 128:
                         raise ValueError('Invalid session id')
                     result = owner.adapter.call('terminate', sid)
@@ -102,6 +119,10 @@ class AdminServer:
                 except (ValueError, TypeError):
                     self.send(400, {'error': 'Invalid request.'})
                 except Exception:
+                    if self.path == '/idle-policy':
+                        owner.audit.exception('idle policy update failed')
+                        self.send(503, {'error': 'Idle settings could not be saved. Check the current settings before retrying.'})
+                        return
                     owner.audit.exception('termination failed')
                     self.send(503, {'error': 'Termination unavailable; inspect status before retrying.'})
         self.http = ThreadingHTTPServer(('127.0.0.1', port), Handler)

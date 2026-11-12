@@ -6,9 +6,22 @@
 <strong id="connection-state">Disconnected</strong>
 <span id="connection-detail">Select Connect to open the administration session through this server-local or SSH-tunneled address.</span>
 </div>
-<div class="connection-actions"><button id="connect">Connect</button><button id="logout" disabled>Disconnect</button></div>
+<div class="connection-actions">
+  <button id="connect">Connect</button><button id="logout" disabled>Disconnect</button>
+  <span class="idle-actions">
+    <button id="terminate-idle" disabled>Terminate idle sessions</button>
+    <select id="idle-threshold" aria-label="Idle time threshold" disabled>
+      <option value="5">5min</option><option value="15" selected>15min</option>
+      <option value="30">30min</option><option value="60">1hr</option>
+    </select>
+  </span>
+  <label><input id="auto-idle" type="checkbox" autocomplete="off" disabled> Automatically terminate idle sessions</label>
+  <span id="idle-count" role="status"></span>
+</div>
+<p id="idle-policy-status" role="status" hidden></p>
+<p id="idle-auto-result" role="status" hidden></p>
 <p id="message" role="status"></p><p id="server"></p>
 <section id="confirmation" hidden aria-label="Confirm termination"><p id="confirmation-text"></p><button id="confirm">Confirm termination</button><button id="cancel">Cancel</button></section>
 <p>Memory values are estimates of known retained data, not total per-session RAM. Shared overhead, temporary calculations and browser memory are excluded. Refreshes every five seconds. Times use this browser’s timezone.</p>
-<div class="table"><table><thead><tr><th>Session</th><th>Client</th><th>State</th><th>Created / activity</th><th>Page / dataset</th><th>Rows / columns</th><th>Frame MiB</th><th>Upload MiB</th><th>Export MiB</th><th>Disk MiB</th><th>Action</th></tr></thead><tbody id="sessions"></tbody></table></div>
+<div class="table"><table><thead><tr><th>Session</th><th>Client</th><th>State</th><th>Created / activity</th><th>Idle time</th><th>Page / dataset</th><th>Rows / columns</th><th>Frame MiB</th><th>Upload MiB</th><th>Export MiB</th><th>Disk MiB</th><th>Action</th></tr></thead><tbody id="sessions"></tbody></table></div>
 </main><script src="/admin.js"></script></html>

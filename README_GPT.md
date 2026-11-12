@@ -37,8 +37,8 @@ monitoring loop. Normal user access is unchanged. Admin-enabled launches print t
 Monitoring samples every five seconds, listing connected and retained disconnected sessions,
 observed client addresses, page/dataset metadata, estimated frame/upload/export sizes, private disk
 size, process RSS/CPU, and available host RAM. First-observed timestamps approximate creation;
-last activity means page execution, not browser-only animation. Estimates are not hard per-session
-RAM or CPU accounting. The metadata registry retains no extra DataFrames.
+last activity reflects dashboard interaction, active playback, and completed server work.
+Estimates are not hard per-session RAM or CPU accounting. The metadata registry retains no extra DataFrames.
 Uninitialized Streamlit connections with no application page activity are omitted from monitoring;
 they own no dashboard dataset and would otherwise appear as recurring phantom `— / —` rows.
 
@@ -47,6 +47,20 @@ transport, prevents late ingestion commits, and releases session state and priva
 script thread exits. Locked files are retried. Native work can delay cleanup; Python may retain freed
 memory for reuse. Refresh can start a new session, including normal explicit CLI source staging.
 Other sessions remain independent. Expired runtime sessions also have their tracked private files cleaned.
+
+Use **Terminate idle sessions** and its dropdown to review and confirm a manual bulk action.
+Options are **5min**, **15min** (default), **30min**, and **1hr**. The server checks again at
+confirmation and skips busy sessions, sessions already terminating, and sessions without a
+known activity time. Connected and retained disconnected sessions qualify when their idle
+duration exceeds the threshold. The audit log records the threshold and outcomes. Sessions
+reported as still terminating may need time to finish cleanup.
+
+Check **Automatically terminate idle sessions** to apply the same threshold without confirmation.
+The server checks every five seconds and ends sessions idle longer than the selected value.
+The checkbox and dropdown are shared across administration tabs. Automation continues after
+Disconnect or closing the tab. Uncheck the box to stop it. A server restart returns to unchecked
+and **15min**. The console shows the latest automatic result, and cleanup may finish after that
+result is reported. The audit log records settings changes and sweeps that attempted termination.
 
 The adapter deliberately contains Streamlit internal API dependencies. Test administration after
 dependency upgrades. The bounded audit log records session IDs and termination outcomes, not data
@@ -246,6 +260,21 @@ New-NetFirewallRule -DisplayName 'Engineering Dashboard LAN' -Direction Inbound 
 ```
 
 The scripts do not change firewall rules, install software, or expose the server publicly automatically. This release assumes a trusted LAN/VPN and has no application login. Public-internet hosting needs a separate authenticated HTTPS deployment.
+
+### Moving the server from macOS to Windows
+
+1. Create a fresh Windows virtual environment and install the dependencies using the
+   [Windows commands above](#installation-and-launch). Start `run_server.py` in the foreground
+   and open `http://127.0.0.1:8501` on the Windows server before installing the service.
+2. Use `ipconfig` on the server to find its LAN address. Allow inbound TCP 8501 from the client
+   LAN/VPN range as shown above. If you start with `--admin`, port 8502 stays on loopback.
+3. From the Windows client, open the dashboard with the new server's LAN IP or DNS name, then
+   use that URL in the existing client scripts. Check that the name resolves from the client
+   and the dashboard responds over HTTP. A Windows computer name needs to be resolvable on
+   your LAN or VPN. Use a DNS name that tracks the IP or a DHCP reservation for a stable address.
+4. If using WinSW, give the service account read access to any server startup CSV and write
+   access to the configured private data directory. Use a Windows path for `--csv_file`.
+   Client uploads still take a path on the Windows client.
 
 ## Load a client-local CSV from Windows
 

@@ -63,10 +63,17 @@ Application arguments must follow Streamlit's `--` separator:
 
 ## Load a client-local CSV from Windows
 
-On the server, start the dashboard with `python run_server.py` or the existing Windows service.
+On a macOS or Windows server, start the dashboard with `python run_server.py`.
+On Windows you can also run it as a [WinSW service](README_GPT.md#windows-service).
 Client uploads use the same dashboard URL and port on the trusted LAN or VPN. The scripts
 upload a CSV from the Windows client. The server option `--csv_file` instead opens a path
 on the server for new sessions. Direct `streamlit run "Load CSV.py"` serves the dashboard UI only.
+
+When moving the server to Windows, use the Windows server's LAN IP or a hostname that
+resolves to it from the client. The Mac's Bonjour hostname points to the Mac. For a stable
+address, use a LAN/VPN DNS name that tracks the Windows server's IP, or reserve its IP in DHCP.
+Allow inbound TCP 8501 from the intended LAN/VPN range on the Windows server.
+Use the same URL for uploads and `--stop-all` on each server.
 
 Keep both client scripts together on the Windows machine. Run either command:
 
@@ -175,6 +182,7 @@ the dashboard address. No external identity provider or internet connection is r
 | Inspect client, page, dataset, rows and columns | Table | `sessions inspect ID` | Same CLI command on server |
 | Compare estimated frame/upload/export RAM and private disk bytes | Table, MiB | `sessions list --json` or `inspect` | Same CLI command on server |
 | View process RAM/CPU and available host RAM | Summary | `sessions list --json` | Same CLI command on server |
+| Terminate idle sessions in bulk | **Terminate idle sessions**, then confirm | — | Admin UI over tunnel |
 | Terminate one session | Confirm **Terminate** | `sessions terminate ID` | Same CLI command on server |
 
 ### Open the server UI
@@ -189,6 +197,23 @@ the dashboard address. No external identity provider or internet connection is r
    normal CLI startup-file staging still applies to that new session.
 4. Click **Disconnect** to clear the table and stop browser refreshes. A prominent green or red
    panel shows whether this browser console is connected or disconnected and displays its URL.
+
+Use **Terminate idle sessions** to end sessions idle longer than the selected threshold.
+The dropdown offers **5min**, **15min** (default), **30min**, and **1hr**. The table shows idle
+time and which sessions are busy. Review the eligible count and confirm. The server checks
+eligibility again before termination and reports how many sessions ended, are still cleaning
+up, were skipped, or failed.
+
+Clicks, typing, scrolling, dragging, playback, and completed server work reset the idle timer.
+An open tab with no activity keeps aging. Busy sessions are skipped, and a retained disconnected
+session can qualify.
+
+Check **Automatically terminate idle sessions** to apply the same threshold without confirmation.
+The server checks every five seconds and ends sessions idle longer than the selected value.
+The checkbox and dropdown are shared across administration tabs. Automation continues after
+Disconnect or closing the tab. Uncheck the box to stop it. A server restart returns to unchecked
+and **15min**. The console shows the latest automatic result, and cleanup may finish after that
+result is reported.
 
 `admin.log` remains under `~/.engineering-dashboard-admin/8502/` on macOS or
 `%LOCALAPPDATA%\.engineering-dashboard-admin\8502\` on Windows and rotates at 1 MiB with three
@@ -347,7 +372,6 @@ not necessarily the interactive user's profile. The service account needs a writ
   represent known retained buffers; browser RAM is excluded. Python may reuse freed memory without
   returning it to the OS. Native calculations cannot safely be force-killed inside the shared process.
 
-Administration does not impose automatic idle timeouts, block users, or kill the shared server.
 Windows service/SSH setup must be validated on the target Windows machine.
 
 # 📊 Streamlit + Pandas Tutorial — Global Sales Dashboard

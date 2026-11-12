@@ -6,7 +6,7 @@ import anyio
 import streamlit as st
 from starlette.routing import Route
 
-from framework import client_upload
+from framework import admin_activity, client_upload
 
 
 @asynccontextmanager
@@ -37,4 +37,5 @@ async def lifespan(_app):
 app = st.App("Load CSV.py", routes=[
     Route('/api/client-load-csv', client_upload.upload_csv, methods=['POST']),
     Route('/api/client-stop-sessions', client_upload.stop_sessions, methods=['POST']),
+    Route('/api/session-activity', admin_activity.report, methods=['POST']),
 ], lifespan=lifespan)
