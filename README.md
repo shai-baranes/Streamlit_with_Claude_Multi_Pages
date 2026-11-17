@@ -80,6 +80,38 @@ Application arguments must follow Streamlit's `--` separator:
 Combine `--load-all` with `--all-columns` to keep every column enabled on later files while
 loading every row of the positional startup file.
 
+## Shared Seconds stacked-value presets
+
+Open **Presets** above the column controls on the Seconds stacked-values page.
+Set your display columns, exclusion rule, and view mode, enter a name in **Active preset**, and click
+**Save new**. Names appear alphabetically in **Saved presets** and must be unique
+regardless of case. Select a name and click **Apply preset** to restore its
+column order, exclusions, and view mode. The first available saved column becomes the
+anchor. The page reports unavailable columns or adjusted exclusions and keeps
+the current settings if none of the saved columns are loaded. Presets preserve
+the current filters. Older presets keep the current view mode until you update
+them. The exclusion rule takes effect in **Stacked by All**.
+
+**Update selected** updates the last preset you applied. Change the settings
+and leave **Active preset** blank to keep the original name. Enter a
+new name to rename it. After updating, the dropdown selects the updated preset.
+**Delete selected** acts on the dropdown selection and asks
+for confirmation. Everyone using the same server can create, update, and delete
+presets. The list updates when you interact with or revisit the page. Click
+**Apply preset** to load the selected preset’s latest settings.
+After a successful apply, the button becomes available again when you change
+the selection, settings, or **Active preset** text, or when a newer revision is available.
+**Active preset** shows the applied preset. Changing the display columns,
+exclusions, or view mode clears the name so you can name the edited settings.
+
+The server stores names and column settings in
+`local_data/stacked_seconds_presets.sqlite3` under the app installation.
+Session Clear and server restarts leave this file intact. The account running
+the app, including the Windows service account, must be able to create and
+write to `local_data/`. To back up, restore, or reset presets, stop the server
+first. Copy the database file for a backup, replace it with a backup to restore,
+or remove it to start with an empty preset list.
+
 ## Load a client-local CSV from Windows
 
 On a macOS or Windows server, start the dashboard with `python run_server.py`.

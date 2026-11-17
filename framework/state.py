@@ -10,6 +10,13 @@ class PersistentUI:
         self.target, self.scope = target, scope
         self.in_form = False
 
+    def set_widget_value(self, key, value):
+        """Update a keyed widget before rendering it, including its navigation state."""
+        scope = 'shared' if self.scope == 'utils' else self.scope
+        st.session_state[f'widget:{scope}:{key}'] = value
+        st.session_state[f'value:{scope}:{key}'] = value
+        ScopedState(self.scope)[key] = value
+
     def __getattr__(self, name):
         if name == 'cache_data':
             # Legacy decorators cached entire private frames process-wide. Source projections
@@ -61,8 +68,11 @@ class PersistentUI:
                 current = st.session_state[key]
                 if name == 'multiselect':
                     st.session_state[key] = [v for v in current if v in options]
-                elif current not in options and len(options):
-                    st.session_state[key] = list(options)[0]
+                elif current not in options:
+                    if name == 'selectbox' and kwargs.get('index', 0) is None:
+                        st.session_state[key] = None
+                    elif len(options):
+                        st.session_state[key] = list(options)[0]
             if key in st.session_state and name in {'slider', 'number_input'}:
                 lower = kwargs.get('min_value', args[0] if args else None)
                 upper = kwargs.get('max_value', args[1] if len(args) > 1 else None)

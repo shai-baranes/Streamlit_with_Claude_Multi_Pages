@@ -4,6 +4,7 @@ from framework.state import ui
 st = ui(__file__)
 import pandas as pd
 from framework.analysis import chronological_order
+from framework.stacked_presets import MAX_NAME_LENGTH, VIEW_MODES, PresetError, PresetStore
 
 from utils import inject_css, require_data, sidebar_filters
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
@@ -18,7 +19,6 @@ st.title("📈 Stacked Values")
 
 TIME_COLUMN_CANDIDATES = ["Seconds"]
 DELTA_SECONDS_COLUMN = "Dt [seconds]"
-VIEW_MODES = ["Full", "Stacked by Left", "Stacked by All"]
 
 
 def get_time_column(df: pd.DataFrame) -> str:
@@ -63,38 +63,40 @@ def on_selected_columns_change(widget_key: str, state_key: str) -> None:
         c for c in current_widget_selection if c not in previous_ordered_selection
     ]
 
-    st.session_state[state_key] = previous_still_selected + newly_added
+    ordered = previous_still_selected + newly_added
+    st.session_state[state_key] = ordered
+    if ordered != previous_ordered_selection:
+        clear_preset_name()
 
-    valid_exclusions = [
-        c for c in st.session_state.get("stacked_exclusion_cols", [])
-        if c in st.session_state[state_key]
-    ]
-    st.session_state["stacked_exclusion_cols"] = valid_exclusions
-    st.session_state["stacked_exclusion_cols_widget"] = valid_exclusions
-
+    set_exclusions(st.session_state["stacked_exclusion_cols"])
     mark_grid_for_remount_and_restore()
 
 
 def on_view_mode_change() -> None:
     # Keep the last valid exclusion selection while the control is hidden in
     # other modes so returning to Stacked by All reapplies it immediately.
+    clear_preset_name()
     mark_grid_for_remount_and_restore()
+
+
+def set_exclusions(exclusions) -> None:
+    columns = st.session_state["selected_columns_ordered"]
+    valid = [c for c in exclusions if c in columns][:max(0, len(columns) - 1)]
+    st.session_state["stacked_exclusion_cols"] = valid
+    st.set_widget_value("stacked_exclusion_cols_widget", valid)
 
 
 def on_exclusion_change() -> None:
-    selected_columns = st.session_state.get("selected_columns_ordered", [])
-    current_excluded = [
-        c
-        for c in st.session_state.get("stacked_exclusion_cols_widget", [])
-        if c in selected_columns
-    ]
-
-    if selected_columns and len(current_excluded) >= len(selected_columns):
-        current_excluded = current_excluded[: len(selected_columns) - 1]
-        st.session_state["stacked_exclusion_cols_widget"] = current_excluded
-
-    st.session_state["stacked_exclusion_cols"] = current_excluded
+    previous = st.session_state["stacked_exclusion_cols"]
+    set_exclusions(st.session_state["stacked_exclusion_cols_widget"])
+    if st.session_state["stacked_exclusion_cols"] != previous:
+        clear_preset_name()
     mark_grid_for_remount_and_restore()
+
+
+def clear_preset_name() -> None:
+    st.session_state.pop("active_preset_id", None)
+    st.set_widget_value("preset_name", "")
 
 
 def add_dt_seconds_column(out: pd.DataFrame, time_col: str) -> pd.DataFrame:
@@ -299,14 +301,188 @@ time_col = get_time_column(df_filtered)
 selectable_columns = [c for c in df_filtered.columns if c != time_col]
 
 
+def select_preset(presets) -> None:
+    selected = presets.get(st.session_state.get("preset_choice"))
+    # Keep the revision the user saw when they chose the preset.
+    st.session_state["preset_edit_target"] = selected
+    st.session_state.pop("preset_delete_target", None)
+    st.session_state.pop("last_preset_apply", None)
+
+
+def preset_apply_state(preset) -> tuple:
+    return (
+        preset.id,
+        preset.revision,
+        tuple(st.session_state["selected_columns_ordered"]),
+        tuple(st.session_state["stacked_exclusion_cols"]),
+        st.session_state["view_mode"],
+        st.session_state.get("preset_name", ""),
+    )
+
+
+def apply_preset(preset) -> None:
+    available = set(selectable_columns)
+    columns = [c for c in preset.columns if c in available]
+    if not columns:
+        st.warning("None of this preset’s display columns are loaded. Apply the needed columns on the CSV loader page first.")
+        return
+    st.session_state["selected_columns_ordered"] = columns
+    st.set_widget_value("selected_columns_widget", columns)
+    set_exclusions(preset.exclusions)
+    if preset.view_mode is not None:
+        st.set_widget_value("view_mode", preset.view_mode)
+    mark_grid_for_remount_and_restore()
+    st.session_state["active_preset_id"] = preset.id
+    # Retain the applied revision even after editing settings clears the name.
+    st.session_state["preset_update_target"] = preset
+    st.set_widget_value("preset_name", preset.name)
+    st.session_state["last_preset_apply"] = preset_apply_state(preset)
+
+    missing = [c for c in preset.columns if c not in available]
+    omitted = [c for c in preset.exclusions if c not in st.session_state["stacked_exclusion_cols"]]
+    if missing:
+        st.text("Unavailable display columns: " + ", ".join(missing))
+    if omitted:
+        st.text("Exclusions omitted to match the loaded columns and keep at least one column in change detection: "
+                + ", ".join(omitted))
+
+
+def render_presets() -> None:
+    store = PresetStore()
+    with st.expander("Presets"):
+        # Tint the label text area while leaving the native controls untouched.
+        st.html("""
+            <style>
+            .st-key-seconds-saved-presets [data-testid="stWidgetLabel"] p,
+            .st-key-seconds-active-preset [data-testid="stWidgetLabel"] p {
+                width: fit-content;
+                padding: 0.125rem 0.375rem;
+                border-radius: 0.25rem;
+            }
+            .st-key-seconds-saved-presets [data-testid="stWidgetLabel"] p {
+                background-color: rgb(59 130 246 / 16%);
+            }
+            .st-key-seconds-active-preset [data-testid="stWidgetLabel"] p {
+                background-color: rgb(34 197 94 / 16%);
+            }
+            </style>
+        """)
+        # Save and delete run after the name widget has already rendered.
+        saved_name = st.session_state.pop("preset_name_after_action", None)
+        if saved_name is not None:
+            st.set_widget_value("preset_name", saved_name)
+        st.caption("Presets are shared with everyone on this server. Exclusions affect Stacked by All.")
+        notice = st.session_state.pop("preset_notice", None)
+        if notice:
+            st.success(notice)
+        try:
+            presets = {preset.id: preset for preset in store.list()}
+        except PresetError as exc:
+            st.error(str(exc))
+            return
+
+        updated_id = st.session_state.pop("preset_choice_after_update", None)
+        if updated_id in presets:
+            st.set_widget_value("preset_choice", updated_id)
+        with st.container(key="seconds-saved-presets"):
+            selected_id = st.selectbox(
+                "Saved presets",
+                options=list(presets),
+                index=None,
+                placeholder="Choose a preset",
+                format_func=lambda key: presets[key].name,
+                key="preset_choice",
+                on_change=select_preset,
+                args=(presets,),
+            )
+        selected = presets.get(selected_id)
+        # Process the click against the latest saved revision before rendering the button.
+        apply_button = st.container()
+        if st.session_state.pop("preset_apply_requested", False) and selected is not None:
+            select_preset(presets)
+            apply_preset(selected)
+        apply_button.button(
+            "Apply preset",
+            disabled=selected is None or preset_apply_state(selected) == st.session_state.get("last_preset_apply"),
+            on_click=st.session_state.__setitem__,
+            args=("preset_apply_requested", True),
+        )
+
+        with st.container(key="seconds-active-preset"):
+            name = st.text_input("Active preset", key="preset_name", max_chars=MAX_NAME_LENGTH)
+        applied = st.session_state.get("preset_update_target")
+        can_update = applied is not None and applied.id in presets
+        target = st.session_state.get("preset_edit_target")
+        can_edit = selected is not None and target is not None and target.id == selected.id
+        if target is not None and (not can_edit or target.revision != selected.revision):
+            st.warning("Apply the latest version of this preset before editing."
+                       if can_edit else "The selected preset was deleted. Choose another preset.")
+        pending = st.session_state.get("preset_delete_target")
+        with st.container(horizontal=True):
+            save_new = st.button(
+                "Save new",
+                disabled=pending is not None,
+                help="Enter the new preset’s name in the Active preset field before saving.",
+            )
+            update = st.button(
+                "Update selected",
+                disabled=not can_update or pending is not None,
+                help=f"Update the last applied preset: {applied.name}" if can_update
+                else "Apply a preset before updating it.",
+            )
+            if st.button("Delete selected", disabled=not can_edit or pending is not None):
+                pending = st.session_state["preset_delete_target"] = target
+
+        confirm = False
+        if pending is not None:
+            st.warning("Deleting this preset removes it for everyone on this server.")
+            st.text(pending.name)
+            with st.container(horizontal=True):
+                confirm = st.button("Confirm delete")
+                if st.button("Cancel deletion"):
+                    st.session_state.pop("preset_delete_target", None)
+                    st.rerun()
+
+        try:
+            if confirm:
+                st.session_state.pop("preset_delete_target", None)
+                store.delete(pending)
+                st.session_state.pop("preset_edit_target", None)
+                if st.session_state.get("active_preset_id") == pending.id:
+                    st.session_state.pop("active_preset_id")
+                    st.session_state["preset_name_after_action"] = ""
+                if applied is not None and applied.id == pending.id:
+                    st.session_state.pop("preset_update_target")
+                st.session_state["preset_notice"] = "Preset deleted."
+                st.rerun()
+            if save_new or update:
+                saved = store.save(
+                    (name.strip() or applied.name) if update else name,
+                    st.session_state["selected_columns_ordered"],
+                    st.session_state["stacked_exclusion_cols"],
+                    view_mode=st.session_state["view_mode"],
+                    previous=applied if update else None,
+                )
+                if update:
+                    st.session_state["preset_edit_target"] = saved
+                    st.session_state["preset_update_target"] = saved
+                    st.session_state["preset_choice_after_update"] = saved.id
+                st.session_state["active_preset_id"] = saved.id
+                st.session_state["preset_name_after_action"] = saved.name
+                st.session_state["preset_notice"] = "Preset updated." if update else "Preset saved."
+                st.rerun()
+        except PresetError as exc:
+            st.error(str(exc))
+
+
 @st.fragment
 def render_stacked_table() -> None:
     st.subheader("Stacked event table")
+    render_presets()
 
     st.multiselect(
         "Select columns to display",
         options=selectable_columns,
-        default=st.session_state["selected_columns_ordered"],
         key="selected_columns_widget",
         on_change=on_selected_columns_change,
         args=("selected_columns_widget", "selected_columns_ordered"),
@@ -326,21 +502,11 @@ def render_stacked_table() -> None:
     selected_columns = st.session_state["selected_columns_ordered"]
 
     if st.session_state["view_mode"] == "Stacked by All" and selected_columns:
-        allowed_max = max(0, len(selected_columns) - 1)
-        current_excluded = [
-            c for c in st.session_state.get("stacked_exclusion_cols", [])
-            if c in selected_columns
-        ]
-
-        if len(current_excluded) > allowed_max:
-            current_excluded = current_excluded[:allowed_max]
-            st.session_state["stacked_exclusion_cols"] = current_excluded
-            st.session_state["stacked_exclusion_cols_widget"] = current_excluded
-
+        # The widget may have been removed during a run in another view mode.
+        set_exclusions(st.session_state["stacked_exclusion_cols"])
         st.multiselect(
             "Exclusion rule",
             options=selected_columns,
-            default=current_excluded,
             key="stacked_exclusion_cols_widget",
             on_change=on_exclusion_change,
             help="Excluded columns do not participate in change detection for 'Stacked by All'. At least one selected column must still participate.",
