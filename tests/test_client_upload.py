@@ -86,10 +86,12 @@ def test_concurrent_claim_is_single_use(store):
     assert store.bytes == 0
 
 
-def test_client_launch_beats_startup_and_does_not_replay(store, tmp_path, monkeypatch):
+@pytest.mark.parametrize('all_columns', [False, True])
+def test_client_launch_beats_startup_and_does_not_replay(store, tmp_path, monkeypatch, all_columns):
     startup = tmp_path / 'startup.csv'
     startup.write_text('Seconds\n99\n')
-    monkeypatch.setattr(sys, 'argv', ['dashboard_server.py', '--csv_file', str(startup)])
+    args = ['dashboard_server.py', '--csv_file', str(startup)]
+    monkeypatch.setattr(sys, 'argv', args + (['--all-columns'] if all_columns else []))
     key = 'ab' * 32
     link = token(post(b'Seconds,Altitude,Extra\n1,15,x\n3,20,y\n', owner=key))
     entry = str(Path(__file__).resolve().parents[1] / 'Load CSV.py')
@@ -99,6 +101,7 @@ def test_client_launch_beats_startup_and_does_not_replay(store, tmp_path, monkey
     assert not app.exception
     assert client_upload.TOKEN_PARAM not in app.query_params
     assert app.session_state['df_full'].Seconds.tolist() == [1, 3]
+    assert list(app.session_state['df_full']) == ['Seconds', 'Altitude'] + (['Extra'] if all_columns else [])
     assert app.slider[0].value == (1., 3.)
     assert app.checkbox[0].value is True
     ownership = dict(store.claimed)

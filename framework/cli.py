@@ -11,6 +11,7 @@ class StartupCSVOptions:
     load_all: bool = False
     auto_apply: bool = False
     parquet: bool = False
+    all_columns: bool = False
 
 # the value is probably the path input into the CLI cmd line
 def validate_csv_path(value):
@@ -22,7 +23,7 @@ def validate_csv_path(value):
     return path
 
 
-def startup_csv_options():
+def startup_csv_options(*, validate_path=True):
     # Only inspect application arguments, never a hosting process's unrelated argv.
     if Path(sys.argv[0]).name not in {'Load CSV.py', 'Load CSV_2.py', 'dashboard_server.py'}:
         return StartupCSVOptions(None)
@@ -39,8 +40,16 @@ def startup_csv_options():
     if args.load_all and not args.csv_path:
         raise ValueError('--load-all requires a CSV path after Streamlit\'s -- separator.')
     source = args.csv_file or args.csv_path
-    return StartupCSVOptions(validate_csv_path(source) if source else None,
-                             args.load_all, args.csv_file is not None, args.parquet)
+    path = None
+    if source:
+        path = validate_csv_path(source) if validate_path else Path(source)
+    return StartupCSVOptions(
+        path=path,
+        load_all=args.load_all,
+        auto_apply=args.csv_file is not None,
+        parquet=args.parquet,
+        all_columns=args.all_columns,
+    )
 
 
 class _ApplicationParser(argparse.ArgumentParser):
@@ -58,7 +67,9 @@ def parse_boolean(value):
 def add_csv_arguments(parser):
     """Keep launcher and direct Streamlit argument names/defaults identical."""
     parser.add_argument('csv_path', nargs='?', help='Server-local CSV to stage in each new session')
-    parser.add_argument('--csv_file', metavar='PATH', help='Automatically apply fixed columns and the full Seconds interval')
+    parser.add_argument('--csv_file', metavar='PATH', help='Automatically apply always-loaded columns and the full Seconds interval')
+    parser.add_argument('--all-columns', action='store_true',
+                        help='Treat every column in each CSV as always loaded')
     parser.add_argument('--parquet', type=parse_boolean, default=False, metavar='true|false',
                         help='Initial experimental Parquet checkbox value (default: false)')
 

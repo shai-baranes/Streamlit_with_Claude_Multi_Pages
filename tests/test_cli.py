@@ -37,24 +37,25 @@ def test_load_all_is_an_application_argument_only(tmp_path, monkeypatch):
         run_server.main()
 
 
-@pytest.mark.parametrize('entry', ['Load CSV.py'])
-# @pytest.mark.parametrize('entry', ['Load CSV.py', 'Load CSV_2.py'])
-def test_cli_stages_once_isolates_and_clears(tmp_path, monkeypatch, entry):
+@pytest.mark.parametrize('all_columns', [False, True])
+def test_cli_stages_once_isolates_and_clears(tmp_path, monkeypatch, all_columns):
     monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
     source = tmp_path / 'my data.csv'
     source.write_text('Date,extra\n01/01/2022,hello\n')
-    monkeypatch.setattr(sys, 'argv', [str(ROOT / entry), str(source)])
-    first = AppTest.from_file(str(ROOT / entry)).run()
+    entry = str(ROOT / 'Load CSV.py')
+    monkeypatch.setattr(sys, 'argv', [entry, str(source)] + (['--all-columns'] if all_columns else []))
+    first = AppTest.from_file(entry).run()
     assert not first.exception
+    assert 'dataset' not in first.session_state
     assert any(source.name in item.value for item in first.text)
     staged = first.session_state['pending_source']
     assert staged != source and staged.read_bytes() == source.read_bytes()
     first.run()
     assert first.session_state['pending_source'] == staged
-    second = AppTest.from_file(str(ROOT / entry)).run()
+    second = AppTest.from_file(entry).run()
     assert second.session_state['pending_source'] != staged
     first.button[-1].click().run()
-    assert list(first.session_state['df_full']) == ['Date']
+    assert list(first.session_state['df_full']) == (['Date', 'extra'] if all_columns else ['Date'])
     first.button[0].click().run()
     assert 'dataset' not in first.session_state
     assert 'pending_source' not in first.session_state
@@ -113,13 +114,27 @@ def test_named_launcher_arguments(tmp_path, monkeypatch, admin, value):
     source.write_text('Seconds\n0\n')
     commands = []
     monkeypatch.setattr(run_server.subprocess, 'call', lambda command, **kwargs: commands.append(command) or 0)
-    monkeypatch.setattr(sys, 'argv', ['run_server.py', '--csv_file', str(source), '--parquet', value] + (['--admin'] if admin else []))
+    monkeypatch.setattr(sys, 'argv', ['run_server.py', '--csv_file', str(source), '--parquet', value,
+                                     '--all-columns'] + (['--admin'] if admin else []))
     assert run_server.main() == 0
     command = commands[0]
     forwarded = command[command.index('--') + 1:]
     assert forwarded[:2] == ['--csv_file', str(source.resolve())]
     assert ('--parquet' in forwarded) == (value == 'true')
+    assert '--all-columns' in forwarded
     assert command[2] == ('framework.admin_bootstrap' if admin else 'streamlit')
+
+
+@pytest.mark.parametrize('admin', [False, True])
+def test_all_columns_forwards_without_startup(monkeypatch, admin):
+    commands = []
+    monkeypatch.setattr(run_server.subprocess, 'call', lambda command, **kwargs: commands.append(command) or 0)
+    monkeypatch.setattr(sys, 'argv', ['run_server.py', '--all-columns'] + (['--admin'] if admin else []))
+    assert run_server.main() == 0
+    assert commands[0][-2:] == ['--', '--all-columns']
+    monkeypatch.setattr(sys, 'argv', ['dashboard_server.py', '--all-columns'])
+    options = startup_csv_options()
+    assert options.all_columns and options.path is None
 
 
 @pytest.mark.parametrize('args', [ ['--parquet', 'yes'], ['--parquet'], ['a.csv', '--csv_file', 'b.csv'] ])
@@ -218,3 +233,76 @@ def test_auto_apply_failure_is_not_retried(tmp_path, monkeypatch):
     monkeypatch.setattr(home, 'load_dataset', original)
     app.button[-1].click().run()
     assert len(app.session_state['df_full']) == 2
+
+
+@pytest.mark.parametrize('entry', ['Load CSV.py', 'dashboard_server.py'])
+def test_all_columns_loads_unknown_fields_in_header_order(tmp_path, monkeypatch, entry):
+    from framework.config import ALWAYS_LOAD_COLUMNS
+
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    source = tmp_path / 'startup.csv'
+    source.write_text('Zulu,Alpha\nx,1\n')
+    monkeypatch.setattr(sys, 'argv', [entry, '--csv_file', str(source), '--all-columns'])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert not app.exception
+    assert list(app.session_state['df_full']) == ['Zulu', 'Alpha']
+    assert not {'Zulu', 'Alpha'}.intersection(ALWAYS_LOAD_COLUMNS)
+    assert any(item.value == 'Always loaded: all 2 columns' for item in app.caption)
+    assert not app.multiselect[0].options
+    assert app.checkbox[0].label == 'Use experimental Parquet cache'
+
+
+def test_all_columns_replacement_and_clear(tmp_path, monkeypatch):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    monkeypatch.setenv('DASHBOARD_SAMPLE', '1')
+    source = tmp_path / 'startup.csv'
+    source.write_text('Extra,Seconds,Altitude\nx,0,1\ny,bad,2\nz,2,3\n')
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', '--csv_file', str(source),
+                                     '--all-columns', '--parquet', 'true'])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    version = app.session_state['dataset'].version
+    assert list(app.session_state['df_full']) == ['Extra', 'Seconds', 'Altitude']
+    assert app.session_state['df_full'].Seconds.astype(float).tolist() == [0, 2]
+    assert app.slider[0].value == (0.0, 2.0)
+    assert list(app.session_state['dataset'].source.parent.glob('*.parquet'))
+    app.run()
+    app.switch_page('pages/0_🔧_Engineering_Explorer.py').run()
+    app.switch_page('Load CSV.py').run()
+    assert app.session_state['dataset'].version == version
+    app.file_uploader[0].set_value(('replacement.csv', b'Other,Value\na,7\n', 'text/csv')).run()
+    assert app.session_state['dataset'].version == version
+    with monkeypatch.context() as replacement:
+        replacement.setattr(data, 'MAX_FRAME_MB', 0)
+        app.button[-1].click().run()
+        assert 'Selected data exceeds' in app.error[0].value
+        assert app.session_state['dataset'].version == version
+    app.button[-1].click().run()
+    assert list(app.session_state['df_full']) == ['Other', 'Value']
+
+    source.unlink()
+    app.button[0].click().run()
+    assert 'dataset' not in app.session_state
+    app.button[1].click().run()
+    assert 'dataset' not in app.session_state
+    app.button[-1].click().run()
+    assert list(app.session_state['df_full']) == data.inspect_header(ROOT / 'synthetic_sales_data.csv')
+
+    fresh = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert any('CSV file not found' in item.value for item in fresh.warning)
+    fresh.file_uploader[0].set_value(('fresh.csv', b'New,Other\na,7\n', 'text/csv')).run()
+    fresh.button[-1].click().run()
+    assert list(fresh.session_state['df_full']) == ['New', 'Other']
+
+
+def test_all_columns_can_follow_legacy_load_all(tmp_path, monkeypatch):
+    monkeypatch.setattr(data, 'ROOT', tmp_path / 'private')
+    source = tmp_path / 'startup.csv'
+    source.write_text('Seconds,Note\n0,a\nbad,b\n')
+    monkeypatch.setattr(sys, 'argv', ['Load CSV.py', str(source), '--load-all', '--all-columns'])
+    app = AppTest.from_file(str(ROOT / 'Load CSV.py')).run()
+    assert app.session_state['df_full'].Note.tolist() == ['a', 'b']
+    assert not app.slider
+    app.file_uploader[0].set_value(('later.csv', b'Other,Value\na,7\n', 'text/csv')).run()
+    assert list(app.session_state['df_full']) == ['Seconds', 'Note']
+    app.button[-1].click().run()
+    assert list(app.session_state['df_full']) == ['Other', 'Value']

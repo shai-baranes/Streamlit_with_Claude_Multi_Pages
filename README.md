@@ -7,7 +7,8 @@
 | Argument | Accepted value | Default | Behavior |
 |---|---|---|---|
 | `CSV_PATH` (positional) | Server-local `.csv` path | None | Privately stage the file in each new session; wait for Apply columns. |
-| `--csv_file PATH` | Server-local `.csv` path | None | Automatically apply available fixed columns and the full numeric Seconds interval once per new session; keep the form visible. Cannot be combined with positional CSV_PATH. |
+| `--csv_file PATH` | Server-local `.csv` path | None | Automatically apply the always-loaded columns and the full numeric Seconds interval once per new session. The form stays visible. Cannot be combined with positional CSV_PATH. |
+| `--all-columns` | Flag | Off | Use every column in each CSV's header as an always-loaded column. Works without a startup CSV. |
 | `--parquet true\|false` | `true` or `false`, case-insensitive | `false` | Set the initial experimental Parquet checkbox value, including automatic loading. Users may change it afterward. Works without a startup CSV. |
 | `--debug` | Flag | Off | Enable foreground development/debug logging. |
 | `--sample` | Flag | Off | Offer the explicit Load sample data button. |
@@ -24,6 +25,8 @@ Windows PowerShell examples:
 .\.venv\Scripts\python.exe run_server.py "C:\Data\file.csv"
 .\.venv\Scripts\python.exe run_server.py --csv_file "C:\Data\file.csv" --parquet true
 .\.venv\Scripts\python.exe run_server.py --csv_file "C:\Data\file.csv" --parquet false
+.\.venv\Scripts\python.exe run_server.py --csv_file "C:\Data\file.csv" --all-columns
+.\.venv\Scripts\python.exe run_server.py --all-columns --admin
 ```
 
 macOS examples:
@@ -33,10 +36,12 @@ macOS examples:
 .venv/bin/python run_server.py "/absolute/path/to/file.csv" --debug
 .venv/bin/python run_server.py --csv_file "/absolute/path/to/file.csv" --parquet true --debug
 .venv/bin/python run_server.py --csv_file "/absolute/path/to/file.csv" --parquet false --debug
+.venv/bin/python run_server.py --csv_file "/absolute/path/to/file.csv" --all-columns
 ```
 
 `--csv_file` uses the same validation, limits, and atomic commit as Apply columns.
-Available fixed fields load automatically; select additional fields and press Apply columns
+By default, available fields from `framework.config.ALWAYS_LOAD_COLUMNS` load automatically.
+Select additional fields and press Apply columns
 for later changes. The Seconds slider initially spans the numeric minimum through maximum;
 rows with invalid/missing Seconds are excluded when an interval is available. Without a usable
 numeric interval, no time filter is applied. If no fixed fields exist, select additional columns
@@ -45,6 +50,11 @@ cache failure. The checkbox preference survives navigation and later uploads/sam
 those later sources still require Apply. Clear dataset empties the session without reloading the
 startup file. A new browser session receives its own private startup copy and initial preferences.
 
+`--all-columns` uses each CSV's header order for every session and file served by that process.
+Named startup files and client-script uploads apply automatically. Positional files, browser
+uploads, and samples still require **Apply columns**. Seconds and Parquet controls remain
+available. Loading more columns can reach the existing memory limits sooner.
+
 ### Direct Streamlit application arguments
 
 Application arguments must follow Streamlit's `--` separator:
@@ -52,14 +62,23 @@ Application arguments must follow Streamlit's `--` separator:
 ```sh
 .venv/bin/streamlit run "Load CSV.py" -- --csv_file "/absolute/path/to/file.csv" --parquet true
 .venv/bin/streamlit run "Load CSV.py" -- "/absolute/path/to/file.csv" --load-all
+.venv/bin/streamlit run "Load CSV.py" -- --csv_file "/absolute/path/to/file.csv" --all-columns
+```
+
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run "Load CSV.py" -- --csv_file "C:\Data\file.csv" --all-columns
 ```
 
 | Application argument | Default | Behavior |
 |---|---|---|
 | `CSV_PATH` | None | Stage privately and wait for Apply columns. |
-| `--csv_file PATH` | None | Auto-apply fixed columns and full Seconds interval; form stays visible. |
+| `--csv_file PATH` | None | Auto-apply always-loaded columns and the full Seconds interval. The form stays visible. |
+| `--all-columns` | Off | Treat every column in each CSV as always loaded, with normal Seconds filtering and Apply behavior. |
 | `--parquet true\|false` | `false` | Initial session checkbox/cache setting; accepted case-insensitively. |
 | `--load-all` | Off | Requires positional CSV_PATH; loads every row and column and hides the projection form for that source. Cannot be combined with --csv_file and is not a run_server.py option. |
+
+Combine `--load-all` with `--all-columns` to keep every column enabled on later files while
+loading every row of the positional startup file.
 
 ## Load a client-local CSV from Windows
 
@@ -91,7 +110,7 @@ Keep both client scripts together on the Windows machine. Run either command:
 
 The script opens a single-use link in the default browser after validation. Browser settings
 determine whether it opens in a tab or window. The link expires after 10 minutes and creates an
-independent session that applies the fixed fields over the full Seconds range. The projection
+independent session that applies the always-loaded columns over the full Seconds range. The projection
 form stays available for adjustments. Run the script again if the link expires or the session
 is lost after it was claimed. With `--admin` enabled, the browser session appears in the
 loopback administration console once it connects. Pending uploads have no dashboard session.

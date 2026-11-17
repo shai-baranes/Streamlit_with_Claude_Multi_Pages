@@ -8,7 +8,7 @@ from framework.config import ALWAYS_LOAD_COLUMNS, MAX_UPLOAD_MB
 from framework.data import (cleanup, save_source, inspect_header, inspect_numeric_range,
                             load_dataset, session_directory)
 from framework.state import reset_controls
-from framework.cli import startup_csv_options, StartupCSVOptions
+from framework.cli import startup_csv_options, StartupCSVOptions, validate_csv_path
 
 
 def render():
@@ -61,10 +61,14 @@ def render():
 
     if clear_clicked:
         private_id = st.session_state.session_id
+        cli_options = st.session_state.get('home:cli-options')
         shutil.rmtree(session_directory(private_id), ignore_errors=True)
         st.session_state.clear()
         # Keep the directory identity registered with client session cleanup.
         st.session_state.session_id = private_id
+        # Retain the launch policy even if the original startup file has since moved.
+        if cli_options is not None:
+            st.session_state['home:cli-options'] = cli_options
         # Clear must leave an empty session even when the server has a startup file.
         st.session_state['cli_initialized'] = True
         st.rerun()
@@ -96,7 +100,8 @@ def render():
         st.warning(st.session_state['client_upload_error'])
     if 'home:cli-options' not in st.session_state:
         try:
-            st.session_state['home:cli-options'] = startup_csv_options()
+            # A missing startup file should not discard options for later uploads.
+            st.session_state['home:cli-options'] = startup_csv_options(validate_path=False)
         except ValueError as error:
             st.session_state['home:cli-options'] = StartupCSVOptions(None)
             st.session_state['cli_error'] = f'Startup CSV could not be loaded: {error}'
@@ -111,6 +116,7 @@ def render():
             try:
                 cli_path = cli_options.path
                 if cli_path is not None:
+                    cli_path = validate_csv_path(cli_path)
                     with cli_path.open('rb') as source:
                         path = save_source(source, st.session_state.session_id)
                     st.session_state.update(pending_source=path, pending_name=cli_path.name)
@@ -176,12 +182,17 @@ def render():
     )
     if show_projection:
         available = inspect_header(path)
-        fixed = [c for c in ALWAYS_LOAD_COLUMNS if c in available]
-        st.caption('Always loaded: ' + (', '.join(fixed) or '(none present)'))
-        missing = [c for c in ALWAYS_LOAD_COLUMNS if c not in available]
-        if missing:
-            st.caption('Fixed fields absent from this file: ' + ', '.join(missing))
-        options = [c for c in available if c not in fixed]
+        if cli_options.all_columns:
+            fixed = available
+            options = []
+            st.caption(f'Always loaded: all {len(available)} columns')
+        else:
+            fixed = [c for c in ALWAYS_LOAD_COLUMNS if c in available]
+            st.caption('Always loaded: ' + (', '.join(fixed) or '(none present)'))
+            missing = [c for c in ALWAYS_LOAD_COLUMNS if c not in available]
+            if missing:
+                st.caption('Fixed fields absent from this file: ' + ', '.join(missing))
+            options = [c for c in available if c not in fixed]
         defaults = [c for c in (active.selected if active and active.source == path else []) if c in options]
         seconds_profile = None
         seconds_error = None

@@ -46,6 +46,8 @@ def main():
         application_args.extend(['--csv_file', str(csv_path)] if args.csv_file else [str(csv_path)])
     if args.parquet:
         application_args.extend(['--parquet', 'true'])
+    if args.all_columns:
+        application_args.append('--all-columns')
     if application_args:
         command.extend(['--', *application_args])
     return subprocess.call(command, cwd=Path(__file__).parent, env=env)
