@@ -1,6 +1,6 @@
 import streamlit as st
 # Namespace widget persistence so legacy pages retain independent selections.
-from framework.state import ui
+from framework.state import current_html_export, ui
 st = ui(__file__)
 import numpy as np
 import pandas as pd
@@ -44,6 +44,9 @@ st.caption(
     f"lat {geo_df['Latitude'].min():.3f}–{geo_df['Latitude'].max():.3f} · "
     f"lon {geo_df['Longitude'].min():.3f}–{geo_df['Longitude'].max():.3f}"
 )
+
+# Capture this section with the offline player instead of static settings and a tile map.
+st.begin_export_exclusion()
 
 # ── UI controls ───────────────────────────────────────────────────────────────
 c1, c2, c3 = st.columns([1, 1, 1])
@@ -243,4 +246,12 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig, theme=None)
+st.end_export_exclusion()
+
+report = current_html_export()
+if report is not None:
+    from framework.trajectory_export import export_trajectory
+
+    export_trajectory(report, geo_df, zoom=zoom, marker_size=marker_size,
+                      frame_duration=frame_duration, show_points=show_points)
 st.finish_html_export()

@@ -73,9 +73,33 @@ section to omit it. For custom components, follow the measured chart's
 user values through its data argument. Pages with external maps or custom
 controls need an offline renderer for those elements.
 
-Report generation runs only on an export request. A chart report includes the
-local Plotly.js bundle once (about 4.9 MB), plus the exported content. Anyone
-holding the downloaded file can inspect the embedded chart and table data.
+Report generation runs only on an export request. Reports with Plotly charts
+include the local Plotly.js bundle once (about 4.9 MB). Anyone holding the
+downloaded file can inspect the embedded chart and table data.
+
+### Play an animated trajectory offline
+
+On **Animated Trajectory 2**, set the zoom, marker size, frame duration, and
+sample visibility, then click **Export page as HTML** and **Download HTML**.
+The file opens at the first sample with those settings. Use **Play** and
+**Pause**, or drag **Step** to inspect a sample. Playback stops at the final
+sample. Click **Play** again to start over. Drag the map to pan, scroll over it
+to zoom, or use the arrow and plus/minus keys when the map is focused. Hover
+over the current marker or a visible sample to see its time and coordinates.
+
+The offline map embeds Natural Earth 1:10m land polygons clipped to
+31.5–37.5°E and 29.5–36°N around the eastern Mediterranean route. Level 9
+fits the route to the browser viewport. [Natural Earth land data](https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-land/)
+
+### Export a 3D flight simulation
+
+On **3D Flight Simulation**, click **Export page as HTML** in the player and
+then **Download HTML**. The file opens paused at the captured frame, with
+the same camera, playback rate, visible layers, and warning distance. Use
+**Play** to continue or **Reset** to return to the start. Scrubbing, camera
+controls, and the aircraft separation warning work offline in a
+WebGL-capable browser. The file includes the flight coordinates for up to
+300 playback frames and the terrain grid when available.
 
 ## Shared Seconds stacked-value presets
 

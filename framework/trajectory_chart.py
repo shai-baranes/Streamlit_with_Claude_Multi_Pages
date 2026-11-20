@@ -5,6 +5,7 @@ import json
 import pandas as pd
 import streamlit as st
 
+from framework.state import current_html_export
 from framework.trajectory import trajectory_separation_meters
 
 
@@ -16,14 +17,11 @@ TRAJECTORY_COMPONENT_KEY = "trajectory_3d_component"
 # Share the installed bundle with the other app-owned v2 chart.
 from framework.plotly_assets import PLOTLY_SOURCE as _PLOTLY_SOURCE
 
-_COMPONENT_JS = (
-    _PLOTLY_SOURCE
-    + r"""
+_PLAYER_JS = r"""
 
 const trajectoryPlayers = new WeakMap()
 
-export default async function(component) {
-  const {data, parentElement, setStateValue} = component
+async function renderFlightPlayer({data, parentElement, setStateValue, setTriggerValue}) {
   const plot = parentElement.querySelector("#trajectory-plot")
   if (!plot) return
 
@@ -36,14 +34,17 @@ export default async function(component) {
     trajectoryPlayers.set(parentElement, player)
   } else {
     // A remount receives the last state saved by this browser session.
-    player.state = {...player.state, ...data.initialState}
+    if (!data.exporting || player.datasetIdentity !== data.datasetIdentity) {
+      player.state = {...player.state, ...data.initialState}
+    }
     player.setStateValue = setStateValue
   }
 
+  player.datasetIdentity = data.datasetIdentity
   const rows = data.rows
   const hasSecondary = data.hasSecondary
   const lastIndex = Math.max(0, rows.length - 1)
-  player.state.index = Math.min(Math.max(Number(player.state.index) || 0, 0), lastIndex)
+  player.state.index = Math.min(Math.max(Math.trunc(Number(player.state.index) || 0), 0), lastIndex)
   player.state.fps = Math.min(Math.max(Number(player.state.fps) || 5, 1), 10)
   player.state.maxDistance = Math.max(Number(player.state.maxDistance) || 2000, 100)
   player.state.showRoute1 = player.state.showRoute1 !== false
@@ -76,7 +77,7 @@ export default async function(component) {
 
   function saveState() {
     // Clone the object so Streamlit receives a new serializable state value.
-    player.setStateValue("simulation", JSON.parse(JSON.stringify(player.state)))
+    player.setStateValue?.("simulation", JSON.parse(JSON.stringify(player.state)))
   }
 
   function scheduleStateSave(delay = 100) {
@@ -423,17 +424,30 @@ export default async function(component) {
       player.cameraTimer = setTimeout(saveState, 100)
     })
   }
+  const exportButton = parentElement.querySelector("#trajectory-export")
+  if (exportButton && setTriggerValue) {
+    exportButton.hidden = false
+    exportButton.onclick = () => {
+      // The snapshot already includes pending changes. Prevent their timers from
+      // starting a second rerun while Streamlit prepares the download.
+      clearTimeout(player.cameraTimer)
+      clearTimeout(player.stateTimer)
+      clearTimeout(player.resetTimer)
+      resetButton.classList.remove("reset-feedback")
+      const scene = plot._fullLayout.scene
+      const camera = scene._scene?.getCamera() ?? player.state.camera
+      const view = {...player.state, camera, dragMode: scene.dragmode}
+      setTriggerValue("export_snapshot", {
+        dataset: data.datasetIdentity,
+        view: JSON.parse(JSON.stringify(view)),
+      })
+    }
+  }
   startTimer()
 }
 """
-)
 
-_TRAJECTORY_COMPONENT = st.components.v2.component(
-    "trajectory_flight_player",
-    # Plotly's document stylesheet and pointer handling require light DOM.
-    # Prefix local classes so player styling cannot affect surrounding pages.
-    isolate_styles=False,
-    html="""
+_PLAYER_HTML = """
 <div class="trajectory-metrics">
   <div><span>Status</span><strong id="trajectory-status"></strong></div>
   <div><span>Elapsed</span><strong id="trajectory-elapsed"></strong></div>
@@ -472,8 +486,9 @@ _TRAJECTORY_COMPONENT = st.components.v2.component(
   <input id="trajectory-max-distance" type="range" min="100" max="5000" step="100" value="2000" />
   <strong id="trajectory-distance-warning" class="trajectory-distance-warning" hidden></strong>
 </div>
-""",
-    css="""
+"""
+
+_PLAYER_CSS = """
 .trajectory-graph-stage { position: relative; min-width: 0; }
 .trajectory-controls { position: absolute; left: 4px; bottom: 8px; z-index: 100; display: flex; flex-direction: column; gap: .45rem; margin: 0; width: 5.4rem; }
 .trajectory-fps-control { position: absolute; left: calc(4px + 1.5rem); bottom: 27.4rem; z-index: 101; display: grid; gap: .3rem; width: 9.5rem; padding: .5rem; border: 1px solid var(--st-border-color); border-radius: .5rem; background: var(--st-background-color, #fff); color: var(--st-text-color); font-size: .72rem; }
@@ -512,8 +527,17 @@ _TRAJECTORY_COMPONENT = st.components.v2.component(
   .trajectory-fps-control { left: calc(4px + 1.25rem); width: 8.5rem; }
   #trajectory-plot .modebar { left: calc(4px + 1.25rem) !important; }
 }
-""",
-    js=_COMPONENT_JS,
+"""
+
+_EXPORT_BUTTON = '<button id="trajectory-export" type="button" hidden>Export page as HTML</button>'
+
+_TRAJECTORY_COMPONENT = st.components.v2.component(
+    "trajectory_flight_player",
+    # Plotly's document stylesheet and pointer handling require light DOM.
+    isolate_styles=False,
+    html=_EXPORT_BUTTON + _PLAYER_HTML,
+    css=_PLAYER_CSS,
+    js=_PLOTLY_SOURCE + _PLAYER_JS + "\nexport default renderFlightPlayer",
 )
 
 
@@ -535,10 +559,23 @@ def reset_trajectory_player(key: str = TRAJECTORY_COMPONENT_KEY) -> None:
     }
 
 
+def flight_export_view(dataset_identity: str, key: str = TRAJECTORY_COMPONENT_KEY) -> dict | None:
+    """Read the one-run trigger only when it belongs to the active route."""
+    component_state = st.session_state.get(key, {})
+    snapshot = component_state.get("export_snapshot")
+    if isinstance(snapshot, dict) and snapshot.get("dataset") == dataset_identity:
+        view = snapshot.get("view")
+        if isinstance(view, dict) and view:
+            return view
+    return None
+
+
 def render_trajectory_player(
     route: pd.DataFrame,
     *,
     terrain: dict | None = None,
+    dataset_identity: str | None = None,
+    export_view: dict | None = None,
     key: str = TRAJECTORY_COMPONENT_KEY,
 ) -> None:
     """Mount one persistent browser player for the validated trajectory."""
@@ -568,18 +605,40 @@ def render_trajectory_player(
         selected_columns.extend(secondary_columns)
         selected_columns.append("distance_m")
     rows = json.loads(route[selected_columns].to_json(orient="records"))
+    data = {
+        "rows": rows,
+        "hasSecondary": has_secondary,
+        "terrain": terrain,
+        "initialState": simulation if export_view is None else export_view,
+        "defaultCamera": DEFAULT_CAMERA,
+        "datasetIdentity": dataset_identity,
+        "exporting": export_view is not None,
+    }
     _TRAJECTORY_COMPONENT(
         key=key,
-        data={
-            "rows": rows,
-            "hasSecondary": has_secondary,
-            "terrain": terrain,
-            "initialState": simulation,
-            "defaultCamera": DEFAULT_CAMERA,
-        },
+        data=data,
         width="stretch",
         # Responsive metrics use three rows on narrow screens, so reserve enough
         # component height to keep both sliders inside the interactive host boundary.
         height=1200,
         on_simulation_change=lambda: None,
+        on_export_snapshot_change=lambda: None,
     )
+
+    report = current_html_export() if export_view is not None else None
+    if report is not None:
+        # Reuse the bounded rows and terrain prepared for the live mount.
+        export_data = {name: data[name] for name in ("rows", "hasSecondary", "terrain", "defaultCamera")}
+        export_data["initialState"] = {**export_view, "status": "paused"}
+        report.component(
+            "renderFlightPlayer", export_data, html=_PLAYER_HTML,
+            css=_PLAYER_CSS + """
+[data-renderer="renderFlightPlayer"] {
+  --st-border-color: #cbd5e1;
+  --st-background-color: #fff;
+  --st-secondary-background-color: #f1f5f9;
+  --st-text-color: #1e293b;
+  --st-primary-color: #2563eb;
+}
+""", js=_PLAYER_JS, dependencies=("plotly",),
+        )
