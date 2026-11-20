@@ -1,6 +1,6 @@
 import streamlit as st
 # Namespace widget persistence so legacy pages retain independent selections.
-from framework.state import ui
+from framework.state import current_html_export, ui
 st = ui(__file__)
 import pandas as pd
 from framework.analysis import chronological_order
@@ -15,6 +15,10 @@ from framework.grid import AgGrid
 st.set_page_config(page_title="Stacked Values", page_icon="📈", layout="wide")
 inject_css()
 
+st = st.exportable_page(
+    title="Stacked Values",
+    help="Includes every loaded column and every row matching the current sidebar filters.",
+)
 st.title("📈 Stacked Values")
 
 TIME_COLUMN_CANDIDATES = ["Seconds"]
@@ -612,4 +616,16 @@ def render_stacked_table() -> None:
     st.caption(f"Showing {len(visible_df):,} of {len(df_full):,} records")
 
 
-render_stacked_table()
+report = current_html_export()
+if report is None:
+    render_stacked_table()
+else:
+    # The offline controls replace the fragment in the report, while it stays live here.
+    st.begin_export_exclusion()
+    try:
+        render_stacked_table()
+    finally:
+        st.end_export_exclusion()
+    from framework.stacked_export import export_stacked_table
+    export_stacked_table(report, df_filtered, st.session_state)
+st.finish_html_export() # end section of HTML export (started as: 'st = st.exportable_page(title="Stacked Values")' - usually end of file)

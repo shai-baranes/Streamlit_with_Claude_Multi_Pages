@@ -91,6 +91,8 @@ class HtmlReport:
         self.title, self.slot = title, slot
         self.blocks = []
         self.adapters = {}
+        self.dependencies = set()
+        self.error = None
         self.exclusions = 0
         self.closed = False
         # Streamlit replaces this mapping on each run, including interrupted reruns.
@@ -112,10 +114,11 @@ class HtmlReport:
             value = ", ".join(map(str, value))
         self.blocks.append(f'<p class="setting"><b>{escape(str(label))}</b> · {escape(str(value))}</p>')
 
-    def component(self, name, data, *, html, css, js):
-        """Register trusted adapter assets once; pass dataset values only through data."""
+    def component(self, name, data, *, html, css, js, dependencies=()):
+        """Register trusted assets once. A lazy data callable returns encoded JSON."""
+        self.dependencies.update(dependencies)
         self.adapters[name] = (css, js)
-        payload = json.dumps(data, ensure_ascii=True).replace("<", r"\u003c")
+        payload = (data() if callable(data) else json.dumps(data, ensure_ascii=True)).replace("<", r"\u003c")
         self.blocks.append(
             f'<section class="report-chart" data-renderer="{escape(name, quote=True)}">'
             f'{html}<script type="application/json">{payload}</script></section>'
@@ -139,12 +142,12 @@ class HtmlReport:
     def document(self):
         css = _STYLE + "\n".join(css for css, _ in self.adapters.values())
         scripts = ""
-        if self.adapters:
+        if "plotly" in self.dependencies:
             from framework.plotly_assets import PLOTLY_SOURCE
             scripts = f"<script>{PLOTLY_SOURCE}</script>"
-            for name, (_, js) in self.adapters.items():
-                # Each adapter gets its own scope; no module imports or CDN on file://.
-                scripts += f"""<script>(() => {{
+        for name, (_, js) in self.adapters.items():
+            # Each adapter gets its own scope; no module imports or CDN on file://.
+            scripts += f"""<script>(() => {{
 {js}
 for (const parentElement of document.querySelectorAll('[data-renderer="{name}"]')) {{
   const data = JSON.parse(parentElement.querySelector('script[type="application/json"]').textContent);
@@ -179,6 +182,9 @@ class ExportUI:
         self.report.closed = True
         filename = re.sub(r'[^\w.-]+', '-', self.report.title).strip('-') or "report"
         try:
+            if self.report.error:
+                self.report.slot.warning(self.report.error)
+                return
             self.report.slot.download_button("Download HTML", self.report.document().encode("utf-8"),
                                             file_name=f"{filename}.html", mime="text/html",
                                             on_click="ignore")
@@ -202,7 +208,8 @@ class ExportUI:
     def __getattr__(self, name):
         method = getattr(self.target, name)
         report = self.report
-        if report.exclusions:
+        # A fragment can rerun with its original page wrapper after download creation.
+        if report.closed or report.exclusions:
             return method
         if name == "columns":
             def columns(*args, **kwargs):
@@ -233,7 +240,7 @@ class ExportUI:
                 from plotly.io import to_json
                 figure = _arg(args, kwargs, 0, "figure_or_data")
                 report.component("renderPlot", {"figure": to_json(figure), "config": kwargs.get("config")},
-                                 html='<div class="plot"></div>', css="", js=_PLOT)
+                                 html='<div class="plot"></div>', css="", js=_PLOT, dependencies=("plotly",))
             else:
                 body = str(_arg(args, kwargs, 0, "body"))
                 if name == "markdown" and kwargs.get("unsafe_allow_html"):

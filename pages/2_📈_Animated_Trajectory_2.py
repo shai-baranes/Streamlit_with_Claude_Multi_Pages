@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Trajectory Animation", layout="wide")
 
+st = st.exportable_page(title="Animated trajectory")
 st.title("Animated trajectory")
 st.caption("Gray = full route, Blue = achieved route, Dark blue = current position")
 
@@ -242,3 +243,4 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig, theme=None)
+st.finish_html_export()

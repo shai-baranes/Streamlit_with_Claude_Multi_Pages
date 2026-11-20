@@ -300,7 +300,7 @@ def measured_plotly_chart(
     report = current_html_export()
     if report is not None:
         # The downloaded file mounts the same browser renderer with the same data.
-        report.component("renderMeasuredChart", data, html=_HTML, css=_CSS, js=_JS)
+        report.component("renderMeasuredChart", data, html=_HTML, css=_CSS, js=_JS, dependencies=("plotly",))
     _COMPONENT(
         key=key,
         data=data,

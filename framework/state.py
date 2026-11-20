@@ -24,9 +24,9 @@ class PersistentUI:
         self.target, self.scope = target, scope
         self.in_form = False
 
-    def exportable_page(self, *, title):
+    def exportable_page(self, *, title, help=None):
         _active_export.set(None)
-        if not self.target.button("Export page as HTML", key=f"html_export:{self.scope}"):
+        if not self.target.button("Export page as HTML", key=f"html_export:{self.scope}", help=help):
             return self
         # Import the report machinery and reserve its download slot only on demand.
         from framework.html_export import ExportUI, HtmlReport

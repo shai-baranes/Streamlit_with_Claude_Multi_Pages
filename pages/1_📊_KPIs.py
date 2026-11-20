@@ -18,6 +18,7 @@ _missing = set(ALWAYS_LOAD_COLUMNS) - set(df_full.columns)
 if _missing:
     st.info("This sales view needs: " + ", ".join(sorted(_missing)) + ". Use Engineering Explorer for other schemas.")
     st.stop()
+st = st.exportable_page(title="KPIs") # new addition to support html export on this page
 df      = sidebar_filters(df_full)
 
 st.title("⚡ Key Performance Indicators")
@@ -76,3 +77,5 @@ with st.expander("📋 Descriptive Statistics  (df.describe())"):
 
 st.markdown("---")
 st.caption(f"Showing {len(df):,} of {len(df_full):,} records")
+
+st.finish_html_export()

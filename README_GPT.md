@@ -528,3 +528,17 @@ Source size was 4,517,013 bytes; combined peak process RSS was approximately 262
 For browser acceptance: upload distinct files with the same name in separate tabs; verify datasets/exports differ, select filters and table fields, switch pages and return, select an AgGrid row and expand stacked mode, add source columns, and attempt malformed replacement. New tabs must not inherit another tab's data.
 
 Local verification: 40 pytest checks passed; all Python pages compiled and `git diff --check` passed. Browser checks exercised the highlighted native upload area, selected-filename feedback, cross-page dataset/field retention, a separate empty browser session, and AgGrid row selection across a stacked-mode change. Windows service execution was not exercised.
+
+### Investigate a Seconds export offline
+
+On Stacked Values Enhanced Seconds the downloaded HTML opens with the current
+ordered columns, stacking mode, exclusions and selected source row. It embeds
+all loaded fields for all rows matching the current sidebar filters, including
+fields hidden in the live table. Use Add column, Move up/down or Remove to
+change the anchor and displayed fields. Change modes, apply an embedded saved
+preset, sort by a heading, page through events, or select a row to inspect its
+source values. Sidebar filters describe the exported population. Preset edits
+are made on the live page. The encoded interactive payload is limited to
+32 MiB by default (DASHBOARD_MAX_INTERACTIVE_EXPORT_MB). Narrow the filters or
+load fewer columns if the report exceeds this limit. Table-only exports use
+embedded JavaScript and do not require Plotly or an internet connection.
