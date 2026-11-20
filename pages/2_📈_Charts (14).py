@@ -11,7 +11,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
-from utils import inject_css, require_data, sidebar_filters, tutorial_box, my_func3
+from framework.measured_chart import measured_plotly_chart
+from utils import inject_css, require_data, sidebar_filters, tutorial_box
+# from utils import inject_css, require_data, sidebar_filters, tutorial_box, my_func3
 
 st.set_page_config(page_title="Charts", page_icon="📈", layout="wide")
 inject_css()
@@ -374,8 +376,9 @@ for r in [1, 2, 3]:
 for r in [1, 2, 3]:
     fig_sub.update_xaxes(type="category", tickangle=-35, row=r, col=1)
 
-st.plotly_chart(fig_sub, use_container_width=True)
-my_func3("koko")
+measured_plotly_chart(fig_sub, key="sales_shared_x", x_kind="period")
+# st.plotly_chart(fig_sub, use_container_width=True)
+# my_func3("koko")
 
 # ══════════════════════════════════════════════
 # ROW 6: Shared-X Multi-metric — Option 3 (Normalized / same scale)
@@ -565,10 +568,12 @@ fig_norm.update_layout(
     shapes=_shapes,
     annotations=_annotations,
 )
-st.plotly_chart(fig_norm, width="stretch")
+measured_plotly_chart(fig_norm, key="sales_normalized", x_kind="period")
+# st.plotly_chart(fig_norm, width="stretch")
 
-# Coordinate and delta readouts are always active; no mode toggle is needed.
-my_func3("Normalized")
+## Coordinate and delta readouts are always active; no mode toggle is needed.
+# my_func3("Normalized")
+
 
 # ══════════════════════════════════════════════
 # ROW 7: Animated Geo-Trace (Streamlit 1.12 compatible)

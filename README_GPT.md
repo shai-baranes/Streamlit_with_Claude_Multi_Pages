@@ -14,13 +14,36 @@ Run one Streamlit server and open it from multiple computers over a trusted LAN 
 | Navigation | Data, shared sales filters, and page-specific selections survive page switches |
 | Engineering views | Categorical/numeric filters, grouping, aggregation, full/stacked tables, numeric/datetime trends |
 | Sales pages | Existing calculations; missing-schema guidance instead of missing-column errors |
-| Chart point measurements | Shared-X and normalized chart coordinate/delta readouts are always active; click two points to compare, double-click to clear |
+| Chart point measurements | Shared-X and normalized charts show signed X/Y deltas inline and in full screen; time deltas default to milliseconds |
 | 3D flight simulation | Two adjacent, differently colored aircraft routes share the sample `Seconds` timeline; an adjustable distance limit adds a pink warning sleeve; an optional deterministic terrain surface demonstrates elevation changes |
 | Rendering | Generic table defaults to 200 rows; previews capped at 1,000; engineering charts capped at 10,000 points per trace |
 | Export | Explicit preparation; engineering export includes all filtered rows of the selected display fields |
 | Parquet | Experimental session-private cache; opt-in, automatic conversion disabled |
 | Hosting | Windows service packaging and macOS foreground debug launcher |
 | Administration | Opt-in loopback UI and local CLI; remote CLI through OS-authenticated SSH |
+
+## Measure two points on a chart
+
+On the shared-X or normalized chart, click two points to see their coordinates,
+series, and signed differences (second minus first). A third click starts a new
+pair, and double-click clears the measurement. **Full screen** expands the chart
+and readout together. Press Escape or **Exit full screen** to return with the
+same measurement. A change to the plotted data clears the pair.
+
+To enable measurement on another 2D Plotly figure, give the wrapper a unique
+key and call it where you would render the figure.
+
+```python
+from framework.measured_chart import measured_plotly_chart
+
+measured_plotly_chart(fig, key="my_chart", x_kind="period")
+```
+
+The default `x_kind="numeric"` uses the X values in their original units.
+`x_kind="period"` interprets `YYYY-MM`, `YYYY Qn`, and `YYYY` as period starts
+in UTC. Use `x_kind="seconds"` for numeric timestamps in seconds. Both time
+modes display elapsed milliseconds by default. Pass `delta_time_unit="s"` to
+display elapsed seconds.
 
 ## Shared Seconds stacked-value presets
 
