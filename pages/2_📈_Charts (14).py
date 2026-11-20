@@ -25,6 +25,7 @@ _missing = set(ALWAYS_LOAD_COLUMNS) - set(df_full.columns)
 if _missing:
     st.info("This sales view needs: " + ", ".join(sorted(_missing)) + ". Use Engineering Explorer for other schemas.")
     st.stop()
+st = st.exportable_page(title="Dynamic Charts") # new addition to support html export on this page
 df      = sidebar_filters(df_full)
 
 st.title("📈 Dynamic Charts")
@@ -578,6 +579,7 @@ measured_plotly_chart(fig_norm, key="sales_normalized", x_kind="period")
 # ══════════════════════════════════════════════
 # ROW 7: Animated Geo-Trace (Streamlit 1.12 compatible)
 # ══════════════════════════════════════════════
+st.begin_export_exclusion() # exclude below from html export (up-to 'st.end_export_exclusion()')
 st.markdown("---")
 st.markdown("<div style='border-left:4px solid #6366f1;padding-left:12px;font-size:1.3rem;font-weight:700;'>🗺️ Animated Geo-Trace</div>", unsafe_allow_html=True)
 
@@ -915,6 +917,7 @@ if st.session_state["geo_running"]:
 # ══════════════════════════════════════════════
 # ROW 8: Tri-state / Binary Signal Charts
 # ══════════════════════════════════════════════
+st.end_export_exclusion()
 st.markdown("---")
 st.markdown("<div style='border-left:4px solid #6366f1;padding-left:12px;font-size:1.3rem;font-weight:700;'>⬛ Signal Viewer (tri-state: -1 / 0 / +1)</div>", unsafe_allow_html=True)
 
@@ -1120,3 +1123,5 @@ st.dataframe(pd.DataFrame(_stat_rows))
 
 st.markdown("---")
 st.caption(f"Showing {len(df):,} of {len(df_full):,} records")
+
+st.finish_html_export() # end section of HTML export (started as: 'st = st.exportable_page(title="Dynamic Charts")' - usually end of file)

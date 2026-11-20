@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from framework.plotly_assets import PLOTLY_SOURCE
+from framework.state import current_html_export
 
 
 _HTML = """
@@ -156,7 +157,7 @@ function closestPoint(plot, {points, event}) {
   return best || candidates[0]
 }
 
-export default function ({data, parentElement}) {
+function renderMeasuredChart({data, parentElement}) {
   const plotly = window.Plotly
   const inline = parentElement.querySelector(".measured-chart-inline")
   const dialog = parentElement.querySelector(".measured-chart-dialog")
@@ -283,7 +284,7 @@ _COMPONENT = st.components.v2.component(
     isolate_styles=False,
     html=_HTML,
     css=_CSS,
-    js=PLOTLY_SOURCE + "\n" + _JS,
+    js=PLOTLY_SOURCE + "\n" + _JS + "\nexport default renderMeasuredChart",
 )
 
 
@@ -295,8 +296,13 @@ def measured_plotly_chart(
     delta_time_unit: Literal["ms", "s"] = "ms",
 ) -> None:
     """Display signed click deltas with the figure, including in full screen."""
+    data = {"figure": figure.to_json(), "xKind": x_kind, "unit": delta_time_unit}
+    report = current_html_export()
+    if report is not None:
+        # The downloaded file mounts the same browser renderer with the same data.
+        report.component("renderMeasuredChart", data, html=_HTML, css=_CSS, js=_JS)
     _COMPONENT(
         key=key,
-        data={"figure": figure.to_json(), "xKind": x_kind, "unit": delta_time_unit},
+        data=data,
         width="stretch",
     )

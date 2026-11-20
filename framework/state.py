@@ -1,14 +1,48 @@
 """Widget values are copied into non-widget state before navigation cleanup."""
+from contextvars import ContextVar
 from pathlib import Path
+from weakref import ref
 import streamlit as st
 
 WIDGETS = {'checkbox', 'toggle', 'selectbox', 'multiselect', 'slider', 'radio',
            'number_input', 'text_input', 'date_input'}
 
+# Helpers in other modules can join the current export without sharing page data.
+_active_export = ContextVar("active_html_export", default=None)
+
+
+def current_html_export():
+    reference = _active_export.get()
+    report = reference() if reference else None
+    if report is not None and report.is_current():
+        return report
+    return None
+
+
 class PersistentUI:
     def __init__(self, target, scope):
         self.target, self.scope = target, scope
         self.in_form = False
+
+    def exportable_page(self, *, title):
+        _active_export.set(None)
+        if not self.target.button("Export page as HTML", key=f"html_export:{self.scope}"):
+            return self
+        # Import the report machinery and reserve its download slot only on demand.
+        from framework.html_export import ExportUI, HtmlReport
+        report = HtmlReport(title, self.target.empty())
+        _active_export.set(ref(report))
+        return ExportUI(self, report)
+
+    # On ordinary runs, the page keeps its original UI and data paths.
+    def finish_html_export(self):
+        pass
+
+    def begin_export_exclusion(self):
+        pass
+
+    def end_export_exclusion(self):
+        pass
 
     def set_widget_value(self, key, value):
         """Update a keyed widget before rendering it, including its navigation state."""

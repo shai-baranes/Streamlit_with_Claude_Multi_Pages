@@ -14,7 +14,7 @@ session, so the uploaded file and all filter selections survive page switches.
 import io
 import streamlit as st
 # Persist shared filter widgets independently of Streamlit widget cleanup.
-from framework.state import ui
+from framework.state import current_html_export, ui
 st = ui(__file__)
 import pandas as pd
 import streamlit.components.v1 as _cv1
@@ -67,6 +67,9 @@ CSS = """
 # and cannot be overridden by any external stylesheet.
 def tutorial_box(html_content: str) -> None:
     """Render a styled tutorial callout box using fully inline styles."""
+    report = current_html_export()
+    if report is not None:
+        report.rich_text(html_content)
     st.markdown(f"""
 <div style="
     background: #eff6ff;
@@ -215,6 +218,13 @@ def sidebar_filters(df_full: pd.DataFrame) -> pd.DataFrame:
     if math.isclose(high, rev_max, rel_tol=1e-6, abs_tol=1e-8):
         high = rev_max
     revenue_range = (low, high)
+
+    report = current_html_export()
+    if report is not None:
+        for label, selection in (("Years", selected_years), ("Regions", selected_regions),
+                                 ("Categories", selected_categories), ("Segments", selected_segments),
+                                 ("Revenue range", revenue_range), ("Won deals only", won_only)):
+            report.setting(label, selection)
 
     # Apply filters
     df = df_full[

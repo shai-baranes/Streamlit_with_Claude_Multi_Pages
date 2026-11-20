@@ -45,6 +45,38 @@ in UTC. Use `x_kind="seconds"` for numeric timestamps in seconds. Both time
 modes display elapsed milliseconds by default. Pass `delta_time_unit="s"` to
 display elapsed seconds.
 
+## Download a page as interactive HTML
+
+On **Charts (14)**, apply the desired filters and chart settings, click **Export
+page as HTML**, then **Download HTML**. Open the saved file directly in a
+modern browser. The nine charts, ruler, tutorials, applied settings, channel
+statistics, and record count travel together. Click a table column heading to
+sort. The shared-X and normalized charts support fresh two-click measurements
+and full screen. Settings reflect the export run. After changing the live page,
+export again to save the new view. The animated geo-trace is omitted.
+
+For another page using `st = ui(__file__)`, add these two lines around its
+report content, starting after the dataset check and before filters:
+
+```python
+st = st.exportable_page(title="My report")
+# Existing controls, plots, tables, and metrics
+st.finish_html_export()
+```
+
+The wrapper collects supported calls in display order, including column
+methods, shared sales filters, tutorials, and measured charts. Reports use a
+single column, honor table preview limits, and show widget values as text.
+Use `st.begin_export_exclusion()` and `st.end_export_exclusion()` around a
+section to omit it. For custom components, follow the measured chart's
+`current_html_export()` adapter, passing trusted renderer assets and supplying
+user values through its data argument. Pages with external maps or custom
+controls need an offline renderer for those elements.
+
+Report generation runs only on an export request. A chart report includes the
+local Plotly.js bundle once (about 4.9 MB), plus the exported content. Anyone
+holding the downloaded file can inspect the embedded chart and table data.
+
 ## Shared Seconds stacked-value presets
 
 Open **Presets** above the column controls on the Seconds stacked-values page.

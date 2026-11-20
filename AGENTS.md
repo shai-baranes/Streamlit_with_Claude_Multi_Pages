@@ -49,6 +49,23 @@ when user-visible behavior, launch commands, limits, or service setup changes.
 
 ## CSV and performance constraints
 
+Every change must preserve the performance of loading data and investigating it.
+This includes applying column projections, filtering, grouping, navigating pages,
+and interacting with tables and charts. If an enhancement would slow these
+workflows or increase their memory use enough to affect responsiveness, redesign,
+narrow, or defer the enhancement. Core performance takes priority.
+
+For HTML export, assemble the report, serialize its data, and embed its resources
+only after the user requests an export. Ordinary page reruns must incur no
+export-related dataset scans, figure serialization, or retained copies of tables
+and charts.
+
+When a change touches a core workflow, compare elapsed time and peak memory
+before and after the change using the same representative data and actions.
+For HTML export, verify normal loading and investigation with the feature
+available but unused. Revise the design if the comparison shows a repeatable
+regression.
+
 `ALWAYS_LOAD_COLUMNS` in `framework/config.py` contains the fixed sample schema,
 including `Seconds`, `longitude`, `latitude`, and `Altitude`. Available fixed
 fields load automatically; users may add other fields through the projection UI.
