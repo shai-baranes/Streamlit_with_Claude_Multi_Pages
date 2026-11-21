@@ -1,0 +1,13 @@
+HTML batch complete · 7 of 7 pages processed
+CSV: synthetic_sales_data.csv
+Rows: 1,500
+Columns: Date, Year, Quarter, Month, MonthNum, Seconds, Region, Country, Category, Product, Segment, Channel, Sales_Rep, Revenue, Units, Cost, Profit, Margin_%, Deal_Won, longitude, latitude, Altitude, longitude_2, latitude_2, altitude_2, Power_1, Power_2, Power_3, Power_4
+Seconds interval: [0.0, 749.5]
+
+0_🔧_Engineering_Explorer.py: Saved · Engineering-Explorer.html
+1_📊_KPIs.py: Saved · KPIs.html
+2_✈️_3D_Flight_Simulation.py: Saved · 3D-flight-simulation.html
+2_📈_Animated_Trajectory_2.py: Saved · Animated-trajectory.html
+2_📈_Charts (14).py: Saved · Dynamic-Charts.html
+2_📈_Stacked_Values_Enhanced Seconds.py: Saved · Stacked-Values.html
+3_🔄_Pivot_Tables.py: Saved · Pivot-Tables.html

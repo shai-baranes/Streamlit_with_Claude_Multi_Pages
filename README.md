@@ -9,6 +9,7 @@
 | `CSV_PATH` (positional) | Server-local `.csv` path | None | Privately stage the file in each new session; wait for Apply columns. |
 | `--csv_file PATH` | Server-local `.csv` path | None | Automatically apply the always-loaded columns and the full numeric Seconds interval once per new session. The form stays visible. Cannot be combined with positional CSV_PATH. |
 | `--all-columns` | Flag | Off | Use every column in each CSV's header as an always-loaded column. Works without a startup CSV. |
+| `--export-pages-html` | Flag | Off | Requires a startup CSV. Export supported pages once after successful import into `streamlit_pages` beside the CSV. |
 | `--parquet true\|false` | `true` or `false`, case-insensitive | `false` | Set the initial experimental Parquet checkbox value, including automatic loading. Users may change it afterward. Works without a startup CSV. |
 | `--debug` | Flag | Off | Enable foreground development/debug logging. |
 | `--sample` | Flag | Off | Offer the explicit Load sample data button. |
@@ -74,11 +75,39 @@ Application arguments must follow Streamlit's `--` separator:
 | `CSV_PATH` | None | Stage privately and wait for Apply columns. |
 | `--csv_file PATH` | None | Auto-apply always-loaded columns and the full Seconds interval. The form stays visible. |
 | `--all-columns` | Off | Treat every column in each CSV as always loaded, with normal Seconds filtering and Apply behavior. |
+| `--export-pages-html` | Off | Pass after Streamlit's `--` with a startup CSV. Export supported pages once after successful import into `streamlit_pages` beside the CSV. |
 | `--parquet true\|false` | `false` | Initial session checkbox/cache setting; accepted case-insensitively. |
 | `--load-all` | Off | Requires positional CSV_PATH; loads every row and column and hides the projection form for that source. Cannot be combined with --csv_file and is not a run_server.py option. |
 
 Combine `--load-all` with `--all-columns` to keep every column enabled on later files while
 loading every row of the positional startup file.
+
+### Batch HTML export
+
+```sh
+python run_server.py --csv_file "/absolute/path/to/file.csv" --export-pages-html
+streamlit run "Load CSV.py" -- --csv_file "/absolute/path/to/file.csv" --export-pages-html
+```
+
+The batch starts once per launch after the first successful import of the
+startup CSV. With a positional path, select columns and a Seconds interval,
+then click **Apply columns**. With `--csv_file`, opening a browser session
+starts the normal automatic import when the projection is available. Direct
+launches with `--load-all` import the entire file.
+
+The dashboard stays available while reports export in the background. The
+initiating session shows the folder and progress. Reports use the imported
+columns and interval with fresh page settings. The host account needs write
+permission beside the original CSV. Each launch creates `streamlit_pages`
+or the next available numbered folder such as `streamlit_pages_2`.
+Open `summary.txt` for counts and the outcome of each page, including skips
+and failures. Pages that exceed the configured interactive export limit
+appear as failures. The completed HTML files can be opened offline.
+
+```text
+python run_server.py [CSV_PATH | --csv_file PATH] [--export-pages-html] [other options]
+streamlit run "Load CSV.py" -- [CSV_PATH | --csv_file PATH] [--export-pages-html] [other app options]
+```
 
 ## Shared Seconds stacked-value presets
 

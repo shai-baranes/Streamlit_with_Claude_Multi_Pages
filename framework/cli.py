@@ -12,6 +12,7 @@ class StartupCSVOptions:
     auto_apply: bool = False
     parquet: bool = False
     all_columns: bool = False
+    export_pages_html: bool = False
 
 # the value is probably the path input into the CLI cmd line
 def validate_csv_path(value):
@@ -40,6 +41,8 @@ def startup_csv_options(*, validate_path=True):
     if args.load_all and not args.csv_path:
         raise ValueError('--load-all requires a CSV path after Streamlit\'s -- separator.')
     source = args.csv_file or args.csv_path
+    if args.export_pages_html and not source:
+        raise ValueError('--export-pages-html requires a startup CSV path.')
     path = None
     if source:
         path = validate_csv_path(source) if validate_path else Path(source)
@@ -49,6 +52,7 @@ def startup_csv_options(*, validate_path=True):
         auto_apply=args.csv_file is not None,
         parquet=args.parquet,
         all_columns=args.all_columns,
+        export_pages_html=args.export_pages_html,
     )
 
 
@@ -70,6 +74,8 @@ def add_csv_arguments(parser):
     parser.add_argument('--csv_file', metavar='PATH', help='Automatically apply always-loaded columns and the full Seconds interval')
     parser.add_argument('--all-columns', action='store_true',
                         help='Treat every column in each CSV as always loaded')
+    parser.add_argument('--export-pages-html', action='store_true',
+                        help='Export supported pages beside the startup CSV after its first successful import')
     parser.add_argument('--parquet', type=parse_boolean, default=False, metavar='true|false',
                         help='Initial experimental Parquet checkbox value (default: false)')
 

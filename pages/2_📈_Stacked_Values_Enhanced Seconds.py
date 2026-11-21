@@ -30,8 +30,9 @@ def get_time_column(df: pd.DataFrame) -> str:
     for col in TIME_COLUMN_CANDIDATES:
         if col in df.columns:
             return col
-    st.info("Select the Seconds field on the upload page to use this table.")
-    st.stop()
+    message = "Select the Seconds field on the upload page to use this table."
+    st.info(message)
+    st.stop(batch_skip=message)
     raise KeyError("Could not find the Seconds column in the dataframe.")
 
 

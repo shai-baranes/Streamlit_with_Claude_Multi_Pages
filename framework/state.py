@@ -26,18 +26,30 @@ class PersistentUI:
 
     def exportable_page(self, *, title, help=None, requested=None):
         _active_export.set(None)
+        destination = self.target.session_state.get('_html_batch_destination')
         # A browser component can submit its current view with its own export trigger.
-        if requested is None:
+        if destination is not None:
+            requested = True
+        elif requested is None:
             requested = self.target.button("Export page as HTML", key=f"html_export:{self.scope}", help=help)
         if not requested:
             return self
         # Import the report machinery and reserve its download slot only on demand.
         from framework.html_export import ExportUI, HtmlReport
         from utils import csv_metadata_entries
-        report = HtmlReport(title, self.target.empty())
+        report = HtmlReport(title, self.target.empty() if destination is None else None)
+        if destination is not None:
+            destination.started = True
+            report.destination = destination
         report.csv_metadata(csv_metadata_entries())
         _active_export.set(ref(report))
         return ExportUI(self, report)
+
+    def is_batch_export(self):
+        return self.target.session_state.get('_html_batch_destination') is not None
+
+    def stop(self, *, batch_skip=None):
+        self.target.stop()
 
     # On ordinary runs, the page keeps its original UI and data paths.
     def finish_html_export(self):

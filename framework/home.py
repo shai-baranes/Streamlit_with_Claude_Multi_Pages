@@ -124,6 +124,8 @@ def render():
                         path, header = stage_source(source, st.session_state.session_id)
                     st.session_state.update(pending_source=path, pending_name=cli_path.name,
                                             pending_header=(path, header))
+                    if cli_options.export_pages_html:
+                        st.session_state['home:batch-source'] = path
                     if cli_options.auto_apply:
                         st.session_state['cli_auto_apply_source'] = path
                     if cli_options.load_all:
@@ -265,6 +267,18 @@ def render():
                 active = candidate
             except Exception as error:
                 st.error(f'Import failed: {error}')
+    if cli_options.export_pages_html:
+        if active is not None and active.source == st.session_state.get('home:batch-source'):
+            from framework.batch_html import start_batch
+
+            job = start_batch(cli_options.path, active)
+            if job is not None:
+                st.session_state['home:batch-job'] = job
+            st.session_state.pop('home:batch-source')
+        if job := st.session_state.get('home:batch-job'):
+            from framework.batch_html import show_progress
+
+            show_progress(job)
     if active:
         st.success(f'{active.name}: {len(active.frame):,} rows, {len(active.frame.columns):,} loaded fields')
         st.dataframe(active.frame.head(5))

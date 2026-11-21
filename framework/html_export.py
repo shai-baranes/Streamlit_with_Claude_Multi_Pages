@@ -98,6 +98,7 @@ class HtmlReport:
         self.adapters = {}
         self.dependencies = set()
         self.error = None
+        self.destination = None
         self.exclusions = 0
         self.closed = False
         # Streamlit replaces this mapping on each run, including interrupted reruns.
@@ -192,21 +193,30 @@ class ExportUI:
 
     def finish_html_export(self):
         self.report.closed = True
-        filename = re.sub(r'[^\w.-]+', '-', self.report.title).strip('-') or "report"
+        filename = (re.sub(r'[^\w.-]+', '-', self.report.title).strip('-') or "report") + ".html"
         try:
+            if self.report.destination is not None:
+                destination = self.report.destination
+                if self.report.error:
+                    destination.error = self.report.error
+                elif destination.skipped is None:
+                    destination.stage(filename, self.report.document())
+                return
             if self.report.error:
                 self.report.slot.warning(self.report.error)
                 return
             self.report.slot.download_button("Download HTML", self.report.document().encode("utf-8"),
-                                            file_name=f"{filename}.html", mime="text/html",
+                                            file_name=filename, mime="text/html",
                                             on_click="ignore")
         finally:
             # Once the download is prepared, release its intermediate snapshots.
             self.report.blocks.clear()
             self.report.adapters.clear()
 
-    def stop(self):
+    def stop(self, *, batch_skip=None):
         # Early exits (for example, empty filters) still export the visible message.
+        if batch_skip and self.report.destination is not None:
+            self.report.destination.skipped = batch_skip
         self.finish_html_export()
         self.target.stop()
 

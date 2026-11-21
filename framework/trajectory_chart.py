@@ -595,6 +595,10 @@ def render_trajectory_player(
             "dragMode": "orbit",
             "camera": DEFAULT_CAMERA,
         }
+    report = current_html_export()
+    if report is not None and report.destination is not None and export_view is None:
+        # Headless runs have no browser snapshot and start from the fresh player state.
+        export_view = simulation
     # JSON normalization converts pandas and NumPy scalar values for the frontend.
     secondary_columns = ["longitude_2", "latitude_2", "altitude_2"]
     has_secondary = all(column in route.columns for column in secondary_columns)
@@ -625,8 +629,7 @@ def render_trajectory_player(
         on_export_snapshot_change=lambda: None,
     )
 
-    report = current_html_export() if export_view is not None else None
-    if report is not None:
+    if report is not None and export_view is not None:
         # Reuse the bounded rows and terrain prepared for the live mount.
         export_data = {name: data[name] for name in ("rows", "hasSecondary", "terrain", "defaultCamera")}
         export_data["initialState"] = {**export_view, "status": "paused"}

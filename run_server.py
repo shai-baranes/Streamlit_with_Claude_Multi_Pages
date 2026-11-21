@@ -23,6 +23,8 @@ def main():
         parser.error('Admin port must be 1–65535 and different from the dashboard port.')
     if args.csv_path and args.csv_file:
         parser.error('Supply either CSV_PATH or --csv_file, not both.')
+    if args.export_pages_html and not (args.csv_file or args.csv_path):
+        parser.error('--export-pages-html requires a startup CSV path.')
     try:
         source = args.csv_file or args.csv_path
         csv_path = validate_csv_path(source) if source else None
@@ -48,6 +50,8 @@ def main():
         application_args.extend(['--parquet', 'true'])
     if args.all_columns:
         application_args.append('--all-columns')
+    if args.export_pages_html:
+        application_args.append('--export-pages-html')
     if application_args:
         command.extend(['--', *application_args])
     return subprocess.call(command, cwd=Path(__file__).parent, env=env)

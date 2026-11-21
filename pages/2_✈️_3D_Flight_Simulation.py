@@ -63,8 +63,9 @@ if prepared.invalid_rows:
         f"Ignored {prepared.invalid_rows:,} rows with missing, nonnumeric, or out-of-range coordinates."
     )
 if len(trajectory) < 2:
-    st.info("At least two valid trajectory records are required for simulation.")
-    st.stop()
+    message = "At least two valid trajectory records are required for simulation."
+    st.info(message)
+    st.stop(batch_skip=message)
 if prepared.reduced:
     st.caption(
         f"Playback uses {len(trajectory):,} evenly distributed frames from "
