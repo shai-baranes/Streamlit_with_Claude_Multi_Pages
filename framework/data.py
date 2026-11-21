@@ -11,8 +11,15 @@ import uuid
 import pandas as pd
 import psutil
 from framework.config import ROOT, MAX_UPLOAD_MB, MAX_FRAME_MB, TTL_SECONDS, MAX_PROCESS_MB
+from utils import CSVPreamble, parse_csv_preamble
 
 INGEST_LOCK = threading.Lock()
+
+@dataclass(frozen=True)
+class CSVHeader:
+    columns: tuple[str, ...]
+    preamble: CSVPreamble
+
 
 @dataclass
 class Dataset:
@@ -23,6 +30,7 @@ class Dataset:
     frame: pd.DataFrame
     version: str
     seconds_range: tuple[float, float] | None = None
+    header: CSVHeader | None = None
 
 
 @dataclass(frozen=True)
@@ -52,6 +60,12 @@ def cleanup(now=None):
 
 
 def save_source(stream, session_id):
+    path, _ = stage_source(stream, session_id)
+    return path
+
+
+def stage_source(stream, session_id):
+    """Retain and validate a private source, returning its path and parsed header."""
     directory = session_directory(session_id)
     path = directory / f'{uuid.uuid4().hex}.csv'
     size = 0
@@ -66,39 +80,57 @@ def save_source(stream, session_id):
                 if size > MAX_UPLOAD_MB * 1024**2:
                     raise ValueError(f'Upload exceeds {MAX_UPLOAD_MB} MB. Reduce the source size.')
                 output.write(block)
-        validate_source(path)
-        return path
+        return path, validate_source(path)
     except Exception:
         path.unlink(missing_ok=True)
         raise
 
 
 def validate_source(path):
-    inspect_header(path)
-    # Validate structure once per uploaded source; usecols otherwise masks extra fields.
-    with path.open(encoding='utf-8-sig', newline='') as source:
+    return inspect_source(path, validate_rows=True)
+
+
+def inspect_source(path, *, validate_rows=False):
+    with Path(path).open(encoding='utf-8', newline='') as source:
+        preamble = parse_csv_preamble(source)
         reader = csv.reader(source, strict=True)
-        width = len(next(reader))
-        for row in reader:
-            if row and len(row) != width:
-                raise ValueError(f'CSV row ending at line {reader.line_num} has {len(row)} fields; expected {width}.')
+        try:
+            columns = next(reader, [])
+            if not columns or any(not name.strip() for name in columns):
+                raise ValueError('CSV requires one header row with nonempty field names.')
+            if len(set(columns)) != len(columns):
+                raise ValueError('Duplicate CSV field names are ambiguous. Rename them before uploading.')
+            # Validate full rows once per staged source; usecols can mask extra fields.
+            if validate_rows:
+                width = len(columns)
+                for row in reader:
+                    if row and len(row) != width:
+                        line = preamble.line_count + reader.line_num
+                        raise ValueError(f'CSV row ending at line {line} has {len(row)} fields; expected {width}.')
+        except csv.Error as error:
+            line = preamble.line_count + reader.line_num
+            raise ValueError(f'CSV parsing error at line {line}: {error}') from error
+    return CSVHeader(tuple(columns), preamble)
 
 
 def inspect_header(path):
-    with Path(path).open(encoding='utf-8-sig', newline='') as source:
-        header = next(csv.reader(source), [])
-    if not header or any(not name.strip() for name in header):
-        raise ValueError('CSV requires one header row with nonempty field names.')
-    if len(set(header)) != len(header):
-        raise ValueError('Duplicate CSV field names are ambiguous. Rename them before uploading.')
-    return header
+    return list(inspect_source(path).columns)
 
 
-def inspect_numeric_range(path, column='Seconds'):
+def _read_csv_chunks(path, header, **options):
+    with Path(path).open('rb') as source:
+        if header.preamble.byte_offset:
+            source.seek(header.preamble.byte_offset)
+        with pd.read_csv(source, **options) as chunks:
+            yield from chunks
+
+
+def inspect_numeric_range(path, column='Seconds', header=None):
     """Scan one field only so the upload form can offer a bounded range slider."""
+    header = header or inspect_source(path)
     minimum = maximum = previous = min_step = None
     valid_rows = invalid_rows = 0
-    for chunk in pd.read_csv(path, usecols=[column], chunksize=100000):
+    for chunk in _read_csv_chunks(path, header, usecols=[column], chunksize=100000):
         values = pd.to_numeric(chunk[column], errors='coerce')
         valid = values.dropna()
         valid_rows += len(valid)
@@ -138,8 +170,9 @@ def normalize(frame):
     return frame
 
 
-def load_projection(path, selected, parquet=False, seconds_range=None):
-    available = inspect_header(path)
+def load_projection(path, selected, parquet=False, seconds_range=None, header=None):
+    header = header or inspect_source(path)
+    available = header.columns
     selected = [name for name in available if name in selected]
     if not selected:
         raise ValueError('Select at least one available column.')
@@ -158,8 +191,8 @@ def load_projection(path, selected, parquet=False, seconds_range=None):
         chunks, memory = [], 0
         # Keep each parser chunk near 100,000 cells even for very wide selections.
         read_columns = selected if seconds_range is None or 'Seconds' in selected else selected + ['Seconds']
-        for chunk in pd.read_csv(path, usecols=read_columns,
-                                 chunksize=max(1, min(10000, 100000 // len(read_columns)))):
+        for chunk in _read_csv_chunks(path, header, usecols=read_columns,
+                                      chunksize=max(1, min(10000, 100000 // len(read_columns)))):
             from framework.admin_runtime import check_cancelled
             check_cancelled()  # Native reads finish before cancellation can be observed.
             if seconds_range is not None:
@@ -182,7 +215,8 @@ def load_projection(path, selected, parquet=False, seconds_range=None):
         return frame
 
 
-def load_dataset(path, name, selected, parquet=False, seconds_range=None):
-    frame = load_projection(path, selected, parquet, seconds_range)
-    return Dataset(Path(path), name, inspect_header(path), list(selected), frame,
-                   uuid.uuid4().hex, seconds_range)
+def load_dataset(path, name, selected, parquet=False, seconds_range=None, header=None):
+    header = header or inspect_source(path)
+    frame = load_projection(path, selected, parquet, seconds_range, header)
+    return Dataset(Path(path), name, list(header.columns), list(selected), frame,
+                   uuid.uuid4().hex, seconds_range, header)

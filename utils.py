@@ -11,13 +11,116 @@ session, so the uploaded file and all filter selections survive page switches.
 ─────────────────────────────────────────────────────────────────────────────
 """
 
+import csv
+from dataclasses import dataclass
+from datetime import datetime, timedelta
 import io
+import re
+from string import punctuation
+from typing import TextIO
 import streamlit as st
-# Persist shared filter widgets independently of Streamlit widget cleanup.
-from framework.state import current_html_export, ui
-st = ui(__file__)
+# Keep shared filter state without registering a page visit when ingestion imports this module.
+from framework.state import current_html_export, PersistentUI
+st = PersistentUI(st, "utils")
 import pandas as pd
 import streamlit.components.v1 as _cv1
+
+# Group 1 of each pattern contains the full key and value shown on the pages.
+CSV_HEADER_PATTERNS = [
+    re.compile(r"^%.*?\b(version:\s*\d+(?:\.\d+)+)\b(?!\.\w)", re.IGNORECASE),
+    re.compile(r"^%.*?\b(start time:\s*\d{2}:\d{2}:\d{2}\.\d{2})\b", re.IGNORECASE),
+    re.compile(r"^%.*?\b(end time:\s*\d{2}:\d{2}:\d{2}\.\d{2})\b", re.IGNORECASE),
+]
+
+
+@dataclass(frozen=True)
+class CSVPreamble:
+    byte_offset: int
+    line_count: int
+    entries: tuple[str, ...]
+
+
+def _insert_elapsed_time(entries: list[str]) -> None:
+    times = {}
+    for index, entry in enumerate(entries):
+        key, _, value = entry.partition(":")
+        key = key.casefold()
+        if key in {"start time", "end time"}:
+            times.setdefault(key, (index, value.strip()))
+    if "start time" not in times or "end time" not in times:
+        return
+
+    end_index, end_value = times["end time"]
+    try:
+        start = datetime.strptime(times["start time"][1], "%H:%M:%S.%f")
+        end = datetime.strptime(end_value, "%H:%M:%S.%f")
+    except ValueError:
+        # The stamp text is still useful when it contains an invalid clock time.
+        return
+    # The stamp contains only clock times, so an earlier end rolls over once.
+    elapsed = (end - start) % timedelta(days=1)
+    hours, remainder = divmod(elapsed.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    hundredths = elapsed.microseconds // 10_000
+    entries.insert(end_index + 1, f"Elapsed time: {hours:02d}:{minutes:02d}:{seconds:02d}.{hundredths:02d}")
+
+
+def parse_csv_preamble(source: TextIO) -> CSVPreamble:
+    """Read leading % lines from a UTF-8 stream opened with newline=''."""
+    marker = source.read(1)
+    offset = 0
+    if marker == "\ufeff":
+        offset = 3
+        marker = source.read(1)
+    lines = 0
+    entries = []
+    matched = set()
+    limit = csv.field_size_limit()
+    while marker == "%": # new addition for ignoring the CSV header (for parsing meta data) before feeding the CSV to pandas
+        remainder = source.readline(limit + 1)
+        if len(remainder) > limit:
+            raise ValueError(f"CSV stamp line {lines + 1} exceeds {limit:,} characters after %.")
+        line = "%" + remainder.rstrip("\r\n")
+        line_matches = []
+        for index, pattern in enumerate(CSV_HEADER_PATTERNS):
+            if index in matched:
+                continue
+            match = pattern.match(line)
+            if match:
+                line_matches.append((match.start(1), match.group(1)))
+                matched.add(index)
+        entries.extend(entry for _, entry in sorted(line_matches))
+        # Count raw UTF-8 bytes so pandas can seek without scanning skipped lines.
+        offset += 1 + len(remainder.encode("utf-8"))
+        lines += 1
+        marker = source.read(1)
+    source.seek(offset)
+    if entries:
+        _insert_elapsed_time(entries)
+    return CSVPreamble(offset, lines, tuple(entries))
+
+
+def csv_metadata_entries() -> tuple[str, ...]:
+    """Return the active dataset's saved metadata for live and exported pages."""
+    dataset = st.session_state.get("dataset")
+    header = getattr(dataset, "header", None)
+    return header.preamble.entries if header is not None else ()
+
+
+def render_csv_metadata() -> None:
+    """Show metadata from the active dataset in this browser session."""
+    entries = csv_metadata_entries()
+    if not entries:
+        return
+    colors = ("blue", "green", "violet")
+    bullets = []
+    for index, entry in enumerate(entries):
+        # Keep configurable captures literal, including Streamlit Markdown directives.
+        literal = re.sub(f"([{re.escape(punctuation)}])", r"\\\1", entry)
+        bullets.append(f":{colors[index % len(colors)]}[●] {literal}")
+    with st.container(border=True):
+        st.markdown("**CSV metadata**\n\n" + "  \n".join(bullets))
+
 
 # ── Shared CSS ────────────────────────────────────────────────────────────────
 # Light theme: white/light-grey backgrounds, dark text, indigo/teal accents.
@@ -101,7 +204,9 @@ def load_csv(file_bytes: bytes) -> pd.DataFrame:
     Derives time columns if they are absent from the CSV.
     ─────────────────────────────────────────────────────────────────────────
     """
-    df = pd.read_csv(io.BytesIO(file_bytes))
+    with io.TextIOWrapper(io.BytesIO(file_bytes), encoding="utf-8", newline="") as source:
+        parse_csv_preamble(source)
+        df = pd.read_csv(source)
     # df["Date"] = pd.to_datetime(df["Date"])
     df["Date"] = pd.to_datetime(df["Date"], dayfirst=True)
     if "Year"     not in df.columns: df["Year"]     = df["Date"].dt.year

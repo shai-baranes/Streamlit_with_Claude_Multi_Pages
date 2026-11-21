@@ -6,7 +6,7 @@ import pandas as pd
 from framework.analysis import chronological_order
 from framework.stacked_presets import MAX_NAME_LENGTH, VIEW_MODES, PresetError, PresetStore
 
-from utils import inject_css, require_data, sidebar_filters
+from utils import inject_css, require_data, sidebar_filters, render_csv_metadata
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
 # Bound grid transport while retaining the selected source-row preview.
 from framework.grid import AgGrid
@@ -20,6 +20,7 @@ st = st.exportable_page(
     help="Includes every loaded column and every row matching the current sidebar filters.",
 )
 st.title("📈 Stacked Values")
+render_csv_metadata()
 
 TIME_COLUMN_CANDIDATES = ["Seconds"]
 DELTA_SECONDS_COLUMN = "Dt [seconds]"

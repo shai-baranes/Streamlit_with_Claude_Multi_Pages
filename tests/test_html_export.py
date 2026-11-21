@@ -7,7 +7,7 @@ from types import SimpleNamespace
 from streamlit.testing.v1 import AppTest
 
 from framework.config import ALWAYS_LOAD_COLUMNS
-from framework.data import load_projection
+from framework.data import load_dataset, load_projection
 from framework.html_export import HtmlReport
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -60,10 +60,27 @@ def test_unused_export_never_starts_collection(monkeypatch):
     assert not app.download_button
 
 
-def test_two_line_opt_in_and_isolated_sessions(monkeypatch):
+def test_two_line_opt_in_and_isolated_sessions(monkeypatch, tmp_path):
+    from utils import CSV_HEADER_PATTERNS
+
     reports = collect_documents(monkeypatch)
-    first = AppTest.from_string(SMALL_PAGE).run()
-    second = AppTest.from_string(SMALL_PAGE).run()
+    stamped = tmp_path / "stamped.csv"
+    stamped.write_text(
+        "% version: 1.5\n% start time: 18:00:30.35\n% end time: 19:20:54.22\n"
+        "% note: <script>alert(1)</script>\nSeconds\n0\n",
+        encoding="utf-8",
+    )
+    clean = tmp_path / "clean.csv"
+    clean.write_text("Seconds\n0\n", encoding="utf-8")
+    with monkeypatch.context() as parsing:
+        parsing.setattr("utils.CSV_HEADER_PATTERNS", [*CSV_HEADER_PATTERNS, re.compile(r"^% (note: .+)")])
+        dataset = load_dataset(stamped, stamped.name, ["Seconds"])
+    first = AppTest.from_string(SMALL_PAGE)
+    first.session_state["dataset"] = dataset
+    first.run()
+    second = AppTest.from_string(SMALL_PAGE)
+    second.session_state["dataset"] = load_dataset(clean, clean.name, ["Seconds"])
+    second.run()
     second.selectbox[0].select('Δ "</script>').run()
     assert not reports
     for app in (first, second):
@@ -71,6 +88,14 @@ def test_two_line_opt_in_and_isolated_sessions(monkeypatch):
         assert not app.exception
         assert len(app.download_button) == 1
     first_report, second_report = reports
+    panel = re.search(r'<aside class="csv-metadata">(.*?)</aside>', first_report).group(1)
+    assert re.findall(r'<li>(.*?)</li>', panel) == [
+        "version: 1.5", "start time: 18:00:30.35", "end time: 19:20:54.22",
+        "Elapsed time: 01:20:23.87", "note: &lt;script&gt;alert(1)&lt;/script&gt;",
+    ]
+    assert first_report.index(panel) < first_report.index("Direct metric")
+    assert '<aside class="csv-metadata">' not in second_report
+    assert "version: 1.5" not in second_report
     payload = r'<script type="application/json">(.*?)</script>'
     labels = []
     for report in reports:
@@ -79,7 +104,7 @@ def test_two_line_opt_in_and_isolated_sessions(monkeypatch):
         figure = json.loads(json.loads(re.search(payload, report).group(1))["figure"])
         labels.append(figure["data"][0]["x"])
     assert labels == [["First"], ['Δ "</script>']]
-    assert "&lt;/script&gt;" in second_report and "&lt;/script&gt;" not in first_report
+    assert "Δ &quot;&lt;/script&gt;" in second_report and "Δ &quot;&lt;/script&gt;" not in first_report
     second.selectbox[0].select("First").run()
     assert not second.download_button
 

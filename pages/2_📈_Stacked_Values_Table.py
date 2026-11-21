@@ -11,12 +11,13 @@ st = ui(__file__)
 # import plotly.graph_objects as go
 # from plotly.subplots import make_subplots
 import pandas as pd
-from utils import inject_css, require_data, sidebar_filters
+from utils import inject_css, require_data, sidebar_filters, render_csv_metadata
 # import streamlit.components.v1 as _cv1
 
 st.set_page_config(page_title="Stacked Vlues", page_icon="📈", layout="wide")
 inject_css()
 
+render_csv_metadata()
 df_full = require_data()
 df      = sidebar_filters(df_full)
 

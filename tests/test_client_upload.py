@@ -93,7 +93,7 @@ def test_client_launch_beats_startup_and_does_not_replay(store, tmp_path, monkey
     args = ['dashboard_server.py', '--csv_file', str(startup)]
     monkeypatch.setattr(sys, 'argv', args + (['--all-columns'] if all_columns else []))
     key = 'ab' * 32
-    link = token(post(b'Seconds,Altitude,Extra\n1,15,x\n3,20,y\n', owner=key))
+    link = token(post(b'% version: 1.5\nSeconds,Altitude,Extra\n1,15,x\n3,20,y\n', owner=key))
     entry = str(Path(__file__).resolve().parents[1] / 'Load CSV.py')
     app = AppTest.from_file(entry)
     app.query_params[client_upload.TOKEN_PARAM] = link
@@ -108,6 +108,8 @@ def test_client_launch_beats_startup_and_does_not_replay(store, tmp_path, monkey
     assert list(ownership.values()) == [(client_upload.owner_hash(key), app.session_state['session_id'])]
     version = app.session_state['dataset'].version
     app.switch_page('pages/0_🔧_Engineering_Explorer.py').run()
+    assert any('CSV metadata' in item.value for item in app.markdown)
+    assert app.session_state['dataset'].header.preamble.entries == ('version: 1.5',)
     app.switch_page('Load CSV.py').run()
     assert app.session_state['dataset'].version == version
 
@@ -119,6 +121,7 @@ def test_client_launch_beats_startup_and_does_not_replay(store, tmp_path, monkey
 
     normal = AppTest.from_file(entry).run()
     assert normal.session_state['df_full'].Seconds.tolist() == [99]
+    assert not normal.session_state['dataset'].header.preamble.entries
     app.button[0].click().run()
     assert 'dataset' not in app.session_state
     assert store.claimed == ownership

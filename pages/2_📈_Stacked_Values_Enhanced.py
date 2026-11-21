@@ -5,7 +5,7 @@ st = ui(__file__)
 import pandas as pd
 from framework.analysis import chronological_order
 
-from utils import inject_css, require_data, sidebar_filters
+from utils import inject_css, require_data, sidebar_filters, render_csv_metadata
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
 # Bound grid transport while retaining the selected source-row preview.
 from framework.grid import AgGrid
@@ -15,6 +15,7 @@ st.set_page_config(page_title="Stacked Values", page_icon="📈", layout="wide")
 inject_css()
 
 st.title("📈 Stacked Values")
+render_csv_metadata()
 
 TIME_COLUMN_CANDIDATES = ["Date", "time", "Time"]
 DELTA_DAYS_COLUMN = "Dt [days]"

@@ -33,7 +33,9 @@ class PersistentUI:
             return self
         # Import the report machinery and reserve its download slot only on demand.
         from framework.html_export import ExportUI, HtmlReport
+        from utils import csv_metadata_entries
         report = HtmlReport(title, self.target.empty())
+        report.csv_metadata(csv_metadata_entries())
         _active_export.set(ref(report))
         return ExportUI(self, report)
 

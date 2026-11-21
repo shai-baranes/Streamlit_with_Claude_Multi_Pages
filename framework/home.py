@@ -5,7 +5,7 @@ import shutil
 import uuid
 import streamlit as st
 from framework.config import ALWAYS_LOAD_COLUMNS, MAX_UPLOAD_MB
-from framework.data import (cleanup, save_source, inspect_header, inspect_numeric_range,
+from framework.data import (cleanup, stage_source, inspect_source, inspect_numeric_range,
                             load_dataset, session_directory)
 from framework.state import reset_controls
 from framework.cli import startup_csv_options, StartupCSVOptions, validate_csv_path
@@ -83,13 +83,16 @@ def render():
             from streamlit.runtime.scriptrunner import get_script_run_ctx
 
             runtime_id = get_script_run_ctx().session_id
-            claimed = store.claim(tokens[0], st.session_state.session_id, runtime_id) if store and len(tokens) == 1 else None
+            claimed = None
+            if store and len(tokens) == 1:
+                claimed = store.claim(tokens[0], st.session_state.session_id, runtime_id, include_header=True)
             check_cancelled()
             if claimed is None:
                 raise ValueError('This launch link is invalid, expired, or already used. Run client_load_csv again.')
-            path, name, parquet = claimed
+            path, name, parquet, header = claimed
             st.session_state.pop('client_upload_error', None)
-            st.session_state.update(pending_source=path, pending_name=name, cli_auto_apply_source=path)
+            st.session_state.update(pending_source=path, pending_name=name,
+                                    pending_header=(path, header), cli_auto_apply_source=path)
             st.session_state['home:parquet'] = parquet
             st.session_state['home:parquet-widget'] = parquet
         except (ValueError, OSError) as error:
@@ -118,21 +121,23 @@ def render():
                 if cli_path is not None:
                     cli_path = validate_csv_path(cli_path)
                     with cli_path.open('rb') as source:
-                        path = save_source(source, st.session_state.session_id)
-                    st.session_state.update(pending_source=path, pending_name=cli_path.name)
+                        path, header = stage_source(source, st.session_state.session_id)
+                    st.session_state.update(pending_source=path, pending_name=cli_path.name,
+                                            pending_header=(path, header))
                     if cli_options.auto_apply:
                         st.session_state['cli_auto_apply_source'] = path
                     if cli_options.load_all:
                         # This application argument is reserved for an explicit local
                         # Streamlit CLI launch and never enabled by the server wrapper.
-                        available = inspect_header(path)
-                        candidate = load_dataset(path, cli_path.name, available, st.session_state['home:parquet'])
+                        candidate = load_dataset(path, cli_path.name, header.columns,
+                                                 st.session_state['home:parquet'], None, header)
                         check_cancelled()
                         reset_controls()
                         st.session_state.update(
                             dataset=candidate,
                             df_full=candidate.frame,
                             pending_source=None,
+                            pending_header=None,
                             cli_load_all_active=True,
                         )
             except Exception as error:
@@ -150,18 +155,20 @@ def render():
     )
     if uploaded is not None and uploaded.file_id != st.session_state.get('upload_id'):
         try:
-            path = save_source(uploaded, st.session_state.session_id)
+            path, header = stage_source(uploaded, st.session_state.session_id)
             old_pending = st.session_state.get('pending_source')
             active = st.session_state.get('dataset')
             if old_pending and (active is None or old_pending != active.source):
                 Path(old_pending).unlink(missing_ok=True)
             st.session_state.update(pending_source=path, pending_name=uploaded.name,
+                                    pending_header=(path, header),
                                     upload_id=uploaded.file_id, cli_load_all_active=False)
         except Exception as error:
             st.error(f'Upload failed: {error}')
     if sample_clicked:
         with Path('synthetic_sales_data.csv').open('rb') as source:
-            st.session_state.pending_source = save_source(source, st.session_state.session_id)
+            path, header = stage_source(source, st.session_state.session_id)
+        st.session_state.update(pending_source=path, pending_header=(path, header))
         st.session_state.pending_name = 'synthetic_sales_data.csv'
         st.session_state.cli_load_all_active = False
     if pending_name := st.session_state.get('pending_name'):
@@ -174,6 +181,7 @@ def render():
     if path and not Path(path).is_file():
         st.warning('The retained source expired. Upload the CSV again to change columns.')
         st.session_state.pop('pending_source', None)
+        st.session_state.pop('pending_header', None)
         path = None
     # An automatically loaded CLI source needs no projection form; later uploads do.
     show_projection = path and not (
@@ -181,7 +189,14 @@ def render():
         and active is not None and active.source == path
     )
     if show_projection:
-        available = inspect_header(path)
+        # Bind the cached header to its source so a pending replacement stays private
+        # and cannot change the active dataset's metadata before a successful parse.
+        cached_path, header = st.session_state.get('pending_header') or (None, None)
+        if cached_path != path or header is None:
+            header = getattr(active, 'header', None) if active and active.source == path else None
+            header = header or inspect_source(path)
+            st.session_state['pending_header'] = (path, header)
+        available = header.columns
         if cli_options.all_columns:
             fixed = available
             options = []
@@ -200,7 +215,7 @@ def render():
             profile_key = f'home:seconds-profile:{path.stem}'
             if profile_key not in st.session_state:
                 try:
-                    st.session_state[profile_key] = inspect_numeric_range(path)
+                    st.session_state[profile_key] = inspect_numeric_range(path, header=header)
                 except Exception as error:
                     st.session_state[profile_key] = error
             profile_result = st.session_state[profile_key]
@@ -242,7 +257,7 @@ def render():
         if apply or (auto_apply and fixed):
             try:
                 candidate = load_dataset(path, st.session_state.get('pending_name', active.name if active else 'CSV'),
-                                         fixed + extra, parquet, seconds_range)
+                                         [*fixed, *extra], parquet, seconds_range, header)
                 check_cancelled()  # A terminated session must not publish a late parse result.
                 # Commit only after parsing succeeds; a failed import leaves the old view usable.
                 reset_controls()

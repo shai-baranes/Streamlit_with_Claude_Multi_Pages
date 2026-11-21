@@ -4,7 +4,7 @@ from framework.state import ui
 st = ui(__file__)
 import pandas as pd
 
-from utils import inject_css, require_data, sidebar_filters
+from utils import inject_css, require_data, sidebar_filters, render_csv_metadata
 
 from st_aggrid import (
     AgGrid,
@@ -20,6 +20,7 @@ from framework.grid import AgGrid
 st.set_page_config(page_title="Stacked Vlues", page_icon="📈", layout="wide")
 inject_css()
 
+render_csv_metadata()
 df_full = require_data()
 df      = sidebar_filters(df_full)
 

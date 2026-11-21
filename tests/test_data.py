@@ -15,10 +15,61 @@ def source(text, session=None):
 
 def test_sample_regression():
     frame = data.load_projection('synthetic_sales_data.csv', ALWAYS_LOAD_COLUMNS)
-    expected = pd.read_csv('synthetic_sales_data.csv')
+    with open('synthetic_sales_data.csv', 'rb') as sample:
+        while sample.peek(1).startswith(b'%'):
+            sample.readline()
+        expected = pd.read_csv(sample)
     expected['Date'] = pd.to_datetime(expected.Date, dayfirst=True)
     expected = expected.sort_values('Date', kind='stable').reset_index(drop=True)
     pd.testing.assert_frame_equal(frame, expected)
+
+
+@pytest.mark.parametrize('newline', ['\n', '\r\n', '\r'])
+def test_stamped_source_matches_clean_source(newline):
+    csv_text = '"%Label",Seconds,value\n"%row",2,"one\n%still data"\nlast,1,\n'
+    stamp = ('% café END TIME: 19:20:54.22 before version: 1.5, extra text\n'
+             '%% unknown "quotes\n%% version: 9.9\n'
+             '% start time: 18:00:30.35\n%\n')
+    clean = source(csv_text.replace('\n', newline))
+    path, header = data.stage_source(
+        io.BytesIO(('\ufeff' + stamp + csv_text).replace('\n', newline).encode('utf-8')),
+        str(uuid.uuid4()),
+    )
+    assert header.preamble.entries == ('END TIME: 19:20:54.22', 'Elapsed time: 01:20:23.87',
+                                       'version: 1.5', 'start time: 18:00:30.35')
+    columns = ['%Label', 'Seconds', 'value']
+    assert data.inspect_header(path) == columns
+    assert data.inspect_numeric_range(path) == data.inspect_numeric_range(clean)
+    for seconds_range in [None, (2, 2)]:
+        expected = data.load_projection(clean, columns, seconds_range=seconds_range)
+        for _ in range(2):  # The second load can use the private Parquet projection.
+            active = data.load_dataset(path, 'stamped.csv', columns, True, seconds_range, header)
+            assert active.header is header
+            pd.testing.assert_frame_equal(active.frame, expected)
+    assert expected['value'].tolist() == ['one' + newline + '%still data']
+
+
+@pytest.mark.parametrize('row', ['one,2,3', '"unterminated'])
+def test_stamped_validation_reports_original_line(row):
+    with pytest.raises(ValueError, match='line 5'):
+        source(f'% version: 1.5\r\n%\r\n"a\r\nb",c\r\n{row}\r\n')
+
+
+def test_stamp_without_column_header_is_invalid():
+    with pytest.raises(ValueError, match='requires one header row'):
+        source('% version: 1.5\n%')
+
+
+@pytest.mark.parametrize('stamp, expected', [
+    ('% start time: 23:59:59.95\n% end time: 00:00:00.20\n', '00:00:00.25'),
+    ('% start time: 08:00:00.00\n% end time: 08:00:00.00\n', '00:00:00.00'),
+    ('% start time: 08:00:00.00\n', None),
+    ('% start time: 99:00:00.00\n% end time: 08:00:00.00\n', None),
+])
+def test_stamp_elapsed_time(stamp, expected):
+    header = data.inspect_source(source(stamp + 'Seconds\n0\n'))
+    elapsed = [entry for entry in header.preamble.entries if entry.startswith('Elapsed time:')]
+    assert elapsed == ([f'Elapsed time: {expected}'] if expected is not None else [])
 
 def test_projection_and_add_columns():
     path = source('time,state,speed,other\n0,on,3,x\n1,off,4,y\n')

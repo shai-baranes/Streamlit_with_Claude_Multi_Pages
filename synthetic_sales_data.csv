@@ -1,3 +1,7 @@
+% just adding some text version: 1.5 and more
+%% also some text to be here - placeholder - start time: 18:00:30.35
+%% also some text to be here - placeholder - end time: 19:20:54.22
+%
 Date,Year,Quarter,Month,MonthNum,Seconds,Region,Country,Category,Product,Segment,Channel,Sales_Rep,Revenue,Units,Cost,Profit,Margin_%,Deal_Won,longitude,latitude,Altitude,longitude_2,latitude_2,altitude_2,Power_1,Power_2,Power_3,Power_4
 01/01/2022,2022,Q1,Jan,1,0.0,North America,Mexico,Hardware,Network Hub,Mid-Market,Partner,Rep_14,35622.39,47,14744.7,20877.69,58.6,TRUE,34.781800,32.085300,300.0,34.792648,32.076716,526.7,OFF,OFF,OFF,OFF
 01/01/2022,2022,Q1,Jan,1,0.5,Middle East & Africa,Saudi Arabia,Cloud,Kubernetes,Mid-Market,Direct,Rep_10,3512.73,29,2006.87,1505.86,42.9,FALSE,34.783223,32.086591,300.3,34.794090,32.077990,528.0,OFF,OFF,OFF,OFF

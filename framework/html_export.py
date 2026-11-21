@@ -42,6 +42,11 @@ table {border-collapse:collapse; font-variant-numeric:tabular-nums}
 th,td {text-align:start; padding:.3rem .65rem; border-bottom:1px solid #ccd5df}
 thead button {font:inherit; color:inherit; border:0; background:none; cursor:pointer}
 aside {background:#eff6ff; border-left:3px solid #3969ac; padding:.6rem 1rem; margin:1rem 0}
+.csv-metadata {border:1px solid #ccd5df; border-radius:.5rem; background:white}
+.csv-metadata ul {margin:.25rem 0 0; padding-left:1.5rem; overflow-wrap:anywhere}
+.csv-metadata li:nth-child(3n+1)::marker {color:#2563eb}
+.csv-metadata li:nth-child(3n+2)::marker {color:#15803d}
+.csv-metadata li:nth-child(3n)::marker {color:#7c3aed}
 .setting {font-size:.9rem; margin:.2rem 0}
 """
 
@@ -108,6 +113,13 @@ class HtmlReport:
         parser.feed(html)
         parser.close()
         self.blocks.append("<aside>" + "".join(parser.parts) + "</aside>")
+
+    def csv_metadata(self, entries):
+        if entries:
+            items = "".join(f"<li>{escape(entry)}</li>" for entry in entries)
+            self.blocks.append(
+                f'<aside class="csv-metadata"><strong>CSV metadata</strong><ul>{items}</ul></aside>'
+            )
 
     def setting(self, label, value):
         if isinstance(value, (list, tuple)):

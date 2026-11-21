@@ -130,9 +130,19 @@ def test_engineering_chart_treats_numeric_years_as_calendar_dates():
     assert tuple(value.year for value in range_slider.value) == (2022, 2024)
     assert not app.exception
 
-def test_atomic_replacement_and_additional_columns(tmp_path):
+def test_atomic_replacement_and_additional_columns(tmp_path, monkeypatch):
+    from framework import data
+
     first = tmp_path / 'first.csv'
-    first.write_text('time,state,speed\n0,on,2\n1,off,3\n')
+    first.write_text('% version: 1.5\ntime,state,speed\n0,on,2\n1,off,3\n')
+    parses = []
+    parse = data.parse_csv_preamble
+
+    def count_preamble(stream):
+        parses.append(stream.name)
+        return parse(stream)
+
+    monkeypatch.setattr(data, 'parse_csv_preamble', count_preamble)
     app = AppTest.from_file(str(ROOT / 'Load CSV.py'))
     app.session_state['pending_source'] = first
     app.session_state['pending_name'] = 'same.csv'
@@ -143,15 +153,47 @@ def test_atomic_replacement_and_additional_columns(tmp_path):
     app.multiselect[0].set_value(['time', 'state', 'speed'])
     app.button[-1].click().run()
     assert 'speed' in app.session_state['df_full']
+    assert parses == [str(first)]
+    assert app.session_state['dataset'].header.preamble.entries == ('version: 1.5',)
+
+    def panel():
+        return [item.value.replace('\\', '') for item in app.markdown if 'CSV metadata' in item.value]
+
+    # Check the metadata on every page, including views with schema guidance.
+    for page in sorted((ROOT / 'pages').glob('*.py')):
+        app.switch_page(str(page.relative_to(ROOT))).run(timeout=30)
+        assert not app.exception
+        assert len(panel()) == 1 and 'version: 1.5' in panel()[0]
+    assert parses == [str(first)]
+
     # A parse failure must leave the active dataset and its values intact.
     bad = tmp_path / 'bad.csv'
-    bad.write_text('time\n"unclosed\n')
+    bad.write_text('% version: 2.0\ntime\n"unclosed\n')
     app.session_state['pending_source'] = bad
-    app.run()
+    app.switch_page('Load CSV.py').run()
     app.multiselect[0].set_value(['time'])
     app.button[-1].click().run()
     assert app.error
     assert app.session_state['df_full']['speed'].tolist() == [2, 3]
+    app.switch_page('pages/0_🔧_Engineering_Explorer.py').run()
+    assert 'version: 1.5' in panel()[0]
+
+    clean = tmp_path / 'clean.csv'
+    clean.write_text('time,speed\n0,90\n1,95\n')
+    app.session_state['pending_source'] = clean
+    app.switch_page('Load CSV.py').run()
+    app.switch_page('pages/0_🔧_Engineering_Explorer.py').run()
+    assert 'version: 1.5' in panel()[0]
+    app.switch_page('Load CSV.py').run()
+    app.multiselect[0].set_value(['speed'])
+    app.button[-1].click().run()
+    assert app.session_state['df_full']['speed'].tolist() == [90, 95]
+    app.switch_page('pages/0_🔧_Engineering_Explorer.py').run()
+    assert not panel()
+    app.switch_page('Load CSV.py').run()
+    app.button[0].click().run()
+    app.switch_page('pages/0_🔧_Engineering_Explorer.py').run()
+    assert not panel() and 'dataset' not in app.session_state
 
 
 def test_scope_separates_legacy_callback_values():

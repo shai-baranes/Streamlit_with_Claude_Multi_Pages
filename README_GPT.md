@@ -511,6 +511,14 @@ Set environment variables before starting the process. Service environments must
 
 Edit `ALWAYS_LOAD_COLUMNS` in `framework/config.py` to change the fixed list. Exact field names are preserved and matched case-sensitively. Missing fixed fields are reported and skipped. CSV input is UTF-8 (optional BOM), comma-delimited, with one nonempty, unique header row. No hierarchical-header or automatic delimiter detection is performed. Row widths and quoting are validated in one streaming pass on upload, because projected pandas reads can otherwise hide malformed extra fields.
 
+A CSV can start with consecutive lines whose first character is `%`, followed immediately by the column header. Quote the first field name if it begins with `%`. The dashboard skips the stamp when reading columns and data. It displays recognized entries such as `version: 1.5`, `start time: 18:00:30.35`, and `end time: 19:20:54.22` in a bordered panel on each analysis page once the dataset is applied. Files with no recognized entries have no panel. Each stamp line is bounded by Python's CSV field size limit.
+
+To recognize another entry, add a compiled regex to `CSV_HEADER_PATTERNS` in `utils.py` and put the full text to display in capture group 1. The dashboard displays the first match for each pattern in the order it appears in the stamp.
+
+HTML page exports include the active dataset's recognized stamp entries in a panel at the top of the report.
+
+When both start and end are valid clock times, the panel shows elapsed time in hours, minutes, seconds, and hundredths immediately below the end time. An end time earlier than the start time is treated as crossing midnight.
+
 The legacy sales date transformation is applied when Date, Revenue, Region, and Category are loaded: day-first dates, missing calendar columns derived, then Date ordering. Other engineering files retain source row order. Engineering Explorer offers explicit Original/Numeric/Datetime X interpretation, excludes invalid converted X values with a notice, and supports an X-range filter.
 
 The source is retained privately to permit later additional-field loading. Dataset replacement is atomic after successful parsing. Failed uploads/imports leave the active frame unchanged. Applying a new projection resets dependent controls; navigating pages does not. **Clear dataset** clears the session and deletes its private files. Abandoned files expire on subsequent home-page visits; directory leases refresh on page activity. Browser refresh or server restart may lose the session; disk files are not a restore/archive feature.

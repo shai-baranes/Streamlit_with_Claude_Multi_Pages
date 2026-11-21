@@ -12,12 +12,13 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
 from framework.measured_chart import measured_plotly_chart
-from utils import inject_css, require_data, sidebar_filters, tutorial_box
+from utils import inject_css, require_data, sidebar_filters, tutorial_box, render_csv_metadata
 # from utils import inject_css, require_data, sidebar_filters, tutorial_box, my_func3
 
 st.set_page_config(page_title="Charts", page_icon="📈", layout="wide")
 inject_css()
 
+render_csv_metadata()
 df_full = require_data()
 # Sales views require their original schema; generic CSVs use Engineering Explorer.
 from framework.config import ALWAYS_LOAD_COLUMNS

@@ -45,6 +45,7 @@ class Upload:
     size: int
     expires: float
     owner: bytes | None = None
+    header: data.CSVHeader | None = None
 
 
 class Staging:
@@ -107,7 +108,7 @@ class Staging:
             self.pending[token] = upload
             return token
 
-    def claim(self, token, session_id, runtime_id=None):
+    def claim(self, token, session_id, runtime_id=None, *, include_header=False):
         with self.lock:
             self._expire()
             upload = self.pending.get(token)
@@ -121,7 +122,8 @@ class Staging:
             self.bytes -= upload.size
             if upload.owner is not None:
                 self.claimed[runtime_id] = (upload.owner, session_id)
-            return destination, upload.name, upload.parquet
+            claimed = (destination, upload.name, upload.parquet)
+            return (*claimed, upload.header) if include_header else claimed
 
     def cancel_group(self, owner):
         # Claim, upload registration and revocation share this lock.
@@ -287,8 +289,8 @@ async def upload_csv(request):
                             await run_in_threadpool(output.write, chunk)
         if received != size:
             return response(400, error='CSV upload ended before the declared length.')
-        await run_in_threadpool(data.validate_source, path)
-        retained = Upload(path, name, parquet == 'true', size, time.monotonic() + TTL, owner)
+        header = await run_in_threadpool(data.validate_source, path)
+        retained = Upload(path, name, parquet == 'true', size, time.monotonic() + TTL, owner, header)
     except UploadStopped:
         return response(409, error='Upload cancelled by the client stop command.')
     except (ClientDisconnect, TimeoutError):

@@ -6,10 +6,13 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
+from utils import render_csv_metadata
+
 st.set_page_config(page_title="Trajectory Animation", layout="wide")
 
 st = st.exportable_page(title="Animated trajectory")
 st.title("Animated trajectory")
+render_csv_metadata()
 st.caption("Gray = full route, Blue = achieved route, Dark blue = current position")
 
 # ── Synthetic geo dataset ─────────────────────────────────────────────────────

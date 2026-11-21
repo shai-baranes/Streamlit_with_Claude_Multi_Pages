@@ -13,13 +13,14 @@ from framework.trajectory_chart import (
     render_trajectory_player,
     reset_trajectory_player,
 )
-from utils import require_data
+from utils import require_data, render_csv_metadata
 
 
 st = ui(__file__)
 MAX_ANIMATION_FRAMES = 300
 
 st.set_page_config(page_title="3D flight simulation", layout="wide")
+render_csv_metadata()
 df_full = require_data()
 missing = missing_trajectory_columns(df_full)
 if missing:

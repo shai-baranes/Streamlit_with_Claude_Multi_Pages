@@ -6,11 +6,12 @@ import streamlit as st
 # Namespace widget persistence so legacy pages retain independent selections.
 from framework.state import ui
 st = ui(__file__)
-from utils import inject_css, require_data, sidebar_filters, tutorial_box
+from utils import inject_css, require_data, sidebar_filters, tutorial_box, render_csv_metadata
 
 st.set_page_config(page_title="KPIs", page_icon="📊", layout="wide")
 inject_css()
 
+render_csv_metadata()
 df_full = require_data()
 # Sales views require their original schema; generic CSVs use Engineering Explorer.
 from framework.config import ALWAYS_LOAD_COLUMNS

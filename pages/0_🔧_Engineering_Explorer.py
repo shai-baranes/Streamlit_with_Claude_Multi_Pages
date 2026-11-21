@@ -5,12 +5,13 @@ import streamlit as st
 from framework.state import ui
 from framework.analysis import filter_range, aggregate, reduce_points
 from framework.config import MAX_PREVIEW, MAX_POINTS
-from utils import inject_css, require_data
+from utils import inject_css, require_data, render_csv_metadata
 
 st.set_page_config(page_title='Engineering Explorer', layout='wide')
 st = ui(__file__)
 inject_css()
 st.title('Engineering Explorer')
+render_csv_metadata()
 st.divider()
 st.subheader("Grouping for statistics")
 df = require_data()

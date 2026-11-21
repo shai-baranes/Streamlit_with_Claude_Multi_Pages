@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_sample_trajectory_profile():
-    frame = pd.read_csv(ROOT / "synthetic_sales_data.csv")
+    frame = load_projection(ROOT / "synthetic_sales_data.csv", ALWAYS_LOAD_COLUMNS)
     assert len(frame) == 1_500
     assert len(frame.columns) == 29
     assert frame.columns.is_unique
@@ -55,7 +55,7 @@ def test_sample_trajectory_profile():
 
 
 def test_sample_power_states_follow_seconds_thresholds():
-    frame = pd.read_csv(ROOT / "synthetic_sales_data.csv")
+    frame = load_projection(ROOT / "synthetic_sales_data.csv", ALWAYS_LOAD_COLUMNS)
     thresholds = {"Power_1": 60, "Power_2": 70, "Power_3": 80, "Power_4": 90}
     assert set(thresholds).issubset(ALWAYS_LOAD_COLUMNS)
     for column, threshold in thresholds.items():
