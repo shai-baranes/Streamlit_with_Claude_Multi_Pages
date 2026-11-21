@@ -41,3 +41,22 @@ def transitions(frame, columns):
     if len(changed):
         changed.iloc[0] = True
     return frame.loc[changed]
+
+
+def interpret_chart_x(series, interpretation):
+    if interpretation == 'Numeric':
+        return pd.to_numeric(series, errors='coerce')
+    if interpretation == 'Datetime':
+        numeric = pd.to_numeric(series, errors='coerce')
+        present = numeric.dropna()
+        if (not present.empty and present.between(1000, 9999).all()
+                and present.mod(1).eq(0).all()):
+            # Four-digit numeric fields represent calendar years rather than epoch nanoseconds.
+            return pd.to_datetime(numeric.astype('Int64').astype('string'), format='%Y', errors='coerce')
+        try:
+            return pd.to_datetime(series, errors='coerce', dayfirst=True)
+        except ValueError as error:
+            if "Mixed timezones" not in str(error):
+                raise
+            return pd.to_datetime(series, errors='coerce', dayfirst=True, utc=True)
+    return series

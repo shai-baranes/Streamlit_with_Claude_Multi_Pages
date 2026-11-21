@@ -1,30 +1,14 @@
 """On-demand standalone Seconds event table."""
 from dataclasses import asdict
-from datetime import date
-from io import StringIO
-import json
-import math
 from pathlib import Path
 
-import numpy as np
+import json
+
 import pandas as pd
 
 from framework.config import MAX_INTERACTIVE_EXPORT_MB, MAX_PREVIEW
+from framework.export_payload import InteractiveExportTooLarge, PayloadWriter, json_cell
 from framework.stacked_presets import PresetError, PresetStore
-
-
-def _cell(value):
-    if pd.isna(value):
-        return None
-    if isinstance(value, np.generic):
-        value = value.item()
-    if isinstance(value, date):
-        return value.isoformat()
-    if isinstance(value, int) and abs(value) > 2**53 - 1:
-        return str(value)  # Preserve identifiers beyond JavaScript's integer precision.
-    if isinstance(value, float) and not math.isfinite(value):
-        return str(value)
-    return value
 
 
 def payload(frame, state, presets, limit):
@@ -36,20 +20,13 @@ def payload(frame, state, presets, limit):
                     mode=state["view_mode"], exclusions=state["stacked_exclusion_cols"],
                     active=state.get("active_preset_id"), source=state.get("selected_source_row"),
                     presets=[asdict(p) for p in presets], pageSize=MAX_PREVIEW)
-    buffer = StringIO()
-
-    def append(value):
-        # ASCII JSON makes this character count the exact embedded UTF-8 byte size.
-        value = value.replace("<", r"\u003c")
-        if buffer.tell() + len(value) > limit:
-            raise ValueError("Interactive HTML exceeds the configured size limit. Narrow the filters or load fewer columns and export again.")
-        buffer.write(value)
-
-    append(json.dumps(settings)[:-1] + ',"rows":[')
-    for i, (index, *values) in enumerate(frame.itertuples(index=True, name=None)):
-        append(("," if i else "") + json.dumps([str(index), *map(_cell, values)], separators=(",", ":")))
-    append("]}")
-    return buffer.getvalue()
+    writer = PayloadWriter(limit)
+    writer.write(json.dumps(settings)[:-1])
+    writer.write(',"rows":')
+    writer.array([str(index), *map(json_cell, values)]
+                 for index, *values in frame.itertuples(index=True, name=None))
+    writer.write("}")
+    return writer.finish()
 
 
 def export_stacked_table(report, frame, state):
@@ -67,5 +44,8 @@ def export_stacked_table(report, frame, state):
         .stacked-scroll tr[aria-selected=true]{background:#def}
         .stacked-controls button,.stacked-controls select{margin:.2rem}
         """, js=Path(__file__).with_suffix(".js").read_text(encoding="utf8"))
+    except InteractiveExportTooLarge:
+        report.error = ("Interactive HTML exceeds the configured size limit. "
+                        "Narrow the filters or load fewer columns and export again.")
     except (ValueError, PresetError) as exc:
         report.error = str(exc)

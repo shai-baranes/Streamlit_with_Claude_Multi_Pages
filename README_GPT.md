@@ -77,6 +77,19 @@ Report generation runs only on an export request. Reports with Plotly charts
 include the local Plotly.js bundle once (about 4.9 MB). Anyone holding the
 downloaded file can inspect the embedded chart and table data.
 
+### Investigate an Engineering Explorer report offline
+
+On **Engineering Explorer**, click **Export page as HTML**, then **Download HTML**.
+The report opens with the current grouping, aggregation, chart fields, chart
+type, and X range. Change any of these settings in the downloaded file, and
+click a table heading to sort the preview. The chart range applies only to
+the chart. Grouped statistics use all rows in the exported projection.
+
+The file contains every loaded row and column, including fields hidden in
+the current view. The interactive payload, including preconverted chart X values,
+defaults to a 32 MiB limit. If it exceeds the limit, load fewer columns or
+narrow the Seconds interval on the CSV loader page and export again.
+
 ### Play an animated trajectory offline
 
 On **Animated Trajectory 2**, set the zoom, marker size, frame duration, and
@@ -506,6 +519,7 @@ Set environment variables before starting the process. Service environments must
 | `DASHBOARD_MAX_PROCESS_MB` | 24576 | Ingestion admission/working-memory ceiling for the server process |
 | `DASHBOARD_MAX_PREVIEW` | 1000 | Maximum table/grid preview rows |
 | `DASHBOARD_MAX_POINTS` | 10000 | Engineering chart points per trace |
+| `DASHBOARD_MAX_INTERACTIVE_EXPORT_MB` | 32 | Encoded data limit in MiB for interactive table and Explorer HTML exports |
 | `DASHBOARD_TTL_SECONDS` | 86400 | Idle private-source expiry |
 | `DASHBOARD_DATA_DIR` | OS temp / engineering-dashboard | Private session directories |
 

@@ -2,17 +2,26 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from framework.state import ui
-from framework.analysis import filter_range, aggregate, reduce_points
+from framework.state import current_html_export, ui
+from framework.analysis import filter_range, aggregate, reduce_points, interpret_chart_x
 from framework.config import MAX_PREVIEW, MAX_POINTS
 from utils import inject_css, require_data, render_csv_metadata
 
 st.set_page_config(page_title='Engineering Explorer', layout='wide')
 st = ui(__file__)
 inject_css()
+
+st = st.exportable_page(
+    title="Engineering Explorer",
+    help="Includes every loaded field and row, including fields hidden in the current view.",
+)
+
 st.title('Engineering Explorer')
 render_csv_metadata()
 st.divider()
+report = current_html_export()
+# The offline renderer supplies its own controls and results.
+st.begin_export_exclusion()
 st.subheader("Grouping for statistics")
 df = require_data()
 columns = list(df.columns)
@@ -41,25 +50,9 @@ if num:
     y = st.multiselect('Trend - Y field/s (only numeric fields)', num, default=[metric])
     kind = st.radio('Chart type', ['Line', 'Scatter'])
     chart = df[list(dict.fromkeys([x] + y))].copy()
-    if xtype == 'Numeric':
-        chart[x] = pd.to_numeric(chart[x], errors='coerce')
-    elif xtype == 'Datetime':
-        numeric_x = pd.to_numeric(chart[x], errors='coerce')
-        year_like = (
-            numeric_x.notna().any()
-            and numeric_x.dropna().between(1000, 9999).all()
-            and numeric_x.dropna().mod(1).eq(0).all()
-        )
-        if year_like:
-            # Four-digit numeric fields represent calendar years; pandas otherwise
-            # interprets them as nanoseconds after the Unix epoch.
-            chart[x] = pd.to_datetime(
-                numeric_x.astype('Int64').astype('string'),
-                format='%Y',
-                errors='coerce',
-            )
-        else:
-            chart[x] = pd.to_datetime(chart[x], errors='coerce', dayfirst=True)
+    bounds = None
+    if xtype != 'Original':
+        chart[x] = interpret_chart_x(chart[x], xtype)
     if xtype != 'Original' and chart[x].isna().any():
         st.caption('Rows with invalid X values are excluded from the chart.')
         chart = chart.dropna(subset=[x])
@@ -87,3 +80,11 @@ if num:
     if y:
         st.plotly_chart((px.line if kind == 'Line' else px.scatter)(chart, x=x, y=y))
     st.divider()
+st.end_export_exclusion()
+if report is not None:
+    from framework.explorer_export import export_explorer
+
+    settings = dict(group=group, metric=metric, operation=operation, x=x, xtype=xtype,
+                    y=y, kind=kind, bounds=bounds) if num else {}
+    export_explorer(report, df, num, settings)
+st.finish_html_export()
